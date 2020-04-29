@@ -1,0 +1,14 @@
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\bin\Debug\OperationsOnGraph.dll.config
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\bin\Debug\OperationsOnGraph.dll
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\bin\Debug\OperationsOnGraph.pdb
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\bin\Debug\WindowsFormsApp1.dll
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\bin\Debug\WindowsFormsApp1.dll.config
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\obj\Debug\OperationsOnGraph.csprojAssemblyReference.cache
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\obj\Debug\OperationsOnGraph.ClassOperationsOnGraph.resources
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\obj\Debug\OperationsOnGraph.Properties.Resources.resources
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\obj\Debug\OperationsOnGraph.csproj.GenerateResource.cache
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\obj\Debug\OperationsOnGraph.csproj.CoreCompileInputs.cache
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\obj\Debug\OperationsOnGraph.csproj.CopyComplete
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\obj\Debug\OperationsOnGraph.dll
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\OperationsOnGraph\obj\Debug\OperationsOnGraph.pdb

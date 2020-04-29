@@ -1,0 +1,10 @@
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\obj\Debug\GraphUser.csproj.GenerateResource.cache
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\obj\Debug\GraphUser.csproj.CoreCompileInputs.cache
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\obj\Debug\GraphUser.ClassGraphUser.resources
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.dll.config
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.dll
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.dll
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+C:\Users\Илья\source\repos\Конструирование алгоритмов (Графы)\WindowsFormsApp1\obj\Debug\GraphUser.csprojAssemblyReference.cache
