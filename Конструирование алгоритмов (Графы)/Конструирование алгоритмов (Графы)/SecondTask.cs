@@ -33,12 +33,16 @@ namespace Конструирование_алгоритмов__Графы_
 
         private void runTaskButton_Click(object sender, EventArgs e)
         {
+            string nameFileInput = @"C:\Test\graph2.txt";
+            string nameFileOutput = @"C:\Test\graphOut2.txt";
+            ReadAndWriteFile.ReadingFromFile(graphRichTextBox, nameFileInput);
             if (ExceptionHandling_Metod())
             {
                 try
                 {
                     Tasks tasks = new Tasks();
                     tasks.SecondTask(graphRichTextBox, outputTextBox);
+                    ReadAndWriteFile.WriteFromFile(outputTextBox, nameFileOutput, "Максимальное независимое множество: ");
                 }
                 catch
                 {

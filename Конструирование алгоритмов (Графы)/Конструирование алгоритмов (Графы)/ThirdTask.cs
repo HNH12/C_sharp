@@ -20,6 +20,7 @@ namespace Конструирование_алгоритмов__Графы_
         private bool ExceptionHandling_Metod()
         {
             ExceptionHandling exception = new ExceptionHandling();
+
             if (!exception.CheckRightMatrix(graphRichTextBox))
             {
                 return false;
@@ -41,12 +42,17 @@ namespace Конструирование_алгоритмов__Графы_
 
         private void runTaskButton_Click_1(object sender, EventArgs e)
         {
+            string nameFileInput = @"C:\Test\graph3.txt";
+            string nameFileOutput = @"C:\Test\graphOut3.txt";
+            ReadAndWriteFile.ReadingFromFile(graphRichTextBox, nameFileInput);
             if (ExceptionHandling_Metod())
             {
                 try
                 {
                     Tasks tasks = new Tasks();
                     tasks.ThirdTask(graphRichTextBox, outputTextBox, sortedGraphRichTextBox);
+                    ReadAndWriteFile.WriteFromFile(sortedGraphRichTextBox, outputTextBox, nameFileOutput, 
+                        "Отсортированный граф:\n", "Стек вершин топологической сортировки: ");
                 }
                 catch
                 {

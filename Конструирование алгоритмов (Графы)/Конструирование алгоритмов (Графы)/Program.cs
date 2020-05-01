@@ -4,9 +4,66 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OperationsOnGraph;
+using System.IO;
 
 namespace Конструирование_алгоритмов__Графы_
 {
+	class ReadAndWriteFile
+	{
+		/// <summary>
+		/// Чтение из файла
+		/// </summary>
+		/// <param name="inputGraph"></param>
+		/// <param name="nameFile"></param>
+		static public void ReadingFromFile(RichTextBox inputGraph, string nameFile)
+		{
+			FileStream fstream = File.OpenRead(nameFile);
+			byte[] array = new byte[fstream.Length];
+			fstream.Read(array, 0, array.Length);
+			inputGraph.Text = System.Text.Encoding.Default.GetString(array);
+		}
+
+		/// <summary>
+		/// Запись в файл текста из RichTextBox
+		/// </summary>
+		/// <param name="output"></param>
+		/// <param name="nameFile"></param>
+		static public void WriteFromFile(RichTextBox output, string nameFile, string notation = "")
+		{
+			FileStream fstream = new FileStream(nameFile, FileMode.OpenOrCreate);
+			byte[] array = System.Text.Encoding.Default.GetBytes(notation + output.Text);
+			fstream.Write(array, 0, array.Length);
+		}
+
+		/// <summary>
+		/// Запись в файл текста из RichTexBox и TextBox
+		/// </summary>
+		/// <param name="outputRichTextBox"></param>
+		/// <param name="outputTextBox"></param>
+		/// <param name="nameFile"></param>
+		static public void WriteFromFile(RichTextBox outputRichTextBox, TextBox outputTextBox, string nameFile, 
+			string firstNotation = "", string secondNotation = "")
+		{
+			FileStream fstream = new FileStream(nameFile, FileMode.OpenOrCreate);
+			byte[] array1 = System.Text.Encoding.Default.GetBytes(firstNotation + outputRichTextBox.Text);
+			byte[] array2 = System.Text.Encoding.Default.GetBytes("\n" + secondNotation + outputTextBox.Text);
+			fstream.Write(array1, 0, array1.Length);
+			fstream.Write(array2, 0, array2.Length);
+		}
+
+		/// <summary>
+		/// Запись в файл из TextBox
+		/// </summary>
+		/// <param name="outputTextBox"></param>
+		/// <param name="nameFile"></param>
+		static public void WriteFromFile(TextBox outputTextBox, string nameFile, string notation = "")
+		{
+			FileStream fstream = new FileStream(nameFile, FileMode.OpenOrCreate);
+			byte[] array = System.Text.Encoding.Default.GetBytes(notation + outputTextBox.Text);
+			fstream.Write(array, 0, array.Length);
+		}
+	}
+
 	public class Tasks
 	{
 		private void OutputFromListAnswerTextBox(List<int> list, TextBox outTask)

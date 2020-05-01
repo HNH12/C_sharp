@@ -33,12 +33,16 @@ namespace Конструирование_алгоритмов__Графы_
 
         private void runTaskButton_Click(object sender, EventArgs e)
         {
+            string nameFileInput = @"C:\Test\graph4.txt";
+            string nameFileOutput = @"C:\Test\graphOut4.txt";
+            ReadAndWriteFile.ReadingFromFile(graphRichTextBox, nameFileInput);
             if (ExceptionHandling_Metod())
             {
                 try
                 {
                     Tasks tasks = new Tasks();
                     tasks.FourthTask(graphRichTextBox, outputTaskTextBox);
+                    ReadAndWriteFile.WriteFromFile(outputTaskTextBox, nameFileOutput);
                 }
                 catch
                 {
