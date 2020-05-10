@@ -34,6 +34,7 @@
             this.thirdTaskLabel = new System.Windows.Forms.Label();
             this.fourthTaskLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.fifthTaskLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // firstTaskLabel
@@ -107,6 +108,21 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "МЕНЮ";
             // 
+            // fifthTaskLabel
+            // 
+            this.fifthTaskLabel.AutoSize = true;
+            this.fifthTaskLabel.BackColor = System.Drawing.Color.Transparent;
+            this.fifthTaskLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.fifthTaskLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.fifthTaskLabel.Location = new System.Drawing.Point(240, 276);
+            this.fifthTaskLabel.Name = "fifthTaskLabel";
+            this.fifthTaskLabel.Size = new System.Drawing.Size(145, 24);
+            this.fifthTaskLabel.TabIndex = 5;
+            this.fifthTaskLabel.Text = "Пятое задание";
+            this.fifthTaskLabel.Click += new System.EventHandler(this.fifthTaskLabel_Click_1);
+            this.fifthTaskLabel.MouseEnter += new System.EventHandler(this.fifthTaskLabel_MouseEnter);
+            this.fifthTaskLabel.MouseLeave += new System.EventHandler(this.fifthTaskLabel_MouseLeave);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -114,6 +130,7 @@
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(582, 453);
+            this.Controls.Add(this.fifthTaskLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.fourthTaskLabel);
             this.Controls.Add(this.thirdTaskLabel);
@@ -138,6 +155,7 @@
         private System.Windows.Forms.Label thirdTaskLabel;
         private System.Windows.Forms.Label fourthTaskLabel;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label fifthTaskLabel;
     }
 }
 

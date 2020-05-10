@@ -98,9 +98,30 @@ namespace Конструирование_алгоритмов__Графы_
 			this.Hide();
 		}
 
+		private void fifthTaskLabel_MouseLeave(object sender, EventArgs e)
+		{
+			fifthTaskLabel.Font = new Font("Modern No.20", 11);
+		}
+
+		private void fifthTaskLabel_MouseEnter(object sender, EventArgs e)
+		{
+			fifthTaskLabel.Font = new Font("Modern No.20", 11, FontStyle.Underline);
+		}
+
+		private void fifthTaskLabel_Click_1(object sender, EventArgs e)
+		{
+			FifthTask FT = new FifthTask();
+			FT.Size = this.Size;
+			FT.StartPosition = FormStartPosition.Manual;
+			FT.Location = this.Location;
+			FT.Show();
+			this.Hide();
+		}
+
 		private void Menu_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			Application.Exit();
 		}
+
 	}
 }

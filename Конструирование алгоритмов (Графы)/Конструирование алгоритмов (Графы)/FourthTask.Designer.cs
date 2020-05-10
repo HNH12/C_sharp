@@ -105,6 +105,7 @@
             this.Controls.Add(this.outputTaskTextBox);
             this.Controls.Add(this.graphRichTextBox);
             this.Controls.Add(this.runTaskButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FourthTask";
             this.Text = "Четвёртое задание";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FourthTask_FormClosed);

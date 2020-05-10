@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -367,6 +368,43 @@ namespace OperationsOnGraph
 				return true;
 			else
 				return false;
+		}
+
+		private int max(int first, int second)
+		{
+			return first > second ? first : second;
+		}
+
+		private int min(int first, int second)
+		{
+			return first < second ? first : second;
+		}
+
+		public int[] BellmanFord(int startVertex)
+		{
+			int countVertex = _graph.GetCountVertex();
+			int countEdge = _graph.GetCountEdge();
+
+			int[] distances = new int[countVertex];
+			for (int i = 0; i < countVertex; i++)
+				distances[i] = int.MaxValue;
+			distances[startVertex] = 0;
+
+			for (int i = 0; i < countVertex; i++)
+			{
+				for (int j = 0; j < countVertex; j++)
+				{
+					for (int k = 0; k < countVertex; k++)
+					{
+						if (_graph.Edge(j,k) && (distances[j] < int.MaxValue))
+						{
+							if (distances[k] > distances[j] + _graph.GetCostEdge(j,k))
+								distances[k] = max(-int.MaxValue, distances[j] + _graph.GetCostEdge(j, k));
+						}
+					}
+				}
+			}
+			return distances;
 		}
 	}
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OperationsOnGraph;
 using System.IO;
+using System.ComponentModel;
 
 namespace Конструирование_алгоритмов__Графы_
 {
@@ -96,9 +97,35 @@ namespace Конструирование_алгоритмов__Графы_
 				outStack.AppendText(stack.Pop().ToString() + " ");
 		}
 
+		private void OutputBellmanFord(int[] distance, int startVertex, RichTextBox outputTask)
+		{
+			for (int i = 0; i < distance.Length; i++)
+			{
+				if (i < distance.Length)
+				{
+					if (distance[i] != int.MaxValue)
+						outputTask.AppendText("От " + startVertex + " до " + i + " : " + distance[i] + "\n");
+					else
+						outputTask.AppendText("От " + startVertex + " до " + i + " : " + "\u221E\n");
+				}
+				else
+				{
+					if (distance[i] != int.MaxValue)
+						outputTask.AppendText("От вершины " + startVertex + " до вершины " + i + " : " + distance[i]);
+					else
+						outputTask.AppendText("От вершины " + startVertex + " до вершины " + i + " : \u221E");
+				}
+			}
+		}
+
 		private int GetNeededLength(TextBox nL)
 		{
 			return Convert.ToInt32(nL.Text);
+		}
+
+		private int GetStartVertex(TextBox sV)
+		{
+			return Convert.ToInt32(sV.Text);
 		}
 
 		/// <summary>
@@ -166,6 +193,18 @@ namespace Конструирование_алгоритмов__Графы_
 			else
 				outTask.AppendText("Граф не является деревом");
 		}
+
+		/// <summary>
+		/// Реализовать алгоритм Беллмана – Форда нахождения кратчайшего пути. Описать возможности его применения.
+		/// </summary>
+		/// <param name="matrixGraph"></param>
+		/// <param name="outTask"></param>
+		public void FifthTask(RichTextBox matrixGraph, TextBox inTask, RichTextBox outTask)
+		{
+			outTask.Clear();
+			ClassOperationsOnGraph operation = new ClassOperationsOnGraph(matrixGraph);
+			OutputBellmanFord(operation.BellmanFord(GetStartVertex(inTask)),GetStartVertex(inTask), outTask);
+		}
 	}
 
 	/* Знаю, что это не есть хорошо;
@@ -221,11 +260,11 @@ namespace Конструирование_алгоритмов__Графы_
 				string[] text1 = text[i].Split(' ');
 				if (text1.Length != text.Length)
 					return false;
-				for (int j = 0; j < text1.Length; j++)
-				{
-					if (text1[j] != "1" && text1[j]!= "0")
-						return false;
-				}
+				//for (int j = 0; j < text1.Length; j++)
+				//{
+				//	if (text1[j] != "1" && text1[j]!= "0")
+				//		return false;
+				//}
 			}
 			return true;
 		}
@@ -297,6 +336,21 @@ namespace Конструирование_алгоритмов__Графы_
 				if (!CheckLength(graphRichTextBox))
 					return false;
 				if (!NotWeightedGraph(graph))
+					return false;
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public bool CheckRightMatrixWeight(RichTextBox graphRichTextBox)
+		{
+			try
+			{
+				int[][] graph = GetMatrix(graphRichTextBox);
+				if (!CheckLength(graphRichTextBox))
 					return false;
 				return true;
 			}
