@@ -42,7 +42,7 @@ namespace Конструирование_алгоритмов__Графы_
                 {
                     Tasks tasks = new Tasks();
                     tasks.FourthTask(graphRichTextBox, outputTaskTextBox);
-                    ReadAndWriteFile.WriteFromFile(outputTaskTextBox, nameFileOutput);
+                    ReadAndWriteFile.WriteToFile(outputTaskTextBox, nameFileOutput);
                 }
                 catch
                 {

@@ -45,7 +45,7 @@ namespace Конструирование_алгоритмов__Графы_
                 {
                     Tasks tasks = new Tasks();
                     tasks.FirstTask(graphRichTextBox, enterCountWayTextBox, outputCountWayTextBox);
-                    ReadAndWriteFile.WriteFromFile(outputCountWayTextBox, nameFileOutput, "Длина пути: ");
+                    ReadAndWriteFile.WriteToFile(outputCountWayTextBox, nameFileOutput, "Количество путей заданной длины: ");
                 }
                 catch 
                 {

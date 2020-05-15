@@ -121,7 +121,7 @@ namespace GraphUser
 		/// </summary>
 		/// <param name="firstVertex"></param>
 		/// <param name="secondVertex"></param>
-		public void CreatEdge(int firstVertex, int secondVertex)
+		public void CreateEdge(int firstVertex, int secondVertex)
 		{
 			_graph[firstVertex][secondVertex] = 1;
 		}
@@ -131,4 +131,4 @@ namespace GraphUser
 			return _graph;
 		}
 	}
-}
+}	

@@ -42,7 +42,7 @@ namespace Конструирование_алгоритмов__Графы_
                 {
                     Tasks tasks = new Tasks();
                     tasks.SecondTask(graphRichTextBox, outputTextBox);
-                    ReadAndWriteFile.WriteFromFile(outputTextBox, nameFileOutput, "Максимальное независимое множество: ");
+                    ReadAndWriteFile.WriteToFile(outputTextBox, nameFileOutput, "Максимальное независимое множество: ");
                 }
                 catch
                 {

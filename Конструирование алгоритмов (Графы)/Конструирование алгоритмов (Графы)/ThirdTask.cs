@@ -51,7 +51,7 @@ namespace Конструирование_алгоритмов__Графы_
                 {
                     Tasks tasks = new Tasks();
                     tasks.ThirdTask(graphRichTextBox, outputTextBox, sortedGraphRichTextBox);
-                    ReadAndWriteFile.WriteFromFile(sortedGraphRichTextBox, outputTextBox, nameFileOutput, 
+                    ReadAndWriteFile.WriteToFile(sortedGraphRichTextBox, outputTextBox, nameFileOutput, 
                         "Отсортированный граф:\n", "Стек вершин топологической сортировки: ");
                 }
                 catch

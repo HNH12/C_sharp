@@ -61,7 +61,7 @@ namespace OperationsOnGraph
 			{
 				for (int j = 0; j < N; j++)
 				{
-					if (graph[i][j] == 1 && graph[j][i] == 1)
+					if (graph[i][j] != 0 && graph[j][i] != 0)
 					{
 						graph[j][i] = 0;
 					}
@@ -84,9 +84,9 @@ namespace OperationsOnGraph
 				mul[i] = new int[N];
 				for (int j = 0; j < N; j++)
 				{
-					mul[i][j] = 0;
-					for (int k = 0; k < N; k++)
-						mul[i][j] += a[i][k] * b[k][j];
+						mul[i][j] = 0;
+						for (int k = 0; k < N; k++)
+							mul[i][j] += a[i][k] * b[k][j];
 				}
 			}
 			CopyGraph(mul, res, N);
@@ -111,15 +111,14 @@ namespace OperationsOnGraph
 				g[i] = new int[N];
 
 			CopyGraph(_graph.GetGraph(), g, N);
-			DirectedGraph(g, N);
 			CopyGraph(g, res, N);
 
-			while (lengthWay > 1)
+			while (lengthWay > 1)										
 			{
 				int[][] mult = new int[N][];
 				for (int i = 0; i < N; i++)
 					mult[i] = new int[N];
-
+				
 				MultiplicationMatrix(g, res, mult);
 				CopyGraph(mult, res, N);
 				lengthWay--;
@@ -131,6 +130,7 @@ namespace OperationsOnGraph
 				{
 					if (i != j)
 						count += res[i][j];
+					
 				}
 			}
 			return count;

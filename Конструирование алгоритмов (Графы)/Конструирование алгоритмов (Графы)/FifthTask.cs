@@ -46,7 +46,7 @@ namespace Конструирование_алгоритмов__Графы_
                 {
                     Tasks tasks = new Tasks();
                     tasks.FifthTask(graphRichTextBox, getStartVertex, outputTaskRichTextBox);
-                    ReadAndWriteFile.WriteFromFile(outputTaskRichTextBox, nameFileOutput, "Кратчайшие пути до вершин от указанной\n");
+                    ReadAndWriteFile.WriteToFile(outputTaskRichTextBox, nameFileOutput, "Кратчайшие пути до вершин от указанной\n");
                 }
                 catch
                 {

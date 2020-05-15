@@ -29,7 +29,7 @@ namespace Конструирование_алгоритмов__Графы_
 		/// </summary>
 		/// <param name="output"></param>
 		/// <param name="nameFile"></param>
-		static public void WriteFromFile(RichTextBox output, string nameFile, string notation = "")
+		static public void WriteToFile(RichTextBox output, string nameFile, string notation = "")
 		{
 			FileStream fstream = new FileStream(nameFile, FileMode.OpenOrCreate);
 			byte[] array = System.Text.Encoding.Default.GetBytes(notation + output.Text);
@@ -42,7 +42,7 @@ namespace Конструирование_алгоритмов__Графы_
 		/// <param name="outputRichTextBox"></param>
 		/// <param name="outputTextBox"></param>
 		/// <param name="nameFile"></param>
-		static public void WriteFromFile(RichTextBox outputRichTextBox, TextBox outputTextBox, string nameFile, 
+		static public void WriteToFile(RichTextBox outputRichTextBox, TextBox outputTextBox, string nameFile, 
 			string firstNotation = "", string secondNotation = "")
 		{
 			FileStream fstream = new FileStream(nameFile, FileMode.OpenOrCreate);
@@ -57,7 +57,7 @@ namespace Конструирование_алгоритмов__Графы_
 		/// </summary>
 		/// <param name="outputTextBox"></param>
 		/// <param name="nameFile"></param>
-		static public void WriteFromFile(TextBox outputTextBox, string nameFile, string notation = "")
+		static public void WriteToFile(TextBox outputTextBox, string nameFile, string notation = "")
 		{
 			FileStream fstream = new FileStream(nameFile, FileMode.OpenOrCreate);
 			byte[] array = System.Text.Encoding.Default.GetBytes(notation + outputTextBox.Text);
