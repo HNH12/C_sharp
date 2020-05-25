@@ -29,12 +29,6 @@
         private void InitializeComponent()
         {
             this.currentTableDataGridView = new System.Windows.Forms.DataGridView();
-            this.selectTableComboBox = new System.Windows.Forms.ComboBox();
-            this.newOrderLabel = new System.Windows.Forms.Label();
-            this.checkInfoLabel = new System.Windows.Forms.Label();
-            this.warehouseInfoLabel = new System.Windows.Forms.Label();
-            this.updateStatusLabel = new System.Windows.Forms.Label();
-            this.typeTabelComboBox = new System.Windows.Forms.ComboBox();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,6 +37,12 @@
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.selectTableComboBox = new System.Windows.Forms.ComboBox();
+            this.newOrderLabel = new System.Windows.Forms.Label();
+            this.checkInfoLabel = new System.Windows.Forms.Label();
+            this.warehouseInfoLabel = new System.Windows.Forms.Label();
+            this.updateStatusLabel = new System.Windows.Forms.Label();
+            this.typeTabelComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.currentTableDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,6 +67,70 @@
             this.currentTableDataGridView.RowTemplate.Height = 24;
             this.currentTableDataGridView.Size = new System.Drawing.Size(1134, 424);
             this.currentTableDataGridView.TabIndex = 5;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "ID товара";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 125;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "ID продукции";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 125;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Количество";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 125;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "ID цвета";
+            this.Column4.MinimumWidth = 6;
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            this.Column4.Width = 125;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "ID производителя";
+            this.Column5.MinimumWidth = 6;
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.Width = 125;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "ID покупателя";
+            this.Column6.MinimumWidth = 6;
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            this.Column6.Width = 125;
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "Цена (руб.)";
+            this.Column7.MinimumWidth = 6;
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            this.Column7.Width = 125;
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = "Статус товара";
+            this.Column8.MinimumWidth = 6;
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            this.Column8.Width = 125;
             // 
             // selectTableComboBox
             // 
@@ -99,6 +163,7 @@
             this.checkInfoLabel.Size = new System.Drawing.Size(148, 34);
             this.checkInfoLabel.TabIndex = 9;
             this.checkInfoLabel.Text = "Узнать информацию \r\nо заказе";
+            this.checkInfoLabel.Click += new System.EventHandler(this.checkInfoLabel_Click);
             // 
             // warehouseInfoLabel
             // 
@@ -131,62 +196,6 @@
             this.typeTabelComboBox.Size = new System.Drawing.Size(121, 24);
             this.typeTabelComboBox.TabIndex = 12;
             this.typeTabelComboBox.SelectedIndexChanged += new System.EventHandler(this.typeTabelComboBox_SelectedIndexChanged);
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "ID товара";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "ID продукции";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Количество";
-            this.Column3.MinimumWidth = 6;
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "ID цвета";
-            this.Column4.MinimumWidth = 6;
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "ID производителя";
-            this.Column5.MinimumWidth = 6;
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "ID покупателя";
-            this.Column6.MinimumWidth = 6;
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "Цена (руб.)";
-            this.Column7.MinimumWidth = 6;
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "Статус товара";
-            this.Column8.MinimumWidth = 6;
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
             // 
             // Form1
             // 

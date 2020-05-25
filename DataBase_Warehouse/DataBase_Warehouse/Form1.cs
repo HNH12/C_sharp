@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace DataBase_Warehouse
 {
@@ -127,6 +128,28 @@ namespace DataBase_Warehouse
                     case 2:
                         StatusUpdateFurniture F3 = new StatusUpdateFurniture("cars");
                         F3.Show();
+                        break;
+                }
+            }
+        }
+
+        private void checkInfoLabel_Click(object sender, EventArgs e)
+        {
+            if (selectTableComboBox.SelectedIndex > -1)
+            {
+                switch (selectTableComboBox.SelectedIndex)
+                {
+                    case 0:
+                        Form6 F = new Form6();
+                        F.Show();
+                        break;
+                    case 1:
+                        Form5 F5 = new Form5("electronics");
+                        F5.Show();
+                        break;
+                    case 2:
+                        Form5 F5c = new Form5("cars");
+                        F5c.Show();
                         break;
                 }
             }

@@ -523,19 +523,130 @@ namespace DataBase_Warehouse
         //    type.Text = 
         //}
 
-        public void OrderInformation(TextBox type, TextBox nameProduct, TextBox material, TextBox count, TextBox nameColor,
+        public void OrderInformationElectronic (TextBox type, TextBox nameProduct, TextBox count, TextBox nameColor,
             TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
             TextBox firstNameBuyer, TextBox secondNameBuyer, TextBox middleNameBuyer, TextBox countryBuyer, TextBox cityBuyer,
-            TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct, int id)
+            TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct, TextBox status, int id)
         {
-            string sql = "SELECT name,type,material FROM product_furniture WHERE id = (SELECT product_id FROM furniture WHERE item_code = "+id.ToString()+")";
+            string sql = "SELECT pe.type, pe.name, e.count, c.name, b.first_name, b.second_name, b.middle_name," +
+                "b.phone_number, a1.country, a1.city, a1.street, f.name, f.phone_number, a2.country, a2.city, a2.street, e.price_product, e.status "
+                       + "FROM `electronics` e \n"
+                       + "RIGHT OUTER JOIN `product_electronic` pe ON pe.id = e.product_id\n"
+                       + "RIGHT OUTER JOIN `colors` c ON c.id = e.color_id\n"
+                       + "RIGHT OUTER JOIN `buyers` b ON b.id = e.buyer_id\n"
+                       + "RIGHT OUTER JOIN `address` a1 ON a1.id = b.address_id\n"
+                       + "RIGHT OUTER JOIN `fabricators` f ON f.id = e.fabricator_id\n"
+                       + "RIGHT OUTER JOIN `address` a2 ON a2.id = f.address_id\n"
+                       + "WHERE e.item_code = " + id.ToString();
+
             MySqlCommand command = new MySqlCommand(sql, _connection);
             MySqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                type.Text = reader[0].ToString();
+                nameProduct.Text = reader[1].ToString();
+                count.Text = reader[2].ToString();
+                nameColor.Text = reader[3].ToString();
+                firstNameBuyer.Text = reader[4].ToString();
+                secondNameBuyer.Text = reader[5].ToString();
+                middleNameBuyer.Text = reader[6].ToString();
+                phoneNumberBuyer.Text = reader[7].ToString();
+                countryBuyer.Text = reader[8].ToString();
+                cityBuyer.Text = reader[9].ToString();
+                streetBuyer.Text = reader[10].ToString();
+                nameFabricator.Text = reader[11].ToString();
+                phoneNumberFabricator.Text = reader[12].ToString();
+                countryFabricator.Text = reader[13].ToString();
+                cityFabricator.Text = reader[14].ToString();
+                streetFabricator.Text = reader[15].ToString();
+                priceProduct.Text = reader[16].ToString();
+                status.Text = reader[17].ToString();
+            }
+        }
+
+        public void OrderInformationCar(TextBox type, TextBox nameProduct, TextBox count, TextBox nameColor,
+            TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
+            TextBox firstNameBuyer, TextBox secondNameBuyer, TextBox middleNameBuyer, TextBox countryBuyer, TextBox cityBuyer,
+            TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct, TextBox status, int id)
+        {
+            string sql = "SELECT pe.type, pe.name, e.count, c.name, b.first_name, b.second_name, b.middle_name," +
+                "b.phone_number, a1.country, a1.city, a1.street, f.name, f.phone_number, a2.country, a2.city, a2.street, e.price_product, e.status "
+                       + "FROM `cars` e \n"
+                       + "RIGHT OUTER JOIN `product_car` pe ON pe.id = e.product_id\n"
+                       + "RIGHT OUTER JOIN `colors` c ON c.id = e.color_id\n"
+                       + "RIGHT OUTER JOIN `buyers` b ON b.id = e.buyer_id\n"
+                       + "RIGHT OUTER JOIN `address` a1 ON a1.id = b.address_id\n"
+                       + "RIGHT OUTER JOIN `fabricators` f ON f.id = e.fabricator_id\n"
+                       + "RIGHT OUTER JOIN `address` a2 ON a2.id = f.address_id\n"
+                       + "WHERE e.item_code = " + id.ToString();
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                type.Text = reader[0].ToString();
+                nameProduct.Text = reader[1].ToString();
+                count.Text = reader[2].ToString();
+                nameColor.Text = reader[3].ToString();
+                firstNameBuyer.Text = reader[4].ToString();
+                secondNameBuyer.Text = reader[5].ToString();
+                middleNameBuyer.Text = reader[6].ToString();
+                phoneNumberBuyer.Text = reader[7].ToString();
+                countryBuyer.Text = reader[8].ToString();
+                cityBuyer.Text = reader[9].ToString();
+                streetBuyer.Text = reader[10].ToString();
+                nameFabricator.Text = reader[11].ToString();
+                phoneNumberFabricator.Text = reader[12].ToString();
+                countryFabricator.Text = reader[13].ToString();
+                cityFabricator.Text = reader[14].ToString();
+                streetFabricator.Text = reader[15].ToString();
+                priceProduct.Text = reader[16].ToString();
+                status.Text = reader[17].ToString();
+            }
+        }
+
+        public void OrderInformationFurniture(TextBox type, TextBox nameProduct, TextBox material, TextBox count, TextBox nameColor,
+            TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
+            TextBox firstNameBuyer, TextBox secondNameBuyer, TextBox middleNameBuyer, TextBox countryBuyer, TextBox cityBuyer,
+            TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct, TextBox status, int id)
+        {
+            string sql = "SELECT pe.type, pe.name, pe.material, e.count, c.name, b.first_name, b.second_name, b.middle_name," +
+                "b.phone_number, a1.country, a1.city, a1.street, f.name, f.phone_number, a2.country, a2.city, a2.street, e.price_product, e.status "
+                       + "FROM `cars` e \n"
+                       + "RIGHT OUTER JOIN `product_furniture` pe ON pe.id = e.product_id\n"
+                       + "RIGHT OUTER JOIN `colors` c ON c.id = e.color_id\n"
+                       + "RIGHT OUTER JOIN `buyers` b ON b.id = e.buyer_id\n"
+                       + "RIGHT OUTER JOIN `address` a1 ON a1.id = b.address_id\n"
+                       + "RIGHT OUTER JOIN `fabricators` f ON f.id = e.fabricator_id\n"
+                       + "RIGHT OUTER JOIN `address` a2 ON a2.id = f.address_id\n"
+                       + "WHERE e.item_code = " + id.ToString();
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
             while (reader.Read())
             {
                 type.Text = reader[0].ToString();
                 nameProduct.Text = reader[1].ToString();
                 material.Text = reader[2].ToString();
+                count.Text = reader[3].ToString();
+                nameColor.Text = reader[4].ToString();
+                firstNameBuyer.Text = reader[5].ToString();
+                secondNameBuyer.Text = reader[6].ToString();
+                middleNameBuyer.Text = reader[7].ToString();
+                phoneNumberBuyer.Text = reader[8].ToString();
+                countryBuyer.Text = reader[9].ToString();
+                cityBuyer.Text = reader[10].ToString();
+                streetBuyer.Text = reader[11].ToString();
+                nameFabricator.Text = reader[12].ToString();
+                phoneNumberFabricator.Text = reader[13].ToString();
+                countryFabricator.Text = reader[14].ToString();
+                cityFabricator.Text = reader[15].ToString();
+                streetFabricator.Text = reader[16].ToString();
+                priceProduct.Text = reader[17].ToString();
+                status.Text = reader[18].ToString();
             }
         }
 

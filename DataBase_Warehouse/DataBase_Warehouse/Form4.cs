@@ -17,17 +17,35 @@ namespace DataBase_Warehouse
             InitializeComponent();
         }
 
+        private bool CheckFullTextBox()
+        {
+            bool full = (typeTextBox.Text == "" || nameProductTextBox.Text == "" || countTextBox.Text == ""
+                || colorTextBox.Text == "" || nameFabricatorTextBox.Text == "" || countryFabricatorTextBox.Text == "" || cityFabricatorTextBox.Text == ""
+                || streetFabricatorTextBox.Text == "" || phoneFabricatorTextBox.Text == "" || firstNameTextBox.Text == "" || secondNameTextBox.Text == ""
+                || middleNameTextBox.Text == "" || countryBuyerTextBox.Text == "" || streetBuyerTextBox.Text == "" || phoneBuyerTextBox.Text == ""
+                || priceTextBox.Text == "");
+
+            if (full)
+                return false;
+            return true;
+        }
+
         private void addOrderButton_Click(object sender, EventArgs e)
         {
             try
             {
-                DataBaseClass DB = new DataBaseClass();
+                if (CheckFullTextBox())
+                {
+                    DataBaseClass DB = new DataBaseClass();
 
-                DB.NewOrderCars(typeTextBox, nameProductTextBox, countTextBox, colorTextBox, nameFabricatorTextBox, countryFabricatorTextBox,
-                    cityFabricatorTextBox, streetFabricatorTextBox, phoneFabricatorTextBox, firstNameTextBox, secondNameTextBox, middleNameTextBox, countryBuyerTextBox, cityBuyerTextBox,
-                    streetBuyerTextBox, phoneBuyerTextBox, priceTextBox);
+                    DB.NewOrderCars(typeTextBox, nameProductTextBox, countTextBox, colorTextBox, nameFabricatorTextBox, countryFabricatorTextBox,
+                        cityFabricatorTextBox, streetFabricatorTextBox, phoneFabricatorTextBox, firstNameTextBox, secondNameTextBox, middleNameTextBox, countryBuyerTextBox, cityBuyerTextBox,
+                        streetBuyerTextBox, phoneBuyerTextBox, priceTextBox);
 
-                MessageBox.Show("Выполнено");
+                    MessageBox.Show("Выполнено");
+                }
+                else
+                    MessageBox.Show("Заполнены не все поля");
             }
             catch 
             {
