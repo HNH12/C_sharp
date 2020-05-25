@@ -24,3 +24,7 @@ C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\D
 C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.csproj.CopyComplete
 C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.exe
 C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.pdb
+C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.Form2.resources
+C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.Form3.resources
+C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.Form4.resources
+C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.StatusUpdateFurniture.resources

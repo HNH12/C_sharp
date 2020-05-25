@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using System.Data;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.InteropServices;
+using System.Net.Http.Headers;
 
 namespace DataBase_Warehouse
 {
@@ -21,20 +21,26 @@ namespace DataBase_Warehouse
             _connection.Open();
         }
 
-        public void OutputFurnitureTable(DataGridView DGV)
+        public void OutputTable(DataGridView DGV, string tableName, int choose = 0)
         {
             DGV.Rows.Clear();
 
-            string sql = "SELECT * FROM furniture";
+            string sql = String.Empty;
+            switch (choose)
+            {
+                case 0: sql = "SELECT * FROM " + tableName; break;
+                case 1: sql = "SELECT * FROM " + tableName + " WHERE status = 'на складе'"; break;
+                case 2: sql = "SELECT * FROM " + tableName + " WHERE status = 'закрыт'"; break;
+            }
+            
             MySqlCommand command = new MySqlCommand(sql, _connection);
             MySqlDataReader reader = command.ExecuteReader();
-            string allTable = "";
 
             List<string[]> data = new List<string[]>();
 
             while (reader.Read())
             {
-                data.Add(new string[7]);
+                data.Add(new string[8]);
 
                 data[data.Count - 1][0] = reader[0].ToString();
                 data[data.Count - 1][1] = reader[1].ToString();
@@ -43,6 +49,7 @@ namespace DataBase_Warehouse
                 data[data.Count - 1][4] = reader[4].ToString();
                 data[data.Count - 1][5] = reader[5].ToString();
                 data[data.Count - 1][6] = reader[6].ToString();
+                data[data.Count - 1][7] = reader[7].ToString();
             }
 
             reader.Close();
@@ -50,7 +57,6 @@ namespace DataBase_Warehouse
             foreach (string[] s in data)
                 DGV.Rows.Add(s);
         }
-
 
         /// <summary>
         /// Удаление заказа мебели;
@@ -102,7 +108,7 @@ namespace DataBase_Warehouse
 
         private bool CheckFullProduct(TextBox type, TextBox name, TextBox material, object result)
         {
-            string sql = "SELECT id FROM product WHERE type = '" + type.Text + "' AND name = '" +
+            string sql = "SELECT id FROM product_furniture WHERE type = '" + type.Text + "' AND name = '" +
                 name.Text + "' AND material = '" + material.Text + "'";
 
             MySqlCommand command = new MySqlCommand(sql, _connection);
@@ -111,6 +117,20 @@ namespace DataBase_Warehouse
             if (result == null)
                 return false;
             else 
+                return true;
+        }
+
+        private bool CheckFullProduct(TextBox type, TextBox name, string tableName, object result)
+        {
+            string sql = "SELECT id FROM " + tableName + " WHERE type = '" + type.Text + "' AND name = '" +
+                name.Text + "'";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            result = command.ExecuteScalar();
+
+            if (result == null)
+                return false;
+            else
                 return true;
         }
 
@@ -173,6 +193,7 @@ namespace DataBase_Warehouse
             else
                 return true;
         }
+
 
         private bool CheckFullFabricator(TextBox name, TextBox country, TextBox city, TextBox street, TextBox phoneNumber, object result)
         {
@@ -239,7 +260,15 @@ namespace DataBase_Warehouse
         
         private void CreateNewProduct(TextBox type, TextBox name, TextBox material)
         {
-            string sqlAdd = "INSERT INTO `product`(`id`,`type`,`name`,`material`) VALUES (NULL,'" + type.Text + "','" + name.Text + "','" + material.Text + "')";
+            string sqlAdd = "INSERT INTO `product_furniture`(`id`,`type`,`name`,`material`) VALUES (NULL,'" + type.Text + "','" + name.Text + "','" + material.Text + "')";
+
+            MySqlCommand command = new MySqlCommand(sqlAdd, _connection);
+            command.ExecuteNonQuery();
+        }
+
+        private void CreateNewProduct(TextBox type, TextBox name, string tableName)
+        {
+            string sqlAdd = "INSERT INTO `" + tableName + "`(`id`,`type`,`name`) VALUES (NULL,'" + type.Text + "','" + name.Text + "')";
 
             MySqlCommand command = new MySqlCommand(sqlAdd, _connection);
             command.ExecuteNonQuery();
@@ -251,7 +280,7 @@ namespace DataBase_Warehouse
         public void NewOrderFurniture(TextBox type, TextBox nameProduct, TextBox material, TextBox count, TextBox nameColor,
             TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
             TextBox firstNameBuyer, TextBox secondNameBuyer,TextBox middleNameBuyer, TextBox countryBuyer, TextBox cityBuyer,
-            TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox dateDelivery, TextBox priceProduct)
+            TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct)
         {
             object firstResult = new object();
             object secondResult = new object();
@@ -309,19 +338,205 @@ namespace DataBase_Warehouse
             {
                 CreateNewProduct(type, nameProduct, material);
 
-                string sql = "SELECT id FROM product WHERE type = '" + type.Text + "' AND name = '" +
+                string sql = "SELECT id FROM product_furniture WHERE type = '" + type.Text + "' AND name = '" +
                 nameProduct.Text + "' AND material = '" + material.Text + "'";
 
                 MySqlCommand command = new MySqlCommand(sql, _connection);
                 fourthResult = command.ExecuteScalar();
             }
 
-            string sqlAdd = "INSERT INTO `furniture`(`item_code`,`product_id`,`count`,`color_id`,`fabricator_id`,`buyer_id`,`price_product`)" +
+            string sqlAdd = "INSERT INTO `furniture`(`item_code`,`product_id`,`count`,`color_id`,`fabricator_id`,`buyer_id`,`price_product`,`status`)" +
                 " VALUES (NULL,'" + fourthResult.ToString() + "'," + count.Text + ",'" + thirdResult.ToString() + "','" + secondResult.ToString() +
-                "','" + firstResult.ToString() + "'," + priceProduct.Text + ")";
+                "','" + firstResult.ToString() + "'," + priceProduct.Text + ",'на складе')";
 
             MySqlCommand commandAdd = new MySqlCommand(sqlAdd, _connection);
             commandAdd.ExecuteNonQuery();
+        }
+
+        public void NewOrderElectronics(TextBox type, TextBox nameProduct, TextBox count, TextBox nameColor,
+            TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
+            TextBox firstNameBuyer, TextBox secondNameBuyer, TextBox middleNameBuyer, TextBox countryBuyer, TextBox cityBuyer,
+            TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct)
+        {
+            object firstResult = new object();
+            object secondResult = new object();
+            object thirdResult = new object();
+            object fourthResult = new object();
+
+            bool fullBuyer = CheckFullBuyer(firstNameBuyer, secondNameBuyer, middleNameBuyer, countryBuyer,
+                cityBuyer, streetBuyer, phoneNumberBuyer, firstResult);
+
+            bool fullFabricator = CheckFullFabricator(nameFabricator, countryFabricator,
+                cityFabricator, streetFabricator, phoneNumberFabricator, secondResult);
+
+            bool fullColor = CheckFullColor(nameColor, thirdResult);
+
+            bool fullProduct = CheckFullProduct(type, nameProduct, "product_electronic", fourthResult);
+
+            if (!fullBuyer)
+            {
+                CreateNewBuyer(firstNameBuyer, secondNameBuyer, middleNameBuyer,
+                    countryBuyer, cityBuyer, streetBuyer, phoneNumberBuyer);
+
+                string sql = "SELECT id FROM buyers WHERE first_name = '" + firstNameBuyer.Text + "' AND second_name = '"
+                + secondNameBuyer.Text + "' AND middle_name = '" + middleNameBuyer.Text +
+                "' AND address_id = (SELECT id FROM address WHERE country = '" + countryBuyer.Text + "' AND city = '"
+                + cityBuyer.Text + "' AND street = '" + streetBuyer.Text + "') AND phone_number = '" + phoneNumberBuyer.Text + "'";
+
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                firstResult = command.ExecuteScalar();
+            }
+
+            if (!fullFabricator)
+            {
+                CreateNewFabricator(nameFabricator, countryFabricator, cityFabricator,
+                    streetFabricator, phoneNumberFabricator);
+
+                string sql = "SELECT id FROM fabricators WHERE name = '" + nameFabricator.Text +
+                "' AND address_id = (SELECT id FROM address WHERE country = '" + countryFabricator.Text + "' AND city = '"
+                + cityFabricator.Text + "' AND street = '" + streetFabricator.Text + "') AND phone_number = '" + phoneNumberFabricator.Text + "'";
+
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                secondResult = command.ExecuteScalar();
+            }
+
+            if (!fullColor)
+            {
+                CreateNewColor(nameColor);
+
+                string sql = "SELECT id FROM colors WHERE name = '" + nameColor.Text + "'";
+
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                thirdResult = command.ExecuteScalar();
+            }
+
+            if (!fullProduct)
+            {
+                CreateNewProduct(type, nameProduct, "product_electronic");
+
+                string sql = "SELECT id FROM product_electronic WHERE type = '" + type.Text + "' AND name = '" +
+                nameProduct.Text + "'";
+
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                fourthResult = command.ExecuteScalar();
+            }
+
+            string sqlAdd = "INSERT INTO `electronics`(`item_code`,`product_id`,`count`,`color_id`,`fabricator_id`,`buyer_id`,`price_product`,`status`)" +
+                " VALUES (NULL,'" + fourthResult.ToString() + "'," + count.Text + ",'" + thirdResult.ToString() + "','" + secondResult.ToString() +
+                "','" + firstResult.ToString() + "'," + priceProduct.Text + ",'на складе')";
+
+            MySqlCommand commandAdd = new MySqlCommand(sqlAdd, _connection);
+            commandAdd.ExecuteNonQuery();
+        }
+
+        public void NewOrderCars(TextBox type, TextBox nameProduct, TextBox count, TextBox nameColor,
+            TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
+            TextBox firstNameBuyer, TextBox secondNameBuyer, TextBox middleNameBuyer, TextBox countryBuyer, TextBox cityBuyer,
+            TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct)
+        {
+            object firstResult = new object();
+            object secondResult = new object();
+            object thirdResult = new object();
+            object fourthResult = new object();
+
+            bool fullBuyer = CheckFullBuyer(firstNameBuyer, secondNameBuyer, middleNameBuyer, countryBuyer,
+                cityBuyer, streetBuyer, phoneNumberBuyer, firstResult);
+
+            bool fullFabricator = CheckFullFabricator(nameFabricator, countryFabricator,
+                cityFabricator, streetFabricator, phoneNumberFabricator, secondResult);
+
+            bool fullColor = CheckFullColor(nameColor, thirdResult);
+
+            bool fullProduct = CheckFullProduct(type, nameProduct, "product_car", fourthResult);
+
+            if (!fullBuyer)
+            {
+                CreateNewBuyer(firstNameBuyer, secondNameBuyer, middleNameBuyer,
+                    countryBuyer, cityBuyer, streetBuyer, phoneNumberBuyer);
+
+                string sql = "SELECT id FROM buyers WHERE first_name = '" + firstNameBuyer.Text + "' AND second_name = '"
+                + secondNameBuyer.Text + "' AND middle_name = '" + middleNameBuyer.Text +
+                "' AND address_id = (SELECT id FROM address WHERE country = '" + countryBuyer.Text + "' AND city = '"
+                + cityBuyer.Text + "' AND street = '" + streetBuyer.Text + "') AND phone_number = '" + phoneNumberBuyer.Text + "'";
+
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                firstResult = command.ExecuteScalar();
+            }
+
+            if (!fullFabricator)
+            {
+                CreateNewFabricator(nameFabricator, countryFabricator, cityFabricator,
+                    streetFabricator, phoneNumberFabricator);
+
+                string sql = "SELECT id FROM fabricators WHERE name = '" + nameFabricator.Text +
+                "' AND address_id = (SELECT id FROM address WHERE country = '" + countryFabricator.Text + "' AND city = '"
+                + cityFabricator.Text + "' AND street = '" + streetFabricator.Text + "') AND phone_number = '" + phoneNumberFabricator.Text + "'";
+
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                secondResult = command.ExecuteScalar();
+            }
+
+            if (!fullColor)
+            {
+                CreateNewColor(nameColor);
+
+                string sql = "SELECT id FROM colors WHERE name = '" + nameColor.Text + "'";
+
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                thirdResult = command.ExecuteScalar();
+            }
+
+            if (!fullProduct)
+            {
+                CreateNewProduct(type, nameProduct, "product_car");
+
+                string sql = "SELECT id FROM product_car WHERE type = '" + type.Text + "' AND name = '" +
+                nameProduct.Text + "'";
+
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                fourthResult = command.ExecuteScalar();
+            }
+
+            string sqlAdd = "INSERT INTO `electronics`(`item_code`,`product_id`,`count`,`color_id`,`fabricator_id`,`buyer_id`,`price_product`,`status`)" +
+                " VALUES (NULL,'" + fourthResult.ToString() + "'," + count.Text + ",'" + thirdResult.ToString() + "','" + secondResult.ToString() +
+                "','" + firstResult.ToString() + "'," + priceProduct.Text + ",'на складе')";
+
+            MySqlCommand commandAdd = new MySqlCommand(sqlAdd, _connection);
+            commandAdd.ExecuteNonQuery();
+        }
+
+        public void UpdateStatus(int id, string tableName)
+        {
+            string sql = "UPDATE `" + tableName + "` SET `status` = 'закрыт' WHERE `item_code` = " + id;
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            command.ExecuteNonQuery();
+        }
+
+        //public void OrderInformation(TextBox type, TextBox nameProduct, TextBox count, TextBox nameColor,
+        //    TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
+        //    TextBox firstNameBuyer, TextBox secondNameBuyer, TextBox middleNameBuyer, TextBox countryBuyer, TextBox cityBuyer,
+        //    TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct, string nameTable)
+        //{
+        //    string sql = "SELECT type FROM product_" + nameTable.Remove(nameTable.Length-1,1) + "";
+        //    MySqlCommand command = new MySqlCommand(sql, _connection);
+        //    object result = command.ExecuteScalar();
+        //    type.Text = 
+        //}
+
+        public void OrderInformation(TextBox type, TextBox nameProduct, TextBox material, TextBox count, TextBox nameColor,
+            TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
+            TextBox firstNameBuyer, TextBox secondNameBuyer, TextBox middleNameBuyer, TextBox countryBuyer, TextBox cityBuyer,
+            TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct, int id)
+        {
+            string sql = "SELECT name,type,material FROM product_furniture WHERE id = (SELECT product_id FROM furniture WHERE item_code = "+id.ToString()+")";
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                type.Text = reader[0].ToString();
+                nameProduct.Text = reader[1].ToString();
+                material.Text = reader[2].ToString();
+            }
         }
 
         ~DataBaseClass()
