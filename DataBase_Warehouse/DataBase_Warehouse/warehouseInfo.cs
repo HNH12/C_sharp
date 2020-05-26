@@ -15,8 +15,50 @@ namespace DataBase_Warehouse
         public warehouseInfo()
         {
             InitializeComponent();
-            DataBaseClass DB = new DataBaseClass();
-            DB.OutputAllOrdersCount(allOrdersFurnitureTextBox,"furniture");
+
+            FullTextBoxFurniture();
+            FullTextBoxElectronics();
+            FullTextBoxCars();
         }
+
+        private void FullTextBoxFurniture()
+        {
+            DataBaseClass DB = new DataBaseClass();
+            DB.OutputAllOrdersCount(allOrdersFurnitureTextBox, "furniture");
+            DB.OutputCurrentOrdersCount(currentOrdersFurnitureTextBox, "furniture");
+            DB.OutputEndedOrdersCount(endedOrderFurnitureTextBox, "furniture");
+            DB.OutputAllObjectsCount(allObjectsFurnitureTextBox, "furniture");
+            DB.OutputCurrentObjectsCount(onWareObjectsFurnitureTextBox, "furniture");
+            DB.OutputEndedObjectsCount(buyerObjectsTextBox, "furniture");
+            DB.MostExpensiveItem(mostExpensiveFurnitureTextBox,"furniture");
+            DB.CheapestItem(cheapestFurnitureTextBox, "furniture");
+        }
+
+        private void FullTextBoxElectronics()
+        {
+            DataBaseClass DB = new DataBaseClass();
+            DB.OutputAllOrdersCount(allOrdersElectronicsTextBox, "electronics");
+            DB.OutputCurrentOrdersCount(currentOrdersElectronicsTextBox, "electronics");
+            DB.OutputEndedOrdersCount(endedOrdersElectronicsTextBox, "electronics");
+            DB.OutputAllObjectsCount(allObjectsElectronicsTextBox, "electronics");
+            DB.OutputCurrentObjectsCount(onWareObjectsElectronicsTextBox, "electronics");
+            DB.OutputEndedObjectsCount(buyerObjectsElectronicsTextBox, "electronics");
+            DB.MostExpensiveItem(mostExpensiveObjectsElectronicsTextBox, "electronics");
+            DB.CheapestItem(cheapestObjectElectronicsTextBox, "electronics");
+        }
+
+        private void FullTextBoxCars()
+        {
+            DataBaseClass DB = new DataBaseClass();
+            DB.OutputAllOrdersCount(allOrdersCarsTextBox, "cars");
+            DB.OutputCurrentOrdersCount(currentOrdersCarsTextBox, "cars");
+            DB.OutputEndedOrdersCount(endedOrdersCarsTextBox, "cars");
+            DB.OutputAllObjectsCount(allObjectsCarsTextBox, "cars");
+            DB.OutputCurrentObjectsCount(onWareObjectsCarsTextBox, "cars");
+            DB.OutputEndedObjectsCount(buyerObjectCarsTextBox, "cars");
+            DB.MostExpensiveItem(mostExpensiveObjectCarsTextBox, "cars");
+            DB.CheapestItem(cheapestObjectsCarsTextBox, "cars");
+        }
+
     }
 }

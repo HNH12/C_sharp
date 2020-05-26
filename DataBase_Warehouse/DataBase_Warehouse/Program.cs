@@ -9,6 +9,8 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.InteropServices;
 using System.Net.Http.Headers;
 using MySqlX.XDevAPI.Relational;
+using MySqlX.XDevAPI.Common;
+using System.Data.Common;
 
 namespace DataBase_Warehouse
 {
@@ -622,6 +624,134 @@ namespace DataBase_Warehouse
             MySqlCommand command = new MySqlCommand(sql, _connection);
             object result = command.ExecuteScalar();
             count.Text = result.ToString();
+        }
+
+        public void OutputCurrentOrdersCount(TextBox count, string nameTable)
+        {
+            string sql = "SELECT COUNT(*) FROM `"+nameTable+"` WHERE status = 'на складе'";
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            object result = command.ExecuteScalar();
+            count.Text = result.ToString();
+        }
+
+        public void OutputEndedOrdersCount(TextBox count, string nameTable)
+        {
+            string sql = "SELECT COUNT(*) FROM `" + nameTable + "` WHERE status = 'закрыт'";
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            object result = command.ExecuteScalar();
+            count.Text = result.ToString();
+        }
+
+        public void OutputAllObjectsCount(TextBox count, string nameTable)
+        {
+            string sql = "SELECT SUM(count) FROM `"+nameTable+"`";
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            object result = command.ExecuteScalar();
+            count.Text = result.ToString();
+        }
+
+        public void OutputCurrentObjectsCount(TextBox count, string nameTable)
+        {
+            string sql = "SELECT SUM(count) FROM `" + nameTable + "` WHERE status = 'на складе'";
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            object result = command.ExecuteScalar();
+            count.Text = result.ToString();
+        }
+
+        public void OutputEndedObjectsCount(TextBox count, string nameTable)
+        {
+            string sql = "SELECT SUM(count) FROM `" + nameTable + "` WHERE status = 'закрыт'";
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            object result = command.ExecuteScalar();
+            count.Text = result.ToString();
+        }
+
+        public void MostExpensiveItem(TextBox item, string nameTable)
+        {
+            string sql = string.Empty;
+
+            switch (nameTable)
+            {
+                case "furniture":
+                    sql = "SELECT type,name FROM `product_furniture` WHERE id = (" +
+                        "SELECT item_code FROM `furniture` WHERE price_product = (" +
+                        "SELECT MAX(price_product) FROM `furniture`)" +
+                        " LIMIT 1)";
+                    break;
+
+                case "electronics":
+                    sql = "SELECT type,name FROM `product_electronic` WHERE id = (" +
+                        "SELECT item_code FROM `electronics` WHERE price_product = (" +
+                        "SELECT MAX(price_product) FROM `electronics`)" +
+                        " LIMIT 1)";
+                    break;
+
+                case "cars":
+                    sql = "SELECT type,name FROM `product_car` WHERE id = (" +
+                        "SELECT item_code FROM `cars` WHERE price_product = (" +
+                        "SELECT MAX(price_product) FROM `cars`)" +
+                        " LIMIT 1)";
+                    break;
+            }
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            string res = string.Empty;
+            while (reader.Read())
+            {
+                res = "Тип: " + reader[0].ToString() + "; Название: " + reader[1].ToString();
+            }
+            reader.Close();
+            item.Text = res;
+
+            sql = "SELECT MAX(price_product) FROM `" + nameTable + "`";
+            command = new MySqlCommand(sql, _connection);
+            object result = command.ExecuteScalar();
+            item.AppendText("; Цена: " + result.ToString());
+        }
+
+        public void CheapestItem(TextBox item, string nameTable)
+        {
+            string sql = string.Empty;
+
+            switch (nameTable)
+            {
+                case "furniture":
+                    sql = "SELECT type,name FROM `product_furniture` WHERE id = (" +
+                        "SELECT item_code FROM `furniture` WHERE price_product = (" +
+                        "SELECT MIN(price_product) FROM `furniture`)" +
+                        " LIMIT 1)";
+                    break;
+
+                case "electronics":
+                    sql = "SELECT type,name FROM `product_electronic` WHERE id = (" +
+                        "SELECT item_code FROM `electronics` WHERE price_product = (" +
+                        "SELECT MIN(price_product) FROM `electronics`)" +
+                        " LIMIT 1)";
+                    break;
+
+                case "cars":
+                    sql = "SELECT type,name FROM `product_car` WHERE id = (" +
+                        "SELECT item_code FROM `cars` WHERE price_product = (" +
+                        "SELECT MIN(price_product) FROM `cars`)" +
+                        " LIMIT 1)";
+                    break;
+            }
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            string res = string.Empty;
+            while (reader.Read())
+            {
+                res = "Тип: " + reader[0].ToString() + "; Название: " + reader[1].ToString();
+            }
+            reader.Close();
+            item.Text = res;
+
+            sql = "SELECT MIN(price_product) FROM `" + nameTable + "`";
+            command = new MySqlCommand(sql, _connection);
+            object result = command.ExecuteScalar();
+            item.AppendText("; Цена: " + result.ToString());
         }
 
         ~DataBaseClass()
