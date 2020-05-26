@@ -8,6 +8,7 @@ using System.Data;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.InteropServices;
 using System.Net.Http.Headers;
+using MySqlX.XDevAPI.Relational;
 
 namespace DataBase_Warehouse
 {
@@ -62,51 +63,16 @@ namespace DataBase_Warehouse
         /// Удаление заказа мебели;
         /// </summary>
         /// <param name="TB"></param>
-        public void DeleteOrderFurniture(TextBox TB)
+        public void DeleteOrder(TextBox TB, string tableName)
         {
             int neededOrder = Convert.ToInt32(TB.Text);
-
-            string sqlFirst = "SELECT buyer_id FROM furniture WHERE item_code = " + neededOrder.ToString();
-            MySqlCommand commandFirst = new MySqlCommand(sqlFirst, _connection);
-            MySqlDataReader readerFirst = commandFirst.ExecuteReader();
-            int buyer_id = new int();
-            while (readerFirst.Read())
-                buyer_id = Convert.ToInt32(readerFirst[0]);
-            readerFirst.Close();
-
-            string sqlSecond = "SELECT item_code FROM furniture WHERE buyer_id = " + buyer_id.ToString();
-            MySqlCommand commandSecond = new MySqlCommand(sqlSecond, _connection);
-            MySqlDataReader readerSecond = commandSecond.ExecuteReader();
-
-            int count = 0;
-            while (readerSecond.Read())
-            {
-                count++;
-            }
-            readerSecond.Close();
-
-            // Если покупатель приобрёл несколько товаров, тогда просто удаляем один заказ;
-            if (count > 1)
-            {
-                string sqlThird = "DELETE FROM furniture WHERE item_code = " + neededOrder;
-                MySqlCommand commandThird = new MySqlCommand(sqlThird, _connection);
-                commandThird.ExecuteNonQuery();
-            }
-
-            // Иначе удаялется не только заказ, но и клиент; 
-            else
-            {
-                string sqlThird = "DELETE FROM furniture WHERE item_code = " + neededOrder.ToString();
-                MySqlCommand commandThird = new MySqlCommand(sqlThird, _connection);
-                commandThird.ExecuteNonQuery();
-
-                string sqlFourth = "DELETE FROM buyers WHERE id = " + buyer_id.ToString();
-                MySqlCommand commandFourth = new MySqlCommand(sqlFourth, _connection);
-                commandFourth.ExecuteNonQuery();
-            }
+    
+            string sqlThird = "DELETE FROM " + tableName + " WHERE item_code = " + neededOrder;
+            MySqlCommand commandThird = new MySqlCommand(sqlThird, _connection);
+            commandThird.ExecuteNonQuery();
         }
 
-        private bool CheckFullProduct(TextBox type, TextBox name, TextBox material, object result)
+        private bool CheckFullProduct(TextBox type, TextBox name, TextBox material, ref object result)
         {
             string sql = "SELECT id FROM product_furniture WHERE type = '" + type.Text + "' AND name = '" +
                 name.Text + "' AND material = '" + material.Text + "'";
@@ -120,7 +86,7 @@ namespace DataBase_Warehouse
                 return true;
         }
 
-        private bool CheckFullProduct(TextBox type, TextBox name, string tableName, object result)
+        private bool CheckFullProduct(TextBox type, TextBox name, string tableName, ref object result)
         {
             string sql = "SELECT id FROM " + tableName + " WHERE type = '" + type.Text + "' AND name = '" +
                 name.Text + "'";
@@ -134,7 +100,7 @@ namespace DataBase_Warehouse
                 return true;
         }
 
-        private bool CheckFullColor(TextBox name, object result)
+        private bool CheckFullColor(TextBox name, ref object result)
         {
             string sql = "SELECT id FROM colors WHERE name = '" + name.Text + "'";
             MySqlCommand command = new MySqlCommand(sql, _connection);
@@ -146,7 +112,7 @@ namespace DataBase_Warehouse
                 return true;
         }
 
-        private bool CheckFullAdress(TextBox country, TextBox city, TextBox street, object result)
+        private bool CheckFullAdress(TextBox country, TextBox city, TextBox street, ref object result)
         {
             string sql = "SELECT id FROM address WHERE country = '" + country.Text + "' AND city = '" 
                 + city.Text + "' AND street = '" + street.Text + "'";
@@ -161,12 +127,12 @@ namespace DataBase_Warehouse
         }
 
         private bool CheckFullBuyer(TextBox firstName, TextBox secondName, TextBox middleName, TextBox country, 
-            TextBox city, TextBox street, TextBox phoneNumber, object result)
+            TextBox city, TextBox street, TextBox phoneNumber, ref object result)
         {
             object resultAdress = new object();
             string sql = string.Empty;
 
-            if (CheckFullAdress(country, city, street, resultAdress))
+            if (CheckFullAdress(country, city, street, ref resultAdress))
             {
                 sql = "SELECT id FROM buyers WHERE first_name = '" + firstName.Text + "' AND second_name = '"
                 + secondName.Text + "' AND middle_name = '" + middleName.Text + 
@@ -195,12 +161,12 @@ namespace DataBase_Warehouse
         }
 
 
-        private bool CheckFullFabricator(TextBox name, TextBox country, TextBox city, TextBox street, TextBox phoneNumber, object result)
+        private bool CheckFullFabricator(TextBox name, TextBox country, TextBox city, TextBox street, TextBox phoneNumber, ref object result)
         {
             object resultAdress = new object();
             string sql = string.Empty;
 
-            if (CheckFullAdress(country, city, street, resultAdress))
+            if (CheckFullAdress(country, city, street, ref resultAdress))
             {
                 sql = "SELECT id FROM fabricators WHERE name = '" + name.Text + 
                 "' AND address_id = '" + resultAdress.ToString() + "' AND phone_number = '" + phoneNumber.Text + "'";
@@ -288,14 +254,14 @@ namespace DataBase_Warehouse
             object fourthResult = new object();
 
             bool fullBuyer = CheckFullBuyer(firstNameBuyer, secondNameBuyer, middleNameBuyer, countryBuyer,
-                cityBuyer, streetBuyer, phoneNumberBuyer, firstResult);
+                cityBuyer, streetBuyer, phoneNumberBuyer, ref firstResult);
 
             bool fullFabricator = CheckFullFabricator(nameFabricator, countryFabricator,
-                cityFabricator, streetFabricator, phoneNumberFabricator, secondResult);
+                cityFabricator, streetFabricator, phoneNumberFabricator, ref secondResult);
 
-            bool fullColor = CheckFullColor(nameColor, thirdResult);
+            bool fullColor = CheckFullColor(nameColor, ref thirdResult);
 
-            bool fullProduct = CheckFullProduct(type, nameProduct, material, fourthResult);
+            bool fullProduct = CheckFullProduct(type, nameProduct, material, ref fourthResult);
 
             if (!fullBuyer)
             {
@@ -364,14 +330,14 @@ namespace DataBase_Warehouse
             object fourthResult = new object();
 
             bool fullBuyer = CheckFullBuyer(firstNameBuyer, secondNameBuyer, middleNameBuyer, countryBuyer,
-                cityBuyer, streetBuyer, phoneNumberBuyer, firstResult);
+                cityBuyer, streetBuyer, phoneNumberBuyer, ref firstResult);
 
             bool fullFabricator = CheckFullFabricator(nameFabricator, countryFabricator,
-                cityFabricator, streetFabricator, phoneNumberFabricator, secondResult);
+                cityFabricator, streetFabricator, phoneNumberFabricator, ref secondResult);
 
-            bool fullColor = CheckFullColor(nameColor, thirdResult);
+            bool fullColor = CheckFullColor(nameColor, ref thirdResult);
 
-            bool fullProduct = CheckFullProduct(type, nameProduct, "product_electronic", fourthResult);
+            bool fullProduct = CheckFullProduct(type, nameProduct, "product_electronic", ref fourthResult);
 
             if (!fullBuyer)
             {
@@ -440,14 +406,14 @@ namespace DataBase_Warehouse
             object fourthResult = new object();
 
             bool fullBuyer = CheckFullBuyer(firstNameBuyer, secondNameBuyer, middleNameBuyer, countryBuyer,
-                cityBuyer, streetBuyer, phoneNumberBuyer, firstResult);
+                cityBuyer, streetBuyer, phoneNumberBuyer, ref firstResult);
 
             bool fullFabricator = CheckFullFabricator(nameFabricator, countryFabricator,
-                cityFabricator, streetFabricator, phoneNumberFabricator, secondResult);
+                cityFabricator, streetFabricator, phoneNumberFabricator, ref secondResult);
 
-            bool fullColor = CheckFullColor(nameColor, thirdResult);
+            bool fullColor = CheckFullColor(nameColor, ref thirdResult);
 
-            bool fullProduct = CheckFullProduct(type, nameProduct, "product_car", fourthResult);
+            bool fullProduct = CheckFullProduct(type, nameProduct, "product_car", ref fourthResult);
 
             if (!fullBuyer)
             {
@@ -507,21 +473,21 @@ namespace DataBase_Warehouse
 
         public void UpdateStatus(int id, string tableName)
         {
-            string sql = "UPDATE `" + tableName + "` SET `status` = 'закрыт' WHERE `item_code` = " + id;
+            string sql = "SELECT status FROM `" + tableName + "` WHERE item_code = " + id;
             MySqlCommand command = new MySqlCommand(sql, _connection);
+            object result = command.ExecuteScalar();
+
+            string newStatus = string.Empty;
+
+            if (result.ToString() == "закрыт")
+                newStatus = "на складе";
+            else
+                newStatus = "закрыт";
+
+            sql = "UPDATE `" + tableName + "` SET `status` = '"+newStatus+"' WHERE `item_code` = " + id;
+            command = new MySqlCommand(sql, _connection);
             command.ExecuteNonQuery();
         }
-
-        //public void OrderInformation(TextBox type, TextBox nameProduct, TextBox count, TextBox nameColor,
-        //    TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
-        //    TextBox firstNameBuyer, TextBox secondNameBuyer, TextBox middleNameBuyer, TextBox countryBuyer, TextBox cityBuyer,
-        //    TextBox streetBuyer, TextBox phoneNumberBuyer, TextBox priceProduct, string nameTable)
-        //{
-        //    string sql = "SELECT type FROM product_" + nameTable.Remove(nameTable.Length-1,1) + "";
-        //    MySqlCommand command = new MySqlCommand(sql, _connection);
-        //    object result = command.ExecuteScalar();
-        //    type.Text = 
-        //}
 
         public void OrderInformationElectronic (TextBox type, TextBox nameProduct, TextBox count, TextBox nameColor,
             TextBox nameFabricator, TextBox countryFabricator, TextBox cityFabricator, TextBox streetFabricator, TextBox phoneNumberFabricator,
@@ -614,7 +580,7 @@ namespace DataBase_Warehouse
         {
             string sql = "SELECT pe.type, pe.name, pe.material, e.count, c.name, b.first_name, b.second_name, b.middle_name," +
                 "b.phone_number, a1.country, a1.city, a1.street, f.name, f.phone_number, a2.country, a2.city, a2.street, e.price_product, e.status "
-                       + "FROM `cars` e \n"
+                       + "FROM `furniture` e \n"
                        + "RIGHT OUTER JOIN `product_furniture` pe ON pe.id = e.product_id\n"
                        + "RIGHT OUTER JOIN `colors` c ON c.id = e.color_id\n"
                        + "RIGHT OUTER JOIN `buyers` b ON b.id = e.buyer_id\n"
@@ -648,6 +614,14 @@ namespace DataBase_Warehouse
                 priceProduct.Text = reader[17].ToString();
                 status.Text = reader[18].ToString();
             }
+        }
+
+        public void OutputAllOrdersCount(TextBox count, string nameTable)
+        {
+            string sql = "SELECT COUNT(*) FROM `" + nameTable+"`";
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            object result = command.ExecuteScalar();
+            count.Text = result.ToString();
         }
 
         ~DataBaseClass()

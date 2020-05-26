@@ -30,3 +30,5 @@ C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\D
 C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.StatusUpdateFurniture.resources
 C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.Form5.resources
 C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.Form6.resources
+C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.Form7.resources
+C:\Users\Илья\source\repos\DataBase_Warehouse\DataBase_Warehouse\obj\Debug\DataBase_Warehouse.warehouseInfo.resources

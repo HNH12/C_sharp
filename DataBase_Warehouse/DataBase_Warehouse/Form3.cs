@@ -7,15 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Schema;
 
 namespace DataBase_Warehouse
 {
     public partial class Form3 : Form
     {
-        public Form3()
+        public Form3(DataGridView DGV, ComboBox CB)
         {
             InitializeComponent();
+            this.DGV = DGV;
+            this.CB = CB;
         }
+
+        DataGridView DGV;
+        ComboBox CB;
 
         private bool CheckFullTextBox()
         {
@@ -30,29 +36,52 @@ namespace DataBase_Warehouse
             return true;
         }
 
+        private void ClearAllTextBox()
+        {
+            typeTextBox.Clear();
+            nameProductTextBox.Clear();
+            countTextBox.Clear();
+            colorTextBox.Clear();
+            nameFabricatorTextBox.Clear();
+            countryFabricatorTextBox.Clear();
+            cityFabricatorTextBox.Clear();
+            streetFabricatorTextBox.Clear();
+            phoneFabricatorTextBox.Clear();
+            firstNameTextBox.Clear();
+            secondNameTextBox.Clear();
+            middleNameTextBox.Clear();
+            countryBuyerTextBox.Clear();
+            cityBuyerTextBox.Clear();
+            streetBuyerTextBox.Clear();
+            phoneBuyerTextBox.Clear();
+            priceTextBox.Clear();
+        }
+
         private void addOrderButton_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 if (CheckFullTextBox())
                 {
                     DataBaseClass DB = new DataBaseClass();
 
-                    DB.NewOrderCars(typeTextBox, nameProductTextBox, countTextBox, colorTextBox, nameFabricatorTextBox, countryFabricatorTextBox,
+                    DB.NewOrderElectronics(typeTextBox, nameProductTextBox, countTextBox, colorTextBox, nameFabricatorTextBox, countryFabricatorTextBox,
                         cityFabricatorTextBox, streetFabricatorTextBox, phoneFabricatorTextBox, firstNameTextBox, secondNameTextBox, middleNameTextBox, countryBuyerTextBox, cityBuyerTextBox,
                         streetBuyerTextBox, phoneBuyerTextBox, priceTextBox);
 
                     MessageBox.Show("Выполнено");
+                    DB.OutputTable(DGV, "electronics", CB.SelectedIndex);
+                    ClearAllTextBox();
                 }
                 else
                 {
                     MessageBox.Show("Заполнены не все поля");
                 }
-            }
-            catch
-            {
-                MessageBox.Show("Ошибка");
-            }
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("Ошибка");
+            //}
         }
     }
 }

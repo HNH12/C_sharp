@@ -12,13 +12,17 @@ namespace DataBase_Warehouse
 {
     public partial class StatusUpdateFurniture : Form
     {
-        public StatusUpdateFurniture(string data)
+        public StatusUpdateFurniture(DataGridView DGV, ComboBox CB, string data)
         {
             InitializeComponent();
             this.data = data;
+            this.DGV = DGV;
+            this.CB = CB;
         }
 
         string data;
+        DataGridView DGV;
+        ComboBox CB;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -29,6 +33,7 @@ namespace DataBase_Warehouse
                     DataBaseClass DB = new DataBaseClass();
                     DB.UpdateStatus(Convert.ToInt32(neededNumberTextBox.Text), data);
                     MessageBox.Show("Выполнено");
+                    DB.OutputTable(DGV, data, CB.SelectedIndex);
                 }
                 catch
                 {

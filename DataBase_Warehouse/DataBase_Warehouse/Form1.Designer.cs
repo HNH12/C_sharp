@@ -43,6 +43,7 @@
             this.warehouseInfoLabel = new System.Windows.Forms.Label();
             this.updateStatusLabel = new System.Windows.Forms.Label();
             this.typeTabelComboBox = new System.Windows.Forms.ComboBox();
+            this.delete = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.currentTableDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -148,41 +149,54 @@
             // newOrderLabel
             // 
             this.newOrderLabel.AutoSize = true;
+            this.newOrderLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.newOrderLabel.Location = new System.Drawing.Point(1220, 76);
             this.newOrderLabel.Name = "newOrderLabel";
             this.newOrderLabel.Size = new System.Drawing.Size(164, 17);
             this.newOrderLabel.TabIndex = 8;
             this.newOrderLabel.Text = "Оформить новый товар";
             this.newOrderLabel.Click += new System.EventHandler(this.newOrderLabel_Click);
+            this.newOrderLabel.MouseEnter += new System.EventHandler(this.newOrderLabel_MouseEnter);
+            this.newOrderLabel.MouseLeave += new System.EventHandler(this.newOrderLabel_MouseLeave);
             // 
             // checkInfoLabel
             // 
             this.checkInfoLabel.AutoSize = true;
+            this.checkInfoLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.checkInfoLabel.Location = new System.Drawing.Point(1220, 154);
             this.checkInfoLabel.Name = "checkInfoLabel";
             this.checkInfoLabel.Size = new System.Drawing.Size(148, 34);
             this.checkInfoLabel.TabIndex = 9;
             this.checkInfoLabel.Text = "Узнать информацию \r\nо заказе";
             this.checkInfoLabel.Click += new System.EventHandler(this.checkInfoLabel_Click);
+            this.checkInfoLabel.MouseEnter += new System.EventHandler(this.checkInfoLabel_MouseEnter);
+            this.checkInfoLabel.MouseLeave += new System.EventHandler(this.checkInfoLabel_MouseLeave);
             // 
             // warehouseInfoLabel
             // 
             this.warehouseInfoLabel.AutoSize = true;
+            this.warehouseInfoLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.warehouseInfoLabel.Location = new System.Drawing.Point(1220, 483);
             this.warehouseInfoLabel.Name = "warehouseInfoLabel";
             this.warehouseInfoLabel.Size = new System.Drawing.Size(163, 17);
             this.warehouseInfoLabel.TabIndex = 10;
             this.warehouseInfoLabel.Text = "Информация по складу";
+            this.warehouseInfoLabel.Click += new System.EventHandler(this.warehouseInfoLabel_Click);
+            this.warehouseInfoLabel.MouseEnter += new System.EventHandler(this.warehouseInfoLabel_MouseEnter);
+            this.warehouseInfoLabel.MouseLeave += new System.EventHandler(this.warehouseInfoLabel_MouseLeave);
             // 
             // updateStatusLabel
             // 
             this.updateStatusLabel.AutoSize = true;
+            this.updateStatusLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.updateStatusLabel.Location = new System.Drawing.Point(1220, 120);
             this.updateStatusLabel.Name = "updateStatusLabel";
             this.updateStatusLabel.Size = new System.Drawing.Size(169, 17);
             this.updateStatusLabel.TabIndex = 11;
             this.updateStatusLabel.Text = "Изменить статус товара";
             this.updateStatusLabel.Click += new System.EventHandler(this.updateStatusLabel_Click);
+            this.updateStatusLabel.MouseEnter += new System.EventHandler(this.updateStatusLabel_MouseEnter);
+            this.updateStatusLabel.MouseLeave += new System.EventHandler(this.updateStatusLabel_MouseLeave);
             // 
             // typeTabelComboBox
             // 
@@ -197,11 +211,25 @@
             this.typeTabelComboBox.TabIndex = 12;
             this.typeTabelComboBox.SelectedIndexChanged += new System.EventHandler(this.typeTabelComboBox_SelectedIndexChanged);
             // 
+            // delete
+            // 
+            this.delete.AutoSize = true;
+            this.delete.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.delete.Location = new System.Drawing.Point(1220, 208);
+            this.delete.Name = "delete";
+            this.delete.Size = new System.Drawing.Size(104, 17);
+            this.delete.TabIndex = 13;
+            this.delete.Text = "Удалить заказ";
+            this.delete.Click += new System.EventHandler(this.label1_Click);
+            this.delete.MouseEnter += new System.EventHandler(this.deleteOrderLabel_MouseEnter);
+            this.delete.MouseLeave += new System.EventHandler(this.deleteOrderLabel_MouseLeave);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1443, 550);
+            this.Controls.Add(this.delete);
             this.Controls.Add(this.typeTabelComboBox);
             this.Controls.Add(this.updateStatusLabel);
             this.Controls.Add(this.warehouseInfoLabel);
@@ -210,8 +238,7 @@
             this.Controls.Add(this.selectTableComboBox);
             this.Controls.Add(this.currentTableDataGridView);
             this.Name = "Form1";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Text = "Склад";
             ((System.ComponentModel.ISupportInitialize)(this.currentTableDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -235,6 +262,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.Label delete;
     }
 }
 

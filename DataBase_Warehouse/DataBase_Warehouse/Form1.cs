@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -25,23 +26,54 @@ namespace DataBase_Warehouse
             typeTabelComboBox.SelectedIndex = 0;
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void newOrderLabel_MouseEnter(object sender, EventArgs e)
         {
-            //DataBaseClass dataBase = new DataBaseClass();
-            //dataBase.NewOrderFurniture(textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9, textBox10,
-            //    textBox11, textBox12, textBox13, textBox14, textBox15, textBox16, textBox17, textBox18);
+            newOrderLabel.Font = new Font("Microsoft Sans Serif", 7.8f,FontStyle.Underline);
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
+        private void newOrderLabel_MouseLeave(object sender, EventArgs e)
         {
-            //DataBaseClass dataBase = new DataBaseClass();
-            //dataBase.NewOrderElectronics(textBox1, textBox2, textBox3, textBox4, textBox5, textBox6, textBox7, textBox8, textBox9, textBox10,
-            //    textBox11, textBox12, textBox13, textBox14, textBox15, textBox16, textBox17);
+            newOrderLabel.Font = new Font("Microsoft Sans Serif", 7.8f);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void updateStatusLabel_MouseEnter(object sender, EventArgs e)
         {
+            updateStatusLabel.Font = new Font("Microsoft Sans Serif", 7.8f, FontStyle.Underline);
+        }
 
+        private void updateStatusLabel_MouseLeave(object sender, EventArgs e)
+        {
+            updateStatusLabel.Font = new Font("Microsoft Sans Serif", 7.8f);
+        }
+
+        private void checkInfoLabel_MouseEnter(object sender, EventArgs e)
+        {
+            checkInfoLabel.Font = new Font("Microsoft Sans Serif", 7.8f, FontStyle.Underline);
+        }
+
+        private void checkInfoLabel_MouseLeave(object sender, EventArgs e)
+        {
+            checkInfoLabel.Font = new Font("Microsoft Sans Serif", 7.8f);
+        }
+
+        private void warehouseInfoLabel_MouseEnter(object sender, EventArgs e)
+        {
+            warehouseInfoLabel.Font = new Font("Microsoft Sans Serif", 7.8f, FontStyle.Underline);
+        }
+
+        private void warehouseInfoLabel_MouseLeave(object sender, EventArgs e)
+        {
+            warehouseInfoLabel.Font = new Font("Microsoft Sans Serif", 7.8f);
+        }
+
+        private void deleteOrderLabel_MouseEnter(object sender, EventArgs e)
+        {
+            delete.Font = new Font("Microsoft Sans Serif", 7.8f, FontStyle.Underline);
+        }
+
+        private void deleteOrderLabel_MouseLeave(object sender, EventArgs e)
+        {
+            delete.Font = new Font("Microsoft Sans Serif", 7.8f);
         }
 
         private void selectTableComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -94,15 +126,15 @@ namespace DataBase_Warehouse
                 switch (selectTableComboBox.SelectedIndex)
                 {
                     case 0:
-                        Form2 F2 = new Form2();
+                        Form2 F2 = new Form2(currentTableDataGridView,typeTabelComboBox);
                         F2.Show();
                         break;
                     case 1:
-                        Form3 F3 = new Form3();
+                        Form3 F3 = new Form3(currentTableDataGridView,typeTabelComboBox);
                         F3.Show();
                         break;
                     case 2:
-                        Form4 F4 = new Form4();
+                        Form4 F4 = new Form4(currentTableDataGridView,typeTabelComboBox);
                         F4.Show();
                         break;
                 }
@@ -118,15 +150,15 @@ namespace DataBase_Warehouse
                 switch (selectTableComboBox.SelectedIndex)
                 {
                     case 0:
-                        StatusUpdateFurniture F1 = new StatusUpdateFurniture("furniture");
+                        StatusUpdateFurniture F1 = new StatusUpdateFurniture(currentTableDataGridView, typeTabelComboBox, "furniture");
                         F1.Show();
                         break;
                     case 1:
-                        StatusUpdateFurniture F2 = new StatusUpdateFurniture("electronics");
+                        StatusUpdateFurniture F2 = new StatusUpdateFurniture(currentTableDataGridView, typeTabelComboBox, "electronics");
                         F2.Show();
                         break;
                     case 2:
-                        StatusUpdateFurniture F3 = new StatusUpdateFurniture("cars");
+                        StatusUpdateFurniture F3 = new StatusUpdateFurniture(currentTableDataGridView, typeTabelComboBox, "cars");
                         F3.Show();
                         break;
                 }
@@ -150,6 +182,34 @@ namespace DataBase_Warehouse
                     case 2:
                         Form5 F5c = new Form5("cars");
                         F5c.Show();
+                        break;
+                }
+            }
+        }
+
+        private void warehouseInfoLabel_Click(object sender, EventArgs e)
+        {
+            warehouseInfo F = new warehouseInfo();
+            F.Show();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            if (selectTableComboBox.SelectedIndex > -1)
+            {
+                switch (selectTableComboBox.SelectedIndex)
+                {
+                    case 0:
+                        Form7 F = new Form7("furniture",typeTabelComboBox,currentTableDataGridView);
+                        F.Show();
+                        break;
+                    case 1:
+                        Form7 F1 = new Form7("electronics",typeTabelComboBox,currentTableDataGridView);
+                        F1.Show();
+                        break;
+                    case 2:
+                        Form7 F2 = new Form7("cars",typeTabelComboBox,currentTableDataGridView);
+                        F2.Show();
                         break;
                 }
             }

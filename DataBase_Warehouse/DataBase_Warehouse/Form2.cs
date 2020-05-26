@@ -12,10 +12,15 @@ namespace DataBase_Warehouse
 {
     public partial class Form2 : Form
     {
-        public Form2()
+        public Form2(DataGridView DGV, ComboBox CB)
         {
             InitializeComponent();
+            this.CB = CB;
+            this.DGV = DGV;
         }
+
+        DataGridView DGV;
+        ComboBox CB;
 
         private bool CheckFullTextBox()
         {
@@ -28,6 +33,28 @@ namespace DataBase_Warehouse
             if (full)
                 return false;
             return true;
+        }
+
+        private void ClearAllTextBox()
+        {
+            typeTextBox.Clear();
+            nameProductTextBox.Clear();
+            countTextBox.Clear();
+            colorTextBox.Clear();
+            nameFabricatorTextBox.Clear();
+            countryFabricatorTextBox.Clear();
+            cityFabricatorTextBox.Clear();
+            streetFabricatorTextBox.Clear();
+            phoneFabricatorTextBox.Clear();
+            firstNameTextBox.Clear();
+            secondNameTextBox.Clear();
+            middleNameTextBox.Clear();
+            countryBuyerTextBox.Clear();
+            cityBuyerTextBox.Clear();
+            streetBuyerTextBox.Clear();
+            phoneBuyerTextBox.Clear();
+            priceTextBox.Clear();
+            materialTextBox.Clear();
         }
 
         private void addOrderButton_Click(object sender, EventArgs e)
@@ -43,6 +70,8 @@ namespace DataBase_Warehouse
                         streetBuyerTextBox, phoneBuyerTextBox, priceTextBox);
 
                     MessageBox.Show("Выполнено");
+                    DB.OutputTable(DGV, "furniture", CB.SelectedIndex);
+                    ClearAllTextBox();
                 }
                 else
                     MessageBox.Show("Заполнены не все поля");

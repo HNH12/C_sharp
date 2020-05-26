@@ -46,7 +46,7 @@ namespace DataBase_Warehouse
             if (neededNumberTextBox.Text != "")
             {
                 DataBaseClass DB = new DataBaseClass();
-                DB.OrderInformationElectronic(typeTextBox, nameProductTextBox, countTextBox, colorTextBox,
+                DB.OrderInformationFurniture(typeTextBox, nameProductTextBox, materialTextbox, countTextBox, colorTextBox,
                     nameFabricatorTextBox, countryFabricatorTextBox, cityFabricatorTextBox, streetFabricatorTextBox, phoneFabricatorTextBox,
                     firstNameTextBox, secondNameTextBox, middleNameTextBox, countryBuyerTextBox, cityBuyerTextBox, streetBuyerTextBox, phoneBuyerTextBox,
                     priceTextBox, statusTextBox, Convert.ToInt32(neededNumberTextBox.Text));
