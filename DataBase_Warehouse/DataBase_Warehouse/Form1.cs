@@ -25,7 +25,7 @@ namespace DataBase_Warehouse
 
             typeTabelComboBox.SelectedIndex = 0;
         }
-
+        
         private void newOrderLabel_MouseEnter(object sender, EventArgs e)
         {
             newOrderLabel.Font = new Font("Microsoft Sans Serif", 7.8f,FontStyle.Underline);

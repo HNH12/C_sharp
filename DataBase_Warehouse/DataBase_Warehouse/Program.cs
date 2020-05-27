@@ -465,7 +465,7 @@ namespace DataBase_Warehouse
                 fourthResult = command.ExecuteScalar();
             }
 
-            string sqlAdd = "INSERT INTO `electronics`(`item_code`,`product_id`,`count`,`color_id`,`fabricator_id`,`buyer_id`,`price_product`,`status`)" +
+            string sqlAdd = "INSERT INTO `cars`(`item_code`,`product_id`,`count`,`color_id`,`fabricator_id`,`buyer_id`,`price_product`,`status`)" +
                 " VALUES (NULL,'" + fourthResult.ToString() + "'," + count.Text + ",'" + thirdResult.ToString() + "','" + secondResult.ToString() +
                 "','" + firstResult.ToString() + "'," + priceProduct.Text + ",'на складе')";
 
@@ -674,21 +674,21 @@ namespace DataBase_Warehouse
             {
                 case "furniture":
                     sql = "SELECT type,name FROM `product_furniture` WHERE id = (" +
-                        "SELECT item_code FROM `furniture` WHERE price_product = (" +
+                        "SELECT product_id FROM `furniture` WHERE price_product = (" +
                         "SELECT MAX(price_product) FROM `furniture`)" +
                         " LIMIT 1)";
                     break;
 
                 case "electronics":
                     sql = "SELECT type,name FROM `product_electronic` WHERE id = (" +
-                        "SELECT item_code FROM `electronics` WHERE price_product = (" +
+                        "SELECT product_id FROM `electronics` WHERE price_product = (" +
                         "SELECT MAX(price_product) FROM `electronics`)" +
                         " LIMIT 1)";
                     break;
 
                 case "cars":
                     sql = "SELECT type,name FROM `product_car` WHERE id = (" +
-                        "SELECT item_code FROM `cars` WHERE price_product = (" +
+                        "SELECT product_id FROM `cars` WHERE price_product = (" +
                         "SELECT MAX(price_product) FROM `cars`)" +
                         " LIMIT 1)";
                     break;

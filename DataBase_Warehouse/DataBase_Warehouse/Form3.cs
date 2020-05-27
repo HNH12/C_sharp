@@ -59,8 +59,8 @@ namespace DataBase_Warehouse
 
         private void addOrderButton_Click(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 if (CheckFullTextBox())
                 {
                     DataBaseClass DB = new DataBaseClass();
@@ -77,11 +77,11 @@ namespace DataBase_Warehouse
                 {
                     MessageBox.Show("Заполнены не все поля");
                 }
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("Ошибка");
-            //}
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка");
+            }
         }
     }
 }
