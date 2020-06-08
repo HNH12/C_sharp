@@ -1,0 +1,12 @@
+﻿<Window x:Class="Program_for_exam.BackProduct"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Program_for_exam"
+        mc:Ignorable="d"
+        Title="Возврат товара" Height="272.33" Width="377.67">
+    <Grid>
+        <Button x:Name="productBackButton" Click="productBackButton_Click"/>
+    </Grid>
+</Window>

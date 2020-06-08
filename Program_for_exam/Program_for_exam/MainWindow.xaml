@@ -1,0 +1,41 @@
+﻿<Window x:Class="Program_for_exam.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Program_for_exam"
+        mc:Ignorable="d"
+        Title="Программа" Height="450" Width="1222.008" Closing="Window_Closing">
+
+    <Grid x:Name="grid1" Margin="0,0,4,0">
+        <DataGrid x:Name="salesDataBase" Margin="20,55,20,40" IsReadOnly ="True" Grid.ColumnSpan="6">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Номер покупки" Binding="{Binding Path=numberSale}" Width="100"/>
+                <DataGridTextColumn Header="ФИО сотрудника" Binding="{Binding Path=nameWorker}" Width="190" />
+                <DataGridTextColumn Header="Должность сотрудника" Binding="{Binding Path=positionWorker}" Width="190"/>
+                <DataGridTextColumn Header="Название изготовителя" Binding="{Binding Path=dataFabricator}" Width="150"/>
+                <DataGridTextColumn Header="Название техники" Binding="{Binding Path=nameTechnic}" Width="150"/>
+                <DataGridTextColumn Header="Тип техники" Binding="{Binding Path=typeTechnic}" Width="100"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Path=priceTechnic}" Width="60"/>
+                <DataGridTextColumn Header="Дата" Binding="{Binding Path=date}" Width="120"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding Path=status}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Menu Height="25" VerticalAlignment="Top" Margin="0,0,777,0">
+            <MenuItem Header="Сохранить в Excel файл">
+                <MenuItem Header="Продажи за сегодня"></MenuItem>
+                <MenuItem Header="Все продажи" Click="SaveAllTable_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Оформить новую покупку" Click="NewSale_Click" ></MenuItem>
+            <MenuItem Header="Оформить возврат" Click="BackSale_Click" ></MenuItem>
+        </Menu>
+
+        <ComboBox Name="typeList" Height="25" VerticalAlignment="Top" Margin="1078,25,20,0" SelectionChanged="typeList_SelectionChanged">
+            <TextBlock>Все</TextBlock>
+            <TextBlock>Полученные</TextBlock>
+            <TextBlock>Доставляется</TextBlock>
+        </ComboBox>
+
+    </Grid>
+</Window>
