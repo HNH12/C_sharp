@@ -51,3 +51,11 @@ C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\addSa
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\addSale.baml
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\BackProduct.g.cs
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\BackProduct.baml
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\DeleteSale.g.cs
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\DeleteSale.baml
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\UpdateSale.g.cs
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\UpdateSale.baml
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\CreateWorker.g.cs
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\CreateWorker.baml
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\AddDiscount.g.cs
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\AddDiscount.baml

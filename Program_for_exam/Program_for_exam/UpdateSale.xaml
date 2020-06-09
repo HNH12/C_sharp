@@ -1,0 +1,14 @@
+﻿<Window x:Class="Program_for_exam.UpdateSale"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Program_for_exam"
+        mc:Ignorable="d"
+        Title="UpdateSale" Height="229.028" Width="332.737">
+    <Grid>
+        <Button Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="78,97,0,0" Click="UpdateSale_Click"/>
+        <TextBox x:Name="numberSaleTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" Margin="91,57,0,0"/>
+
+    </Grid>
+</Window>

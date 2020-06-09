@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\App.xaml
-3-1069654918
+7-2137077679
 
-8-1615260010
+121292635287
 231280456522
-addSale.xaml;BackProduct.xaml;MainWindow.xaml;
+AddDiscount.xaml;addSale.xaml;BackProduct.xaml;CreateWorker.xaml;DeleteSale.xaml;MainWindow.xaml;UpdateSale.xaml;
 
 True
 

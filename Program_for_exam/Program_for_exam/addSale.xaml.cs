@@ -23,18 +23,18 @@ namespace Program_for_exam
     {
         private string _dataBaseOption = "server = 127.0.0.1; user = root; database = market";
 
-        public addSale(int selectedItem, DataGrid salesTable)
+        public addSale(int selectedIndex, DataGrid salesTable)
         {
             InitializeComponent();
 
             DataBase dataBase = new DataBase(_dataBaseOption);
             dataBase.GetStaff(workersListComboBox);
             
-            this.selectedItem = selectedItem;
+            this.selectedIndex = selectedIndex;
             this.salesTable = salesTable;
         }
 
-        int selectedItem = new int();
+        int selectedIndex = new int();
         DataGrid salesTable;
 
         private (string,string,string,string) GetWorkerInformation()
@@ -121,7 +121,7 @@ namespace Program_for_exam
                     countryTextBox,cityTextBox,streetTextBox);
             }
 
-            dataBase.OutputTable(salesTable, selectedItem);
+            dataBase.OutputTable(salesTable, selectedIndex);
         }
     }
 }

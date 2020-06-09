@@ -12,6 +12,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using MySql.Data.MySqlClient;
 using Xceed.Words.NET;
 using Xceed.Document.NET;
+using System.IO;
 
 namespace Program_for_exam
 {
@@ -164,6 +165,12 @@ namespace Program_for_exam
         public string status { get; set; }
     }
 
+    public class ItemWorker
+    {
+        public string nameWorker { get; set; }
+        public string positionWorker { get; set; }
+    }
+
     interface IDataBase
     {
         void OutputTable(DataGrid DG, int choose);
@@ -174,7 +181,7 @@ namespace Program_for_exam
             TextBox nameFabricator, TextBox priceTechnic,
             TextBox country = null, TextBox city = null, TextBox street = null);
 
-        void DeleteSale(string numberSale);
+        bool DeleteSale(string numberSale);
 
         void GetStaff(ComboBox comboBox);
     }
@@ -183,12 +190,60 @@ namespace Program_for_exam
     {
         public DataBase(string option) : base(option) { }
 
+        public void OutputTableStaff(DataGrid DG)
+        {
+            DG.Items.Clear();
+
+            string sql = "SELECT second_name,first_name,middle_name,position FROM `staff`";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            List<string[]> data = new List<string[]>();
+
+            while (reader.Read())
+            {
+                data.Add(new string[2]);
+
+                data[data.Count - 1][0] = reader[0].ToString() + " " + 
+                    reader[1].ToString() + " " + reader[2].ToString();
+                data[data.Count - 1][1] = reader[3].ToString();
+            }
+            
+            foreach(string[] s in data)
+            {
+                DG.Items.Add(new ItemWorker()
+                {
+                    nameWorker = s[0],
+                    positionWorker = s[1]
+                }) ;
+            }
+
+            reader.Close();
+        }
+
+        public void OutputAllTechnic(ComboBox comboBox)
+        {
+            string sql = "SELECT t.name, t.type, f.name FROM `technic` t " +
+                "LEFT OUTER JOIN `fabricators` f ON f.id = t.fabricator_id";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                comboBox.Items.Add(reader[0] + " " + reader[1] + " произведённый " + reader[2]);
+            }
+
+            reader.Close();
+        }
+
         public void OutputTable(DataGrid DG, int choose = 0)
         {
             DG.Items.Clear();
 
             string sql = string.Empty;
-
+            
             switch (choose)
             {
                 case 0:
@@ -264,7 +319,7 @@ namespace Program_for_exam
             }
         }
 
-        private bool CheckFullStaff(TextBox secondName, TextBox firstName, TextBox middleName, TextBox position)
+        public bool CheckFullStaff(TextBox secondName, TextBox firstName, TextBox middleName, TextBox position)
         {
             object result = new object();
 
@@ -362,7 +417,7 @@ namespace Program_for_exam
             command.ExecuteNonQuery();
         }
 
-        private void CreateNewWorker(TextBox secondName, TextBox firstName, TextBox middleName, TextBox position)
+        public void CreateNewWorker(TextBox secondName, TextBox firstName, TextBox middleName, TextBox position)
         {
             string sql = "INSERT INTO `staff`(`id`,`second_name`,`first_name`,`middle_name`,`position`) " +
                 "VALUES (NULL, '" + secondName.Text + "', '" + firstName.Text + "', '" + middleName.Text + "', " +
@@ -418,12 +473,17 @@ namespace Program_for_exam
             command.ExecuteNonQuery();
         }
 
-        public void DeleteSale(string numberSale)
+        public bool DeleteSale(string numberSale)
         {
             string sql = "DELETE FROM `sale` WHERE id = '" + numberSale + "'";
 
             MySqlCommand command = new MySqlCommand(sql, _connection);
-            command.ExecuteNonQuery();
+            int number = command.ExecuteNonQuery();
+
+            if (number >= 1)
+                return true;
+            else
+                return false;
         }
 
         private (string, string) SaleInformation(string text)
@@ -508,6 +568,19 @@ namespace Program_for_exam
                 comboBox.Items.Add(reader[0] + " " + reader[1] + " " + reader[2]
                     + " " + reader[3]);
             }
+        }
+
+        public bool UpdateSale(string numberSale)
+        {
+            string sql = "UPDATE `sale` SET address_id = NULL WHERE id = " + numberSale + " AND address_id IS NOT NULL";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            int number = command.ExecuteNonQuery();
+
+            if (number >= 1)
+                return true;
+            else
+                return false;
         }
     }
 

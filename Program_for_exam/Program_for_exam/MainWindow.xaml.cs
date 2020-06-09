@@ -64,5 +64,29 @@ namespace Program_for_exam
             BackProduct bP = new BackProduct(typeList.SelectedIndex, salesDataBase);
             bP.ShowDialog();
         }
+
+        private void DeleteSale_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteSale delete = new DeleteSale(typeList.SelectedIndex, salesDataBase);
+            delete.ShowDialog();
+        }
+
+        private void UpdateSale_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateSale update = new UpdateSale(typeList.SelectedIndex, salesDataBase);
+            update.ShowDialog();
+        }
+
+        private void CreateWorker_Click(object sender, RoutedEventArgs e)
+        {
+            CreateWorker createWorker = new CreateWorker();
+            createWorker.ShowDialog();
+        }
+
+        private void AddDiscount_Click(object sender, RoutedEventArgs e)
+        {
+            AddDiscount addDiscount = new AddDiscount();
+            addDiscount.ShowDialog();
+        }
     }
 }

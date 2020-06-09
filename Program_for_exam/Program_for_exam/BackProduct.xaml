@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="Возврат товара" Height="272.33" Width="377.67">
     <Grid>
-        <Button x:Name="productBackButton" Click="productBackButton_Click"/>
+        <Button x:Name="productBackButton" Content="Оформить" Click="productBackButton_Click" Margin="106,163,183.2,49.4"/>
     </Grid>
 </Window>

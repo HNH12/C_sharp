@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,19 +38,29 @@ namespace Program_for_exam
         {
             File file = new File();
             DataBase dataBase = new DataBase(_dataBaseOption);
+
             OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Filter = "Word documents(*.docx)|*.docx";
+
             string numberSale = string.Empty; 
+
             if (openFile.ShowDialog() == true)
             {
                 if (dataBase.IssueRefund(file.GetTextDocWord(openFile.FileName), ref numberSale))
                 {
                     dataBase.DeleteSale(numberSale);
                     MessageBox.Show("Возврат выполнен");
+
+                    dataBase.OutputTable(salesTable, selectedItem);
+
+                    FileInfo fileInf = new FileInfo(openFile.FileName);
+
+                    if (fileInf.Exists)
+                        fileInf.Delete();
                 }
+
                 else
-                {
                     MessageBox.Show("Истёк срок");
-                }
             }
         }
     }
