@@ -1,0 +1,31 @@
+﻿<Window x:Class="Program_for_exam.AddProduct"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Program_for_exam"
+        mc:Ignorable="d"
+        Title="Добавить товар" Height="336.039" Width="800">
+
+    <Grid Margin="0,0,-0.4,0">
+        <TextBox x:Name="nameProduct" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="35,50,0,0"/>
+        <TextBox x:Name="typeProduct" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="35,107,0,0"/>
+        <TextBox x:Name="nameFabricator" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="35,166,0,0"/>
+        <TextBox x:Name="priceProduct" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="35,230,0,0"/>
+        <Label Content="Название товара" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,24,0,0"/>
+        <Label Content="Тип товара" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,81,0,0"/>
+        <Label Content="Название производителя" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,140,0,0" RenderTransformOrigin="0.636,1.435"/>
+        <Label Content="Цена товара" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,199,0,0"/>
+
+        <Button Content="Добавить" HorizontalAlignment="Left" Margin="447,230,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" RenderTransformOrigin="0.548,1.856"/>
+        <DataGrid x:Name="listProductDataGrid" HorizontalAlignment="Left" Height="159" VerticalAlignment="Top" Width="529" Margin="220,50,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding Path=nameProduct}" Width="150" />
+                <DataGridTextColumn Header="Тип" Binding="{Binding Path=typeProduct}" Width="110" />
+                <DataGridTextColumn Header="Производителя" Binding="{Binding Path=nameFabricator}" Width="150"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Path=priceProduct}" Width="40"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+    </Grid>
+</Window>

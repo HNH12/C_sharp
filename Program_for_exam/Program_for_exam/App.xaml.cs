@@ -13,9 +13,16 @@ using MySql.Data.MySqlClient;
 using Xceed.Words.NET;
 using Xceed.Document.NET;
 using System.IO;
+using Microsoft.Office.Interop.Excel;
 
 namespace Program_for_exam
 {
+    static class ListDiscount
+    {
+        static public List<Tuple<string, int>> listDiscount = new List<Tuple<string, int>>();
+
+    }
+
     public class File
     {
         private Excel.Workbook TableToExcel(DataGrid table)
@@ -171,15 +178,22 @@ namespace Program_for_exam
         public string positionWorker { get; set; }
     }
 
+    public class ItemProduct
+    {
+        public string nameProduct { get; set; }
+        public string typeProduct { get; set; }
+        public string nameFabricator { get; set; }
+        public string priceProduct { get; set; }
+    }
+
     interface IDataBase
     {
         void OutputTable(DataGrid DG, int choose);
 
         void CreateNewSale(string firstName, string secondName,
             string middleName, string position,
-            TextBox nameTechnic, TextBox typeTechnic,
-            TextBox nameFabricator, TextBox priceTechnic,
-            TextBox country = null, TextBox city = null, TextBox street = null);
+            string product, System.Windows.Controls.TextBox country = null,
+            System.Windows.Controls.TextBox city = null, System.Windows.Controls.TextBox street = null);
 
         bool DeleteSale(string numberSale);
 
@@ -232,10 +246,77 @@ namespace Program_for_exam
 
             while(reader.Read())
             {
-                comboBox.Items.Add(reader[0] + " " + reader[1] + " произведённый " + reader[2]);
+                comboBox.Items.Add("Название: " + reader[0] + "; Тип: " + reader[1] + "; " +
+                    "Кем произведён: " + reader[2]);
             }
 
             reader.Close();
+        }
+
+        public void OutputAllDiscount(ComboBox comboBox)
+        {
+            string sql = "SELECT * FROM `discount`";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                comboBox.Items.Add(reader[0].ToString());
+            }
+            reader.Close();
+        }
+
+        public void OutputProduct(ComboBox comboBox)
+        {
+            string sql = "SELECT t.name, t.type, f.name, t.price FROM `technic` t " +
+                "LEFT OUTER JOIN `fabricators` f ON f.id = t.fabricator_id";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                comboBox.Items.Add("Название: " + reader[0].ToString() + "; Тип: " + reader[1].ToString() + 
+                    "; Название производителя: " + reader[2].ToString() + "; Цена: " + reader[3].ToString());
+            }
+            reader.Close();
+        }
+
+        public void OutputTableTechnic(DataGrid dataGrid)
+        {
+            dataGrid.Items.Clear();
+
+            string sql = "SELECT t.name,t.type,f.name,t.price FROM `technic` t " +
+                "LEFT OUTER JOIN `fabricators` f ON f.id = t.fabricator_id";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            List<string[]> data = new List<string[]>();
+
+            while (reader.Read())
+            {
+                data.Add(new string[4]);
+
+                data[data.Count - 1][0] = reader[0].ToString();
+                data[data.Count - 1][1] = reader[1].ToString();
+                data[data.Count - 1][2] = reader[2].ToString();
+                data[data.Count - 1][3] = reader[3].ToString();
+            }
+
+            foreach (string[] s in data)
+            {
+                dataGrid.Items.Add(new ItemProduct()
+                {
+                    nameProduct = s[0],
+                    typeProduct = s[1],
+                    nameFabricator = s[2],
+                    priceProduct = s[3],
+                });
+            }
+
+                reader.Close();
         }
 
         public void OutputTable(DataGrid DG, int choose = 0)
@@ -248,7 +329,7 @@ namespace Program_for_exam
             {
                 case 0:
                     sql = "SELECT s.id, w.second_name, w.first_name, w.middle_name, w.position, f.name, " +
-                "t.name, t.type, t.price, s.date, s.address_id FROM `sale` s " +
+                "t.name, t.type, s.price, s.date, s.address_id FROM `sale` s " +
                 "LEFT OUTER JOIN `staff` w ON w.id = s.worker_id " +
                 "LEFT OUTER JOIN `technic` t ON t.id = s.technic_id " +
                 "LEFT OUTER JOIN `fabricators` f ON f.id = t.fabricator_id";
@@ -256,7 +337,7 @@ namespace Program_for_exam
 
                 case 1:
                     sql = "SELECT s.id, w.second_name, w.first_name, w.middle_name, w.position, f.name, " +
-                "t.name, t.type, t.price, s.date, s.address_id FROM `sale` s " +
+                "t.name, t.type, s.price, s.date, s.address_id FROM `sale` s " +
                 "LEFT OUTER JOIN `staff` w ON w.id = s.worker_id " +
                 "LEFT OUTER JOIN `technic` t ON t.id = s.technic_id " +
                 "LEFT OUTER JOIN `fabricators` f ON f.id = t.fabricator_id " +
@@ -265,7 +346,7 @@ namespace Program_for_exam
 
                 case 2:
                     sql = "SELECT s.id, w.second_name, w.first_name, w.middle_name, w.position, f.name, " +
-                "t.name, t.type, t.price, s.date, s.address_id FROM `sale` s " +
+                "t.name, t.type, s.price, s.date, s.address_id FROM `sale` s " +
                 "LEFT OUTER JOIN `staff` w ON w.id = s.worker_id " +
                 "LEFT OUTER JOIN `technic` t ON t.id = s.technic_id " +
                 "LEFT OUTER JOIN `fabricators` f ON f.id = t.fabricator_id " +
@@ -319,7 +400,8 @@ namespace Program_for_exam
             }
         }
 
-        public bool CheckFullStaff(TextBox secondName, TextBox firstName, TextBox middleName, TextBox position)
+        public bool CheckFullStaff(System.Windows.Controls.TextBox secondName, System.Windows.Controls.TextBox firstName, 
+            System.Windows.Controls.TextBox middleName, System.Windows.Controls.TextBox position)
         {
             object result = new object();
 
@@ -336,7 +418,7 @@ namespace Program_for_exam
                 return true;
         }
 
-        private bool CheckFullFabricator(TextBox name)
+        private bool CheckFullFabricator(System.Windows.Controls.TextBox name)
         {
             string sql = "SELECT id FROM fabricators WHERE name = '" + name.Text + "'";
 
@@ -351,8 +433,8 @@ namespace Program_for_exam
                 return true;
         }
 
-        private bool CheckFullTechnic(TextBox nameTechnic, TextBox typeTechnic, TextBox nameFabricator,
-            TextBox price)
+        private bool CheckFullTechnic(System.Windows.Controls.TextBox nameTechnic, System.Windows.Controls.TextBox typeTechnic,
+            System.Windows.Controls.TextBox nameFabricator, System.Windows.Controls.TextBox price)
         {
             string sql = string.Empty;
             MySqlCommand command;
@@ -384,7 +466,8 @@ namespace Program_for_exam
             }
         }
 
-        private bool CheckFullAddress(TextBox country, TextBox city, TextBox street)
+        private bool CheckFullAddress(System.Windows.Controls.TextBox country, System.Windows.Controls.TextBox city, 
+            System.Windows.Controls.TextBox street)
         {
             string sql = "SELECT id FROM address WHERE country = '" + country.Text + "' " +
                 "AND city = '" + city.Text + "' AND street = '" + street.Text + "'";
@@ -398,7 +481,8 @@ namespace Program_for_exam
                 return true;
         }
 
-        private void CreateNewAddress(TextBox country, TextBox city, TextBox street)
+        private void CreateNewAddress(System.Windows.Controls.TextBox country, System.Windows.Controls.TextBox city,
+            System.Windows.Controls.TextBox street)
         {
             string sql = "INSERT INTO `address`(`id`,`country`,`city`,`street`) VALUES " +
                 "(NULL,'" + country.Text + "','" + city.Text + "','" + street.Text + "')";
@@ -407,17 +491,27 @@ namespace Program_for_exam
             command.ExecuteNonQuery();
         }
 
-        private void CreateNewTechnic(TextBox name, TextBox type, TextBox price, TextBox nameFabricator)
+        public bool CreateNewTechnic(System.Windows.Controls.TextBox name, System.Windows.Controls.TextBox type,
+            System.Windows.Controls.TextBox price, System.Windows.Controls.TextBox nameFabricator)
         {
-            string sql = "INSERT INTO `technic`(`id`,`fabricator_id`,`name`,`type`,`price`) VALUES " +
-                "(NULL, (SELECT id FROM fabricators WHERE name = '" + nameFabricator.Text + "'), '" + name.Text + "'," +
-                "'" + type.Text + "', " + price.Text + ")";
+            if (CheckFullTechnic(name,type, nameFabricator,price))
+            {
+                return false;
+            }
+            else
+            {
+                string sql = "INSERT INTO `technic`(`id`,`fabricator_id`,`name`,`type`,`price`) VALUES " +
+                    "(NULL, (SELECT id FROM fabricators WHERE name = '" + nameFabricator.Text + "'), '" + name.Text + "'," +
+                    "'" + type.Text + "', " + price.Text + ")";
 
-            MySqlCommand command = new MySqlCommand(sql, _connection);
-            command.ExecuteNonQuery();
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                command.ExecuteNonQuery();
+                return true;
+            }
         }
 
-        public void CreateNewWorker(TextBox secondName, TextBox firstName, TextBox middleName, TextBox position)
+        public void CreateNewWorker(System.Windows.Controls.TextBox secondName, System.Windows.Controls.TextBox firstName,
+            System.Windows.Controls.TextBox middleName, System.Windows.Controls.TextBox position)
         {
             string sql = "INSERT INTO `staff`(`id`,`second_name`,`first_name`,`middle_name`,`position`) " +
                 "VALUES (NULL, '" + secondName.Text + "', '" + firstName.Text + "', '" + middleName.Text + "', " +
@@ -427,21 +521,62 @@ namespace Program_for_exam
             command.ExecuteNonQuery();
         }
 
+        private (string,string,string,string) GetProductInfo(string product)
+        {
+            string name = ""; string type = ""; string nameFabricator = ""; string price = "";
+
+            string word = "";
+
+            for (int i = 0; i < product.Length; i++)
+            {
+                if(product[i]==';')
+                    word = "";
+                else 
+                {
+                    switch (word)
+                    {
+                        case "Название: ":
+                            name += product[i];
+                            break;
+
+                        case " Тип: ":
+                            type += product[i];
+                            break;
+
+                        case " Название производителя: ":
+                            nameFabricator += product[i];
+                            break;
+
+                        case " Цена: ":
+                            price += product[i];
+                            break;
+
+                        default:
+                            word += product[i];
+                            break;
+                    }
+                }
+                    
+            }
+
+            return (name, type, nameFabricator, price);
+        }
+
         public void CreateNewSale(string firstName, string secondName, string middleName, string position,
-            TextBox nameTechnic, TextBox typeTechnic, TextBox nameFabricator, TextBox priceTechnic, TextBox country = null,
-            TextBox city = null, TextBox street = null)
+            string product, System.Windows.Controls.TextBox country = null,
+            System.Windows.Controls.TextBox city = null, System.Windows.Controls.TextBox street = null)
         {
             bool nonNull = (country!= null) && (city != null) && (street != null);
-
-            bool fullTechnic = CheckFullTechnic(nameTechnic, typeTechnic, nameFabricator, priceTechnic);
 
             string sql = string.Empty;
 
             DateTime date = DateTime.Now;
             string dateForMySql = date.ToString("yyyy-MM-dd");
 
-            if (!fullTechnic)
-                CreateNewTechnic(nameTechnic, typeTechnic, priceTechnic, nameFabricator);
+            var tuple = GetProductInfo(product);
+
+            string productForDiscount = "Название: " + tuple.Item1 + 
+                "; Тип: " + tuple.Item2 + "; Кем произведён: " + tuple.Item3; 
 
             if (nonNull)
             {
@@ -449,24 +584,25 @@ namespace Program_for_exam
 
                 if (!fullAddress)
                     CreateNewAddress(country, city, street);
-
-                sql = "INSERT INTO `sale`(`id`,`worker_id`,`technic_id`,`date`,`address_id`) VALUES " +
+                    
+                sql = "INSERT INTO `sale`(`id`,`worker_id`,`technic_id`,`date`,`address_id`,`price`) VALUES " +
                 "(NULL,(SELECT id FROM staff WHERE second_name = '" + secondName + "' AND " +
                 "first_name = '" + firstName + "' AND middle_name = '" + middleName + "' " +
                 "AND position = '" + position + "'),(SELECT id FROM technic WHERE fabricator_id =(SELECT id FROM fabricators " +
-                "WHERE name = '" + nameFabricator.Text + "') AND name = '" + nameTechnic.Text + "' AND type = '" + typeTechnic.Text + "' " +
-                "AND price = " + priceTechnic.Text + "),'" + dateForMySql + "',(SELECT id FROM address WHERE country = '" + country.Text + "' " +
-                "AND city = '" + city.Text + "' AND street = '" + street.Text + "'))";
+                "WHERE name = '" + tuple.Item3 + "') AND name = '" + tuple.Item1 + "' AND type = '" + tuple.Item2 + "' " +
+                "AND price = " + tuple.Item4 + "),'" + dateForMySql + "',(SELECT id FROM address WHERE country = '" + country.Text + "' " +
+                "AND city = '" + city.Text + "' AND street = '" + street.Text + "'),"+ tuple.Item4 + "-" + tuple.Item4 + "*0.01*" +
+                "(SELECT IF((SELECT COUNT(*) FROM `discount` WHERE product ='"+productForDiscount +"')=0,0,(SELECT discount FROM `discount`WHERE product = '"+productForDiscount +"'))))";
             }
-
             else
             {
-                sql = "INSERT INTO `sale`(`id`,`worker_id`,`technic_id`,`date`,`address_id`) VALUES " +
+                sql = "INSERT INTO `sale`(`id`,`worker_id`,`technic_id`,`date`,`address_id`,`price`) VALUES " +
                 "(NULL,(SELECT id FROM staff WHERE second_name = '" + secondName + "' AND " +
                 "first_name = '" + firstName + "' AND middle_name = '" + middleName + "' " +
                 "AND position = '" + position + "'),(SELECT id FROM technic WHERE fabricator_id =(SELECT id FROM fabricators " +
-                "WHERE name = '" + nameFabricator.Text + "') AND name = '" + nameTechnic.Text + "' AND type = '" + typeTechnic.Text + "' " +
-                "AND price = " + priceTechnic.Text + "),'" + dateForMySql + "',NULL)";
+                "WHERE name = '" + tuple.Item3 + "') AND name = '" + tuple.Item1 + "' AND type = '" + tuple.Item2 + "' " +
+                "AND price = " + tuple.Item4 + "),'" + dateForMySql + "',NULL," + tuple.Item4 + "-" + tuple.Item4 + "*0.01*" +
+                "(SELECT IF((SELECT COUNT(*) FROM `discount` WHERE product ='" + productForDiscount + "')=0,0,(SELECT discount FROM `discount` WHERE product = '" + productForDiscount + "'))))";
             }
 
             MySqlCommand command = new MySqlCommand(sql, _connection);
@@ -568,6 +704,7 @@ namespace Program_for_exam
                 comboBox.Items.Add(reader[0] + " " + reader[1] + " " + reader[2]
                     + " " + reader[3]);
             }
+            reader.Close();
         }
 
         public bool UpdateSale(string numberSale)
@@ -582,12 +719,73 @@ namespace Program_for_exam
             else
                 return false;
         }
+
+        public void OutputTableDiscount(System.Windows.Controls.TextBox textBox)
+        {
+            string sql = "SELECT * FROM `discount`";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            int i = 1;
+            while(reader.Read())
+            {
+                textBox.AppendText(i.ToString() + ") " + reader[0].ToString() + "; Cкидка: " 
+                    + reader[1].ToString() + "%");
+                textBox.AppendText("\n");
+                i++;
+            }
+            reader.Close();
+        }
+
+        public void DeleteDiscount(string product="delete all")
+        {
+            string sql = string.Empty;
+
+            if (product != "delete all")
+                sql = "DELETE FROM `discount` WHERE product = '" + product + "'";
+
+            else
+                sql = "DELETE FROM `discount`";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            command.ExecuteNonQuery();
+        }
+
+        private bool CheckDiscount(string product)
+        {
+            string sql = "SELECT COUNT(*) FROM `discount` WHERE product = '" + product + "'";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            object count = command.ExecuteScalar();
+
+            if (Convert.ToInt32(count) == 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool AddDiscount(string product, string discount)
+        {
+            if (!CheckDiscount(product))
+                return false;
+            else
+            {
+                string sql = "INSERT INTO `discount`(`product`,`discount`) VALUES " +
+                    "('" + product + "'," + discount + ")";
+
+                MySqlCommand command = new MySqlCommand(sql, _connection);
+                command.ExecuteNonQuery();
+
+                return true;
+            }
+        }
     }
 
     /// <summary>
     /// Логика взаимодействия для App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
     }
 }

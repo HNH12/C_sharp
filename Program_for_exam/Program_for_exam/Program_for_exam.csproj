@@ -90,6 +90,9 @@
     <Compile Include="AddDiscount.xaml.cs">
       <DependentUpon>AddDiscount.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddProduct.xaml.cs">
+      <DependentUpon>AddProduct.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CreateWorker.xaml.cs">
       <DependentUpon>CreateWorker.xaml</DependentUpon>
     </Compile>
@@ -100,11 +103,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="addSale.xaml">
+    <Page Include="AddProduct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BackProduct.xaml">
+    <Page Include="addSale.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -126,9 +129,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BackProduct.xaml.cs">
-      <DependentUpon>BackProduct.xaml</DependentUpon>
     </Compile>
     <Compile Include="DeleteSale.xaml.cs">
       <DependentUpon>DeleteSale.xaml</DependentUpon>

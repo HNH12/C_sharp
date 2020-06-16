@@ -1,7 +1,6 @@
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\bin\Debug\Program_for_exam.exe.config
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\bin\Debug\Program_for_exam.exe
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\bin\Debug\Program_for_exam.pdb
-C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\Program_for_exam.csprojAssemblyReference.cache
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\MainWindow.g.cs
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\App.g.cs
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\Program_for_exam_MarkupCompile.cache
@@ -49,8 +48,6 @@ C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\Progr
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\Program_for_exam.csproj.CopyComplete
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\addSale.g.cs
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\addSale.baml
-C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\BackProduct.g.cs
-C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\BackProduct.baml
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\DeleteSale.g.cs
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\DeleteSale.baml
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\UpdateSale.g.cs
@@ -59,3 +56,6 @@ C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\Creat
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\CreateWorker.baml
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\AddDiscount.g.cs
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\AddDiscount.baml
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\AddProduct.g.cs
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\AddProduct.baml
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\Program_for_exam.csprojAssemblyReference.cache

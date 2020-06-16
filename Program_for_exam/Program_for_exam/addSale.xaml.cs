@@ -29,7 +29,8 @@ namespace Program_for_exam
 
             DataBase dataBase = new DataBase(_dataBaseOption);
             dataBase.GetStaff(workersListComboBox);
-            
+            dataBase.OutputProduct(productComboBox);
+
             this.selectedIndex = selectedIndex;
             this.salesTable = salesTable;
         }
@@ -98,7 +99,7 @@ namespace Program_for_exam
             if (deliveryCheckBox.IsChecked == false)
             {
                 dataBase.CreateNewSale(Tuple.Item2,Tuple.Item1,Tuple.Item3,Tuple.Item4,
-                    nameProductTextBox,typeProductTextBox,nameFabricatorTextBox,priceProductTextBox);
+                    productComboBox.SelectedItem.ToString());
 
                 SaveFileDialog saveFile = new SaveFileDialog();
                 saveFile.Filter = "DocX document (.docx)|(*.docx)";
@@ -117,11 +118,28 @@ namespace Program_for_exam
             else
             {
                 dataBase.CreateNewSale(Tuple.Item2, Tuple.Item1, Tuple.Item3, Tuple.Item4,
-                    nameProductTextBox, typeProductTextBox, nameFabricatorTextBox, priceProductTextBox,
-                    countryTextBox,cityTextBox,streetTextBox);
+                    productComboBox.SelectedItem.ToString(), countryTextBox,cityTextBox,streetTextBox);
+                SaveFileDialog saveFile = new SaveFileDialog();
+                saveFile.Filter = "DocX document (.docx)|(*.docx)";
+                if (saveFile.ShowDialog() == true)
+                {
+                    DateTime date = DateTime.Now;
+                    string dateForMySql = date.ToString("yyyy-MM-dd");
+
+                    string text = "Номер покупки: " + dataBase.GetLastSaleNumber() +
+                        "\nДата покупки: " + dateForMySql;
+
+                    File file = new File();
+                    file.SaveDocWord(saveFile.FileName, text);
+                }
             }
 
             dataBase.OutputTable(salesTable, selectedIndex);
+        }
+
+        private void Label_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("hi");
         }
     }
 }

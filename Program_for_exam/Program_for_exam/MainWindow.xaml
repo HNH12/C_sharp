@@ -27,12 +27,17 @@
                 <MenuItem Header="Продажи за сегодня"></MenuItem>
                 <MenuItem Header="Все продажи" Click="SaveAllTable_Click"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Оформить новую покупку" Click="NewSale_Click" ></MenuItem>
-            <MenuItem Header="Оформить возврат" Click="BackSale_Click" ></MenuItem>
-            <MenuItem Header="Удалить покупку" Click="DeleteSale_Click" ></MenuItem>
-            <MenuItem Header="Изменить статус товара" Click="UpdateSale_Click" ></MenuItem>
-            <MenuItem Header="Добавить сотрудника" Click="CreateWorker_Click" ></MenuItem>
-            <MenuItem Header="Добавить скидки" Click="AddDiscount_Click" ></MenuItem>
+            <MenuItem Header="Работа с покупками">
+                <MenuItem Header="Оформить новую покупку" Click="NewSale_Click" ></MenuItem>
+                <MenuItem Header="Оформить возврат" Click="BackSale_Click" ></MenuItem>
+                <MenuItem Header="Удалить покупку" Click="DeleteSale_Click" ></MenuItem>
+                <MenuItem Header="Изменить статус товара" Click="UpdateSale_Click" ></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Работа с сотрудниками и товарами">
+                <MenuItem Header="Добавить товар" Click="AddProduct_Click" ></MenuItem>
+                <MenuItem Header="Добавить скидки" Click="AddDiscount_Click" ></MenuItem>
+                <MenuItem Header="Добавить сотрудника" Click="CreateWorker_Click" ></MenuItem>
+            </MenuItem>
         </Menu>
 
         <ComboBox Name="typeList" Height="25" VerticalAlignment="Top" Margin="1078,25,20,0" SelectionChanged="typeList_SelectionChanged">
@@ -40,6 +45,5 @@
             <TextBlock>Полученные</TextBlock>
             <TextBlock>Доставляется</TextBlock>
         </ComboBox>
-
     </Grid>
 </Window>

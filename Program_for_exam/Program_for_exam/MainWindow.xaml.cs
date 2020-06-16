@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.IO;
+using Microsoft.Win32;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -61,8 +64,33 @@ namespace Program_for_exam
 
         private void BackSale_Click(object sender, RoutedEventArgs e)
         {
-            BackProduct bP = new BackProduct(typeList.SelectedIndex, salesDataBase);
-            bP.ShowDialog();
+            File file = new File();
+            DataBase dataBase = new DataBase(_dataBaseOption);
+
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Title = "Выбрать чек";
+            openFile.Filter = "Word documents(*.docx)|*.docx";
+
+            string numberSale = string.Empty;
+
+            if (openFile.ShowDialog() == true)
+            {
+                if (dataBase.IssueRefund(file.GetTextDocWord(openFile.FileName), ref numberSale))
+                {
+                    dataBase.DeleteSale(numberSale);
+                    MessageBox.Show("Возврат выполнен");
+
+                    dataBase.OutputTable(salesDataBase, Convert.ToInt32(typeList.SelectedItem));
+
+                    FileInfo fileInf = new FileInfo(openFile.FileName);
+
+                    if (fileInf.Exists)
+                        fileInf.Delete();
+                }
+
+                else
+                    MessageBox.Show("Истёк срок");
+            }
         }
 
         private void DeleteSale_Click(object sender, RoutedEventArgs e)
@@ -87,6 +115,12 @@ namespace Program_for_exam
         {
             AddDiscount addDiscount = new AddDiscount();
             addDiscount.ShowDialog();
+        }
+
+        private void AddProduct_Click(object sender, RoutedEventArgs e)
+        {
+            AddProduct addProduct = new AddProduct();
+            addProduct.ShowDialog();
         }
     }
 }
