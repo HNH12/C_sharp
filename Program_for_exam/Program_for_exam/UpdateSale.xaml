@@ -5,10 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Program_for_exam"
         mc:Ignorable="d"
-        Title="UpdateSale" Height="229.028" Width="332.737">
-    <Grid>
-        <Button Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="78,97,0,0" Click="UpdateSale_Click"/>
-        <TextBox x:Name="numberSaleTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" Margin="91,57,0,0"/>
-
+        Title="Изменение" Height="121.63" Width="226.633">
+    <Grid Margin="0,0,4,3.6">
+        <Button Content="изменить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="76,58,0,0" Click="UpdateSale_Click"/>
+        <TextBox x:Name="numberSaleTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" Margin="89,18,0,0" TextChanged="numberSaleTextBox_TextChanged">
+            <TextBox.ToolTip>
+                <ToolTip>
+                    Укажите товар
+                </ToolTip>
+            </TextBox.ToolTip>
+        </TextBox>
     </Grid>
 </Window>

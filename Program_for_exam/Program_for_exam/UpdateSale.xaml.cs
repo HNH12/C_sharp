@@ -33,16 +33,51 @@ namespace Program_for_exam
         int selectedIndex = new int();
         DataGrid salesTable;
 
+        private bool CheckFullNumber()
+        {
+            bool check = true;
+
+            if (numberSaleTextBox.Text == "")
+            {
+                numberSaleTextBox.BorderBrush = Brushes.Red;
+                check = false;
+            }
+
+            return check;
+        }
+
         private void UpdateSale_Click(object sender, RoutedEventArgs e)
         {
             DataBase dataBase = new DataBase(_dataBaseOption);
-            if (dataBase.UpdateSale(numberSaleTextBox.Text))
+
+            if (CheckFullNumber())
             {
-                MessageBox.Show("Статус изменён");
-                dataBase.OutputTable(salesTable, selectedIndex);
+                if (dataBase.UpdateSale(numberSaleTextBox.Text))
+                {
+                    MessageBox.Show("Статус изменён");
+                    dataBase.OutputTable(salesTable, selectedIndex);
+                }
+                else
+                    MessageBox.Show("Невозможно изменить статус");
             }
-            else
-                MessageBox.Show("Невозможно изменить статус");
+        }
+
+        private void numberSaleTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            numberSaleTextBox.BorderBrush = brush;
+
+            if (sender is TextBox textBox)
+            {
+                textBox.Text = new string
+                (
+                textBox.Text.Where
+                (symb =>
+                (symb >= '0' && symb <= '9'))
+                .ToArray()
+                );
+            }
         }
     }
 }

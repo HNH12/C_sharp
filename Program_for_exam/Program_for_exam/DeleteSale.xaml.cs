@@ -32,17 +32,51 @@ namespace Program_for_exam
         int selectedIndex = new int();
         DataGrid dataGrid;
 
+        private bool CheckFullNumber()
+        {
+            bool check = true;
+
+            if (numberSaleTextBox.Text == "")
+            {
+                numberSaleTextBox.BorderBrush = Brushes.Red;
+                check = false;
+            }
+
+            return check;
+        }
+
         private void deleteSale_Click(object sender, RoutedEventArgs e)
         {
             DataBase dataBase = new DataBase(_dataBaseOption);
 
-            if (dataBase.DeleteSale(numberSaleTextBox.Text))
+            if (CheckFullNumber())
             {
-                MessageBox.Show("Удаление прошло успешно");
-                dataBase.OutputTable(dataGrid, selectedIndex);
+                if (dataBase.DeleteSale(numberSaleTextBox.Text))
+                {
+                    MessageBox.Show("Удаление прошло успешно");
+                    dataBase.OutputTable(dataGrid, selectedIndex);
+                }
+                else
+                    MessageBox.Show("Неверный номер покупки"); 
             }
-            else
-                MessageBox.Show("Неверныый номер покупки");
+        }
+
+        private void numberSaleTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            numberSaleTextBox.BorderBrush = brush;
+
+            if (sender is TextBox textBox)
+            {
+                textBox.Text = new string
+                (
+                textBox.Text.Where
+                (symb =>
+                (symb >= '0' && symb <='9'))
+                .ToArray()
+                );
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ using Xceed.Words.NET;
 using Xceed.Document.NET;
 using System.IO;
 using Microsoft.Office.Interop.Excel;
+using System.Windows.Markup;
 
 namespace Program_for_exam
 {
@@ -184,6 +185,12 @@ namespace Program_for_exam
         public string typeProduct { get; set; }
         public string nameFabricator { get; set; }
         public string priceProduct { get; set; }
+    }
+
+    public class Discount
+    {
+        public string product { get; set; }
+        public string discount { get; set; }
     }
 
     interface IDataBase
@@ -401,13 +408,13 @@ namespace Program_for_exam
         }
 
         public bool CheckFullStaff(System.Windows.Controls.TextBox secondName, System.Windows.Controls.TextBox firstName, 
-            System.Windows.Controls.TextBox middleName, System.Windows.Controls.TextBox position)
+            System.Windows.Controls.TextBox middleName, string position)
         {
             object result = new object();
 
             string sql = "SELECT id FROM staff WHERE second_name = '" + secondName.Text + "' AND " +
                 "first_name = '" + firstName.Text + "' AND middle_name = '" + middleName.Text + "' " +
-                "AND position = '" + position.Text + "'";
+                "AND position = '" + position + "'";
 
             MySqlCommand command = new MySqlCommand(sql, _connection);
             result = command.ExecuteScalar();
@@ -511,11 +518,11 @@ namespace Program_for_exam
         }
 
         public void CreateNewWorker(System.Windows.Controls.TextBox secondName, System.Windows.Controls.TextBox firstName,
-            System.Windows.Controls.TextBox middleName, System.Windows.Controls.TextBox position)
+            System.Windows.Controls.TextBox middleName, string position)
         {
             string sql = "INSERT INTO `staff`(`id`,`second_name`,`first_name`,`middle_name`,`position`) " +
                 "VALUES (NULL, '" + secondName.Text + "', '" + firstName.Text + "', '" + middleName.Text + "', " +
-                "'" + position.Text + "')";
+                "'" + position + "')";
 
             MySqlCommand command = new MySqlCommand(sql, _connection);
             command.ExecuteNonQuery();
@@ -617,7 +624,15 @@ namespace Program_for_exam
             int number = command.ExecuteNonQuery();
 
             if (number >= 1)
+            {
+                if (Convert.ToInt32(numberSale) == Convert.ToInt32(GetLastSaleNumber())+1)
+                {
+                    sql = "ALTER TABLE `sale` AUTO_INCREMENT = " + GetLastSaleNumber();
+                    command = new MySqlCommand(sql, _connection);
+                    command.ExecuteNonQuery();
+                }
                 return true;
+            }
             else
                 return false;
         }
@@ -720,20 +735,30 @@ namespace Program_for_exam
                 return false;
         }
 
-        public void OutputTableDiscount(System.Windows.Controls.TextBox textBox)
+        public void OutputTableDiscount(DataGrid dataGrid)
         {
             string sql = "SELECT * FROM `discount`";
 
             MySqlCommand command = new MySqlCommand(sql, _connection);
             MySqlDataReader reader = command.ExecuteReader();
 
-            int i = 1;
-            while(reader.Read())
+            List<string[]> data = new List<string[]>();
+
+            while (reader.Read())
             {
-                textBox.AppendText(i.ToString() + ") " + reader[0].ToString() + "; Cкидка: " 
-                    + reader[1].ToString() + "%");
-                textBox.AppendText("\n");
-                i++;
+                data.Add(new string[2]);
+
+                data[data.Count - 1][0] = reader[0].ToString();
+                data[data.Count - 1][1] = reader[1].ToString();
+            }
+
+            foreach (string[] s in data)
+            {
+                dataGrid.Items.Add(new Discount()
+                {
+                    product = s[0],
+                    discount = s[1],
+                });
             }
             reader.Close();
         }
@@ -779,6 +804,15 @@ namespace Program_for_exam
 
                 return true;
             }
+        }
+
+        public void UpdateDiscount(string product, string discount)
+        {
+            string sql = "UPDATE `discount` SET discount = " + discount + " WHERE " +
+                "product = '" + product + "'";
+
+            MySqlCommand command = new MySqlCommand(sql, _connection);
+            command.ExecuteNonQuery();
         }
     }
 

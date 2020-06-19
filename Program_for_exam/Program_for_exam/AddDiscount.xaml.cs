@@ -28,65 +28,175 @@ namespace Program_for_exam
 
             DataBase dataBase = new DataBase(_dataBaseOption);
             dataBase.OutputAllTechnic(technicComboBox);
-            dataBase.OutputTableDiscount(listDiscountTextBox);
+            dataBase.OutputTableDiscount(discountDataGrid);
             dataBase.OutputAllDiscount(currentDiscount);
+        }
+
+        private bool CheckRightDiscount()
+        {
+            bool check = true;
+
+            int result;
+            bool isInt = Int32.TryParse(discountTextBox.Text, out result);
+
+            bool rightDiscount = (result > 0 && result < 100) && 
+                (discountTextBox.Text[0] != '-' && discountTextBox.Text[0] != '0');
+
+            if (!isInt || !rightDiscount)
+                check = false;
+
+            return check;
+        }
+
+        private bool CheckFullDiscount()
+        {
+            bool check = true;
+
+            if(technicComboBox.SelectedIndex == -1)
+            {
+                check = false;
+
+                firstObejct.Visibility = Visibility.Visible;
+                productToolTip.Visibility = Visibility.Visible;
+            }
+
+            if(discountTextBox.Text=="" || !CheckRightDiscount())
+            {
+                check = false;
+
+                discountTextBox.BorderBrush = Brushes.Red;
+                discountToolTip.Visibility = Visibility.Visible;
+            }
+
+            return check;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Tuple<string, int> tuple = new Tuple<string, int>
-                (technicComboBox.SelectedItem.ToString(), Convert.ToInt32(discountTextBox.Text));
-
-            DataBase dataBase = new DataBase(_dataBaseOption);
-            if (dataBase.AddDiscount(technicComboBox.Text, discountTextBox.Text))
+            if (CheckFullDiscount())
             {
-                listDiscountTextBox.Clear();
-                dataBase.OutputTableDiscount(listDiscountTextBox);
-                dataBase.OutputAllDiscount(currentDiscount);
-            }            
-            else
-                MessageBox.Show("Net");
+                DataBase dataBase = new DataBase(_dataBaseOption);
+
+                if (dataBase.AddDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text))
+                {
+                    Tuple<string, int> tuple = new Tuple<string, int>
+                        (technicComboBox.SelectedItem.ToString(), Convert.ToInt32(discountTextBox.Text));
+             
+                    discountDataGrid.Items.Clear();
+                    currentDiscount.Items.Clear();
+                    dataBase.OutputTableDiscount(discountDataGrid);
+                    dataBase.OutputAllDiscount(currentDiscount);
+
+                    technicComboBox.SelectedIndex = -1;
+                    discountTextBox.Text = "";
+                }
+
+                else
+                {
+                    bool messageResult = MessageBox.Show
+                        ("Скидка на этот товар существует. Изменить существующую скидку?", "Изменнение скидки",
+                        MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+
+                    if (messageResult)
+                    {
+                        dataBase.UpdateDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text);
+
+                        discountDataGrid.Items.Clear();
+                        dataBase.OutputTableDiscount(discountDataGrid);
+
+                        technicComboBox.SelectedIndex = -1;
+                        discountTextBox.Text = "";
+                    }
+                }
+            }
         }
 
-        private string GetProductForIndex(string number)
+        private bool CheckFullProductDelete()
         {
-            char[] separators = new char[] {' ','\n'};
+            bool check = true;
 
-            string[] text = listDiscountTextBox.Text.Split(
-                separators,StringSplitOptions.RemoveEmptyEntries);
-
-            string nameProduct = "", typeProduct ="", nameFabricator = "";
-            
-
-            for (int i = 0; i < text.Length; i++)
+            if (currentDiscount.SelectedIndex == -1)
             {
-                if (text[i] == number + ')')
-                    return (text[i + 1] + " " + text[i + 2] + " " + text[i + 3] + " " + 
-                        text[i+4].Remove(text[i+4].LastIndexOf(';')));
+                check = false;
+
+                secondObject.Visibility = Visibility.Visible;
+                deleteToolTip.Visibility = Visibility.Visible;
             }
-            return "";
+
+            return check;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            DataBase dataBase = new DataBase(_dataBaseOption);
+            if (CheckFullProductDelete())
+            {
+                DataBase dataBase = new DataBase(_dataBaseOption);
 
-            dataBase.DeleteDiscount(currentDiscount.SelectedItem.ToString());
-            listDiscountTextBox.Clear();
-            currentDiscount.Items.Clear();
-            dataBase.OutputAllDiscount(currentDiscount);
-            dataBase.OutputTableDiscount(listDiscountTextBox);
+                dataBase.DeleteDiscount(currentDiscount.SelectedItem.ToString());
+
+                discountDataGrid.Items.Clear();
+                currentDiscount.Items.Clear();
+
+                dataBase.OutputAllDiscount(currentDiscount);
+                dataBase.OutputTableDiscount(discountDataGrid);
+
+                MessageBox.Show("        Удаление прошло успешно");
+            }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            DataBase dataBase = new DataBase(_dataBaseOption);
+            bool messageResult = MessageBox.Show
+                        ("                    Удалить всё?", "Подтверждение операции",
+                        MessageBoxButton.YesNo) == MessageBoxResult.Yes;
 
-            dataBase.DeleteDiscount();
-            currentDiscount.Items.Clear();
-            listDiscountTextBox.Clear();
-            dataBase.OutputAllDiscount(currentDiscount);
-            dataBase.OutputTableDiscount(listDiscountTextBox);
+            if (messageResult)
+            {
+                DataBase dataBase = new DataBase(_dataBaseOption);
+
+                dataBase.DeleteDiscount();
+
+                currentDiscount.Items.Clear();
+                discountDataGrid.Items.Clear();
+
+                dataBase.OutputAllDiscount(currentDiscount);
+                dataBase.OutputTableDiscount(discountDataGrid);
+
+                MessageBox.Show("        Удаление прошло успешно");
+            }
+        }
+
+        private void technicComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            discountTextBox.Text = "";
+            productToolTip.Visibility = Visibility.Hidden;
+            firstObejct.Visibility = Visibility.Hidden;
+        }
+
+        private void discountTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            discountTextBox.BorderBrush = brush;
+
+            discountToolTip.Visibility = Visibility.Hidden;
+
+            if (sender is TextBox textBox)
+            {
+                textBox.Text = new string
+                (
+                textBox.Text.Where
+                (symb =>
+                (symb >= '0' && symb <= '9'))
+                .ToArray()
+                );
+            }
+        }
+
+        private void currentDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            deleteToolTip.Visibility = Visibility.Hidden;
+            secondObject.Visibility = Visibility.Hidden;
         }
     }
 }

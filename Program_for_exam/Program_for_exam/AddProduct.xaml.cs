@@ -30,30 +30,104 @@ namespace Program_for_exam
             dataBase.OutputTableTechnic(listProductDataGrid);
         }
 
+        public bool CheckFullData()
+        {
+            bool check = true;
+
+            if (nameProduct.Text=="")
+            {
+                check = false;
+                nameProduct.BorderBrush = Brushes.Red;
+                nameProductAddProductToolTip.Visibility = Visibility.Visible;
+            }
+
+            if(typeProduct.Text=="")
+            {
+                check = false;
+                typeProduct.BorderBrush = Brushes.Red;
+                typeProductAddProductToolTip.Visibility = Visibility.Visible;
+            }
+
+            if(nameFabricator.Text=="")
+            {
+                check = false;
+                nameFabricator.BorderBrush = Brushes.Red;
+                nameFabricatorAddProductToolTip.Visibility = Visibility.Visible;
+            }
+
+            if(priceProduct.Text=="")
+            {
+                check = false;
+                priceProduct.BorderBrush = Brushes.Red;
+                priceProductAddProductToolTip.Visibility = Visibility.Visible;
+            }
+
+            return check;
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DataBase dataBase = new DataBase(_dataBaseOption);
-
-            if (dataBase.CreateNewTechnic(nameProduct, typeProduct, priceProduct, nameFabricator))
+            
+            try
             {
-                MessageBox.Show("Товар создан");
-                dataBase.OutputTableTechnic(listProductDataGrid);
+                if (dataBase.CreateNewTechnic(nameProduct, typeProduct, priceProduct, nameFabricator))
+                {
+                    MessageBox.Show("Товар создан");
+                    dataBase.OutputTableTechnic(listProductDataGrid);
 
-                nameProduct.Clear();
-                nameFabricator.Clear();
-                typeProduct.Clear();
-                priceProduct.Clear();
+                    nameProduct.Clear();
+                    nameFabricator.Clear();
+                    typeProduct.Clear();
+                    priceProduct.Clear();
+                }
+
+                else
+                {
+                    MessageBox.Show("Такой товар уже существует");
+
+                    nameProduct.Clear();
+                    nameFabricator.Clear();
+                    typeProduct.Clear();
+                    priceProduct.Clear();
+                }
             }
-
-            else
+            catch
             {
-                MessageBox.Show("Такой товар уже существует");
-
-                nameProduct.Clear();
-                nameFabricator.Clear();
-                typeProduct.Clear();
-                priceProduct.Clear();
+                CheckFullData();
             }
+        }
+
+        private void nameProduct_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            nameProduct.BorderBrush = brush;
+            nameProductAddProductToolTip.Visibility = Visibility.Hidden;
+        }
+
+        private void typeProduct_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            typeProduct.BorderBrush = brush;
+            typeProductAddProductToolTip.Visibility = Visibility.Hidden;
+        }
+
+        private void nameFabricator_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            nameFabricator.BorderBrush = brush;
+            nameFabricatorAddProductToolTip.Visibility = Visibility.Hidden;
+        }
+
+        private void priceProduct_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            priceProduct.BorderBrush = brush;
+            priceProductAddProductToolTip.Visibility = Visibility.Hidden;
         }
     }
 }

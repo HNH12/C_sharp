@@ -5,34 +5,69 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Program_for_exam"
         mc:Ignorable="d"
-        Title="Оформить новую покупку" Height="393.453" Width="638.754">
+        Title="Оформить новую покупку" Height="393.453" Width="666.295">
 
-    <Grid Margin="0,0,497,0" HorizontalAlignment="Right" Width="115">
+    <Grid Margin="0,0,-6,0" HorizontalAlignment="Right" Width="656">
         <Grid.RowDefinitions>
+            <RowDefinition Height="14*"/>
             <RowDefinition Height="5*"/>
-            <RowDefinition Height="21*"/>
+            <RowDefinition Height="54*"/>
         </Grid.RowDefinitions>
-        <Label Content="Товар" Margin="10,24,-109.6,0" VerticalAlignment="Top"/>
-        <Label Content="Оформить новый товар" Margin="438,13,-472,0" VerticalAlignment="Top" Height="29" Hyperlink.Click="Label_Click" Grid.Row="1"/>
-        <Label Content="Сотрудник, оформляющий покупку" HorizontalAlignment="Right" Margin="0,60,-105,0" VerticalAlignment="Top" Width="210" Grid.Row="1"/>
-        <ComboBox Name="workersListComboBox" Height="28" VerticalAlignment="Top" Margin="10,90,-208.6,0" Grid.Row="1">
+        <Label Content="Товар" Margin="5,26,-105,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="215"/>
+        <Label Content="Сотрудник, оформляющий покупку" HorizontalAlignment="Left" Margin="5,40.6,-100,0" VerticalAlignment="Top" Width="210" Grid.Row="2"/>
+        <ComboBox Name="workersListComboBox" Height="28" VerticalAlignment="Top" Margin="10,65.6,-209,0" Grid.Row="2" HorizontalAlignment="Left" Width="314" SelectionChanged="workersListComboBox_SelectionChanged">
+            <ComboBox.BorderBrush>
+                <SolidColorBrush Color="#FFF79209" Opacity="0.5"/>
+            </ComboBox.BorderBrush>
         </ComboBox>
 
-        <CheckBox x:Name="deliveryCheckBox" IsThreeState="False" IsChecked="False" Width="123" Content="С доставкой" Margin="348,89.676,-355.6,0" 
-                  Checked="deliveryCheckBox_Checked" Unchecked="deliveryCheckBox_Unchecked" IsEnabled="true" Height="138" VerticalAlignment="Top" Grid.Row="1"/>
-        <Expander x:Name="addressExpander" Header="Адрес" Margin="348,114.676,-471.6,6" IsEnabled="False" Grid.Row="1">
+        <CheckBox x:Name="deliveryCheckBox" IsThreeState="False" IsChecked="False" Content="С доставкой" Margin="348,65.6,-356,0" 
+                  Checked="deliveryCheckBox_Checked" Unchecked="deliveryCheckBox_Unchecked" IsEnabled="true" Height="138" VerticalAlignment="Top" Grid.Row="2" HorizontalAlignment="Left" Width="123"/>
+        <Expander x:Name="addressExpander" Header="Адрес" IsExpanded="false" Margin="348,94.6,0,1" IsEnabled="False" Grid.Row="2" HorizontalAlignment="Left" Width="239">
             <StackPanel>
                 <TextBlock Text="Страна" Margin="0,0,-0.6,0"/>
-                <TextBox x:Name="countryTextBox" Margin="0,0,10.4,0"/>
+                <TextBox x:Name="countryTextBox" Margin="0,0,10.4,0" TextChanged="countryTextBox_TextChanged">
+                    <TextBox.ToolTip>
+                        <ToolTip x:Name="countryToolTip" Visibility="Hidden">
+                            Укажите страну
+                        </ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
                 <TextBlock Text=""/>
                 <TextBlock Text="Город"/>
-                <TextBox x:Name="cityTextBox" Margin="0,0,10.4,0"/>
+                <TextBox x:Name="cityTextBox" Margin="0,0,10.4,0" TextChanged="cityTextBox_TextChanged">
+                    <TextBox.ToolTip>
+                        <ToolTip x:Name="cityToolTip" Visibility="Hidden">
+                            Укажите город
+                        </ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
                 <TextBlock Text=""/>
                 <TextBlock Text="Улица"/>
-                <TextBox x:Name="streetTextBox" Margin="0,0,10.4,0"/>
+                <TextBox x:Name="streetTextBox" Margin="0,0,10.4,0" TextChanged="streetTextBox_TextChanged">
+                    <TextBox.ToolTip>
+                        <ToolTip x:Name="streetToolTip" Visibility="Hidden">
+                            Укажите улицу
+                        </ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
             </StackPanel>
         </Expander>
-        <Button x:Name="addSaleButton" Content="Оформить покупку" Margin="101,198.676,-124.6,0" Click="addSaleButton_Click" Height="29" VerticalAlignment="Top" Grid.Row="1"/>
-        <ComboBox x:Name="productComboBox" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="577" Height="27" Margin="0,0,-471.6,281.4" Grid.RowSpan="2"/>
+        <Button x:Name="addSaleButton" Content="Оформить покупку" Margin="101,174.6,-125,0" Click="addSaleButton_Click" Height="29" VerticalAlignment="Top" Grid.Row="2" HorizontalAlignment="Left" Width="139"/>
+        <ComboBox x:Name="productComboBox" VerticalAlignment="Bottom" Height="27" Margin="10,0,-472,11.4" Grid.RowSpan="2" HorizontalAlignment="Left" Width="577" SelectionChanged="productComboBox_SelectionChanged"/>
+        <Label x:Name="firstObject" Content="!" Visibility="Hidden" Foreground="Red" FontSize="20" HorizontalAlignment="Left" Margin="587,49,0,10.4" Grid.RowSpan="2">
+            <Label.ToolTip>
+                <ToolTip x:Name="productToolTip" Visibility="Hidden">
+                    Выберите товар
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
+        <Label x:Name="secondObject" Content="!" Visibility="Hidden" Foreground="Red" FontSize="20" HorizontalAlignment="Left" Margin="324,60.6,0,152" Grid.Row="2" Width="19" RenderTransformOrigin="0.783,1.537">
+            <Label.ToolTip>
+                <ToolTip x:Name="nameWorkerToolTip" Visibility="Hidden">
+                    Выберите сотрудника
+                </ToolTip>
+            </Label.ToolTip>
+        </Label>
     </Grid>
 </Window>

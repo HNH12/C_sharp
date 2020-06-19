@@ -75,6 +75,55 @@ namespace Program_for_exam
             return (secondName, firstName, middleName, position);
         }
 
+        private bool CheckFullSale()
+        {
+            bool check = true;
+            
+            if (productComboBox.SelectedIndex==-1)
+            {
+                check = false;
+                firstObject.Visibility = Visibility.Visible;
+                productToolTip.Visibility = Visibility.Visible;
+            }
+
+            if (workersListComboBox.SelectedIndex==-1)
+            {
+                check = false;
+                secondObject.Visibility = Visibility.Visible;
+                nameWorkerToolTip.Visibility = Visibility.Visible;
+            }
+
+            return check;
+        }
+
+        private bool CheckFullAddress()
+        {
+            bool check = true;
+
+            if (countryTextBox.Text=="")
+            {
+                check = false;
+                countryTextBox.BorderBrush = Brushes.Red;
+                countryToolTip.Visibility = Visibility.Visible;
+            }
+
+            if (cityTextBox.Text=="")
+            {
+                check = false;
+                cityTextBox.BorderBrush = Brushes.Red;
+                cityToolTip.Visibility = Visibility.Visible;
+            }
+
+            if (streetTextBox.Text=="")
+            {
+                check = false;
+                streetTextBox.BorderBrush = Brushes.Red;
+                streetToolTip.Visibility = Visibility.Visible;
+;            }
+
+            return check;
+        }
+
         private void deliveryCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             addressExpander.IsEnabled = true;
@@ -93,53 +142,119 @@ namespace Program_for_exam
 
         private void addSaleButton_Click(object sender, RoutedEventArgs e)
         {
-            DataBase dataBase = new DataBase(_dataBaseOption);
-            var Tuple = GetWorkerInformation();
-
             if (deliveryCheckBox.IsChecked == false)
             {
-                dataBase.CreateNewSale(Tuple.Item2,Tuple.Item1,Tuple.Item3,Tuple.Item4,
-                    productComboBox.SelectedItem.ToString());
-
-                SaveFileDialog saveFile = new SaveFileDialog();
-                saveFile.Filter = "DocX document (.docx)|(*.docx)";
-                if (saveFile.ShowDialog() == true)
+                if (CheckFullSale())
                 {
-                    DateTime date = DateTime.Now;
-                    string dateForMySql = date.ToString("yyyy-MM-dd");
+                    DataBase dataBase = new DataBase(_dataBaseOption);
+                    var Tuple = GetWorkerInformation();
 
-                    string text = "Номер покупки: " + dataBase.GetLastSaleNumber() +
-                        "\nДата покупки: " + dateForMySql;
+                    dataBase.CreateNewSale(Tuple.Item2, Tuple.Item1, Tuple.Item3, Tuple.Item4,
+                        productComboBox.SelectedItem.ToString());
 
-                    File file = new File();
-                    file.SaveDocWord(saveFile.FileName, text);
+                    SaveFileDialog saveFile = new SaveFileDialog();
+                    saveFile.Filter = "DocX document (.docx)|(*.docx)";
+                    if (saveFile.ShowDialog() == true)
+                    {
+                        DateTime date = DateTime.Now;
+                        string dateForMySql = date.ToString("yyyy-MM-dd");
+
+                        string text = "Номер покупки: " + dataBase.GetLastSaleNumber() +
+                            "\nДата покупки: " + dateForMySql;
+
+                        File file = new File();
+                        file.SaveDocWord(saveFile.FileName, text);
+                    }
+                    dataBase.OutputTable(salesTable, selectedIndex);
                 }
             }
             else
             {
-                dataBase.CreateNewSale(Tuple.Item2, Tuple.Item1, Tuple.Item3, Tuple.Item4,
-                    productComboBox.SelectedItem.ToString(), countryTextBox,cityTextBox,streetTextBox);
-                SaveFileDialog saveFile = new SaveFileDialog();
-                saveFile.Filter = "DocX document (.docx)|(*.docx)";
-                if (saveFile.ShowDialog() == true)
+                // Переменные создаются для того, чтобы подсказки появлись
+                // сразу и у ComboBox, и у TextBox-ов;
+
+                bool checkFullAddress = CheckFullAddress();
+                bool checkFullSale = CheckFullSale();
+
+                if (checkFullAddress && checkFullSale)
                 {
-                    DateTime date = DateTime.Now;
-                    string dateForMySql = date.ToString("yyyy-MM-dd");
+                    DataBase dataBase = new DataBase(_dataBaseOption);
+                    var Tuple = GetWorkerInformation();
 
-                    string text = "Номер покупки: " + dataBase.GetLastSaleNumber() +
-                        "\nДата покупки: " + dateForMySql;
+                    dataBase.CreateNewSale(Tuple.Item2, Tuple.Item1, Tuple.Item3, Tuple.Item4,
+                        productComboBox.SelectedItem.ToString(), countryTextBox, cityTextBox, streetTextBox);
+                    SaveFileDialog saveFile = new SaveFileDialog();
+                    saveFile.Filter = "DocX document (.docx)|(*.docx)";
+                    if (saveFile.ShowDialog() == true)
+                    {
+                        DateTime date = DateTime.Now;
+                        string dateForMySql = date.ToString("yyyy-MM-dd");
 
-                    File file = new File();
-                    file.SaveDocWord(saveFile.FileName, text);
+                        string text = "Номер покупки: " + dataBase.GetLastSaleNumber() +
+                            "\nДата покупки: " + dateForMySql;
+
+                        File file = new File();
+                        file.SaveDocWord(saveFile.FileName, text);
+                    }
+                    dataBase.OutputTable(salesTable, selectedIndex);
                 }
             }
-
-            dataBase.OutputTable(salesTable, selectedIndex);
         }
 
-        private void Label_Click(object sender, RoutedEventArgs e)
+        private void OnlyLetter(object sender)
         {
-            MessageBox.Show("hi");
+            if (sender is TextBox textBox)
+            {
+                textBox.Text = new string
+                (
+                textBox.Text.Where
+                (ch =>
+                (ch >= 'а' && ch <= 'я')
+                || (ch >= 'А' && ch <= 'Я')
+                || ch == 'ё' || ch == 'Ё' || ch == ' ' || ch == '-')
+                .ToArray()
+                );
+            }
+        }
+
+        private void countryTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            countryTextBox.BorderBrush = brush;
+            countryToolTip.Visibility = Visibility.Hidden;
+
+            OnlyLetter(sender);
+        }
+
+        private void cityTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            cityTextBox.BorderBrush = brush;
+            cityToolTip.Visibility = Visibility.Hidden;
+
+            OnlyLetter(sender);
+        }
+
+        private void streetTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            BrushConverter converter = new BrushConverter();
+            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
+            streetTextBox.BorderBrush = brush;
+            streetToolTip.Visibility = Visibility.Hidden;
+        }
+
+        private void productComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            productToolTip.Visibility = Visibility.Hidden;
+            firstObject.Visibility = Visibility.Hidden;
+        }
+
+        private void workersListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            nameWorkerToolTip.Visibility = Visibility.Hidden;
+            secondObject.Visibility = Visibility.Hidden;
         }
     }
 }
