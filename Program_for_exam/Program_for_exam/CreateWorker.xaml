@@ -5,42 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Program_for_exam"
         mc:Ignorable="d"
-        Title="Оформление нового сотрудника" Height="450" Width="800">
-    <Grid Margin="0,-3,-0.4,3">
-        <DataGrid x:Name="staffTable" Margin="456,55,50.6,40" IsReadOnly ="True">
+        Title="Оформление нового сотрудника" Height="378" Width="683.6">
+    <Grid Margin="0,-3,3.6,1">
+        <DataGrid x:Name="staffTable" Margin="186,55,0,46" IsReadOnly ="True" HorizontalAlignment="Left">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ФИО сотрудника" Binding="{Binding Path=nameWorker}" Width="170" />
-                <DataGridTextColumn Header="Должность" Binding="{Binding Path=positionWorker}" Width="100" />
+                <DataGridTextColumn Header="ФИО сотрудника" Binding="{Binding Path=nameWorker}" Width="280" />
+                <DataGridTextColumn Header="Должность" Binding="{Binding Path=positionWorker}" Width="160" />
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="secondName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="122,63,0,0" TextChanged="secondName_TextChanged">
+        <TextBox x:Name="secondName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="22,55,0,0" TextChanged="secondName_TextChanged">
             <TextBox.ToolTip>
                 <ToolTip x:Name="secondNameToolTip" Visibility="Hidden">
                     Укажите фамилию
                 </ToolTip>
             </TextBox.ToolTip>
         </TextBox>
-        <TextBox x:Name="firstName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="122,128,0,0" TextChanged="firstName_TextChanged">
+        <TextBox x:Name="firstName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="22,120,0,0" TextChanged="firstName_TextChanged">
             <TextBox.ToolTip>
                 <ToolTip x:Name="firstNameToolTip" Visibility="Hidden">
                     Укажите имя
                 </ToolTip>
             </TextBox.ToolTip>
         </TextBox>
-        <TextBox x:Name="middleName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="122,187,0,0" TextChanged="middleName_TextChanged">
+        <TextBox x:Name="middleName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="22,179,0,0" TextChanged="middleName_TextChanged">
             <TextBox.ToolTip>
                 <ToolTip x:Name="middleNameToolTip" Visibility="Hidden">
                     Укажите отчество
                 </ToolTip>
             </TextBox.ToolTip>
         </TextBox>
-        <Label Content="Фамилия" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="122,37,0,0"/>
-        <Label Content="Имя" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="122,97,0,0"/>
-        <Label Content="Отчество" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="122,161,0,0"/>
-        <Label Content="Должность" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="122,217,0,0"/>
-        <Button Content="Создать" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="145,286,0,0" Height="26" Click="Button_Click"/>
-        <ComboBox x:Name="staffComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="122,248,0,0" SelectionChanged="staffComboBox_SelectionChanged"/>
-        <Label x:Name="firstObject" Foreground="Red" FontSize="20" Content="!" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="242,240,0,0" RenderTransformOrigin="0.53,-0.228" Height="39" Visibility="Hidden">
+        <Label Content="Фамилия" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,29,0,0"/>
+        <Label Content="Имя" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,89,0,0"/>
+        <Label Content="Отчество" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,153,0,0"/>
+        <Label Content="Должность" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,209,0,0"/>
+        <Button Content="Создать" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="45,278,0,0" Height="26" Click="Button_Click"/>
+        <ComboBox x:Name="staffComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="22,240,0,0" SelectionChanged="staffComboBox_SelectionChanged"/>
+        <Label x:Name="firstObject" Foreground="Red" FontSize="20" Content="!" VerticalAlignment="Top" Margin="147,231,0,0" RenderTransformOrigin="0.53,-0.228" Height="39" Visibility="Hidden" HorizontalAlignment="Left" Width="16">
             <Label.ToolTip>
                 <ToolTip x:Name="staffToolTip">
                     Выберите должность

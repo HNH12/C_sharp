@@ -59,3 +59,5 @@ C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\AddDi
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\AddProduct.g.cs
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\AddProduct.baml
 C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\Program_for_exam.csprojAssemblyReference.cache
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\InfoAboutCreator.g.cs
+C:\Users\Илья\source\repos\Program_for_exam\Program_for_exam\obj\Debug\InfoAboutCreator.baml

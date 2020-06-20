@@ -69,5 +69,13 @@
                 </ToolTip>
             </Label.ToolTip>
         </Label>
+        <Label Content="?" BorderBrush="Black" BorderThickness="1" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="245,174.6,0,0" Height="29" Cursor="Hand" MouseUp="Label_MouseUp" Grid.Row="2"/>
+        <Popup x:Name="addPopup" StaysOpen="False" Placement="Mouse" MaxWidth="250">
+            <Border BorderBrush="Gray" BorderThickness="2" Background="White" Height="40" Width="162">
+                <StackPanel Margin="0,0.4,0,0.6">
+                    <TextBlock TextWrapping="Wrap"><Run Text="Без сохранения чека вы не сможете вернуть товар!"/></TextBlock>
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
 </Window>

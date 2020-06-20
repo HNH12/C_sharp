@@ -5,15 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Program_for_exam"
         mc:Ignorable="d"
-        Title="Изменение" Height="121.63" Width="226.633">
+        Title="Изменение" Height="121.63" Width="253.3">
     <Grid Margin="0,0,4,3.6">
-        <Button Content="изменить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="76,58,0,0" Click="UpdateSale_Click"/>
-        <TextBox x:Name="numberSaleTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" Margin="89,18,0,0" TextChanged="numberSaleTextBox_TextChanged">
+        <Button Content="изменить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="86,58,0,0" Click="UpdateSale_Click"/>
+        <TextBox x:Name="numberSaleTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" Margin="99,18,0,0" TextChanged="numberSaleTextBox_TextChanged">
             <TextBox.ToolTip>
                 <ToolTip>
                     Укажите товар
                 </ToolTip>
             </TextBox.ToolTip>
         </TextBox>
+        <Label Content="?" BorderBrush="Black" BorderThickness="1" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,18,0,0" Height="34" Cursor="Hand" MouseUp="Label_MouseUp"/>
+        <Popup x:Name="changePopup" StaysOpen="False" Placement="Right" MaxWidth="250">
+            <Border BorderBrush="Gray" BorderThickness="2" Background="White" Height="40" Width="195">
+                <StackPanel Margin="0,0.4,0,0.6">
+                    <TextBlock TextWrapping="Wrap"><Run Text="Изменять можно только покупки со статусом &quot;доставляется&quot;."/></TextBlock>
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
 </Window>

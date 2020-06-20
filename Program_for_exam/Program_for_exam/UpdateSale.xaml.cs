@@ -79,5 +79,10 @@ namespace Program_for_exam
                 );
             }
         }
+
+        private void Label_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            changePopup.IsOpen = true;
+        }
     }
 }

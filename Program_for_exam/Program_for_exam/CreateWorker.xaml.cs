@@ -68,6 +68,22 @@ namespace Program_for_exam
             return check;
         }
 
+        private void OnlyLetter(object sender)
+        {
+            if (sender is TextBox textBox)
+            {
+                textBox.Text = new string
+                (
+                textBox.Text.Where
+                (ch =>
+                (ch >= 'а' && ch <= 'я')
+                || (ch >= 'А' && ch <= 'Я')
+                || ch == 'ё' || ch == 'Ё' || ch == ' ' || ch == '-')
+                .ToArray()
+                );
+            }
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DataBase dataBase = new DataBase(_dataBaseOption);
@@ -105,6 +121,8 @@ namespace Program_for_exam
             middleName.BorderBrush = brush;
 
             middleNameToolTip.Visibility = Visibility.Hidden;
+
+            OnlyLetter(sender);
         }
 
         private void firstName_TextChanged(object sender, TextChangedEventArgs e)
@@ -114,6 +132,8 @@ namespace Program_for_exam
             firstName.BorderBrush = brush;
 
             firstNameToolTip.Visibility = Visibility.Hidden;
+
+            OnlyLetter(sender);
         }
 
         private void secondName_TextChanged(object sender, TextChangedEventArgs e)
@@ -123,6 +143,8 @@ namespace Program_for_exam
             secondName.BorderBrush = brush;
 
             secondNameToolTip.Visibility = Visibility.Hidden;
+
+            OnlyLetter(sender);
         }
     }
 }

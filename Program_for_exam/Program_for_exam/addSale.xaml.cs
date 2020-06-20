@@ -256,5 +256,10 @@ namespace Program_for_exam
             nameWorkerToolTip.Visibility = Visibility.Hidden;
             secondObject.Visibility = Visibility.Hidden;
         }
+
+        private void Label_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            addPopup.IsOpen = true;
+        }
     }
 }

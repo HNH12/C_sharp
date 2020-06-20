@@ -122,5 +122,11 @@ namespace Program_for_exam
             AddProduct addProduct = new AddProduct();
             addProduct.ShowDialog();
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            InfoAboutCreator info = new InfoAboutCreator();
+            info.ShowDialog();
+        }
     }
 }
