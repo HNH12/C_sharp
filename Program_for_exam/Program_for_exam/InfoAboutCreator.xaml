@@ -30,12 +30,18 @@
     <Grid Margin="0,2,0,-16">
         <Button Content="Закрыть" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="191" Margin="200,419,0,0" Template="{StaticResource btTemplate}" Height="153" Cursor="Hand" Click="Button_Click">
         </Button>
-        <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="164" VerticalAlignment="Top" Width="167" Margin="428,199,0,0"/>
-        <ScrollViewer HorizontalAlignment="Left" Height="164" VerticalAlignment="Top" Width="274" Margin="79,199,0,0">
-            <StackPanel>
-                <Label Content="Здравствуйте!" FontSize="20"/>
-                <TextBlock x:Name="infoTextBlock" TextWrapping="Wrap"/>
-            </StackPanel>
-        </ScrollViewer>
+        <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="164" VerticalAlignment="Top" Width="167" Margin="428,199,0,0">
+            <Image Source="Resource/Паспорт.jpg">
+
+            </Image>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="2" Margin="76,199,316,323">
+            <ScrollViewer HorizontalAlignment="Left" Height="164" VerticalAlignment="Top" Width="279" BorderBrush="Black" Margin="0.4,0.4,-1.8,-3.6">
+                <StackPanel>
+                    <Label Content="Здравствуйте!" FontSize="20"/>
+                    <TextBlock x:Name="infoTextBlock" TextWrapping="Wrap"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </Window>

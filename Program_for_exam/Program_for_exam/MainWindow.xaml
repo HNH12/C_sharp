@@ -8,7 +8,7 @@
         Title="Программа" Height="450" Width="1246.008" Closing="Window_Closing">
 
     <Grid x:Name="grid1" Margin="0,0,4,0">
-        <DataGrid x:Name="salesDataBase" IsReadOnly ="True" Margin="39,75,0,38" HorizontalAlignment="Left">
+        <DataGrid x:Name="salesDataBase" IsReadOnly ="True" Margin="39,75,0,225" HorizontalAlignment="Left">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Номер чека" Binding="{Binding Path=numberSale}" Width="80" >
                     <DataGridTextColumn.ElementStyle>

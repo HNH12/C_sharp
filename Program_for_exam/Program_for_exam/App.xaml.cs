@@ -26,64 +26,37 @@ namespace Program_for_exam
 
     public class File
     {
-        private Excel.Workbook TableToExcel(DataGrid table)
-        {
-            Excel.Application excel = new Excel.Application();
-            //excel.Visible = false;
-            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
-            Excel.Worksheet sheet = (Excel.Worksheet)excel.Worksheets.get_Item(1);
-
-            for (int j = 0; j < table.Columns.Count; j++)
-            {
-                Excel.Range myRange = (Excel.Range)sheet.Cells[1, j + 1];
-                sheet.Cells[1, j + 1].Font.Bold = true;
-                myRange.Value2 = table.Columns[j].Header;
-            }
-
-            for (int i = 0; i < table.Columns.Count; i++)
-            {
-                for (int j = 0; j < table.Items.Count; j++)
-                {
-                    TextBlock b = table.Columns[i].GetCellContent(table.Items[j]) as TextBlock;
-                    Microsoft.Office.Interop.Excel.Range myRange = 
-                        (Microsoft.Office.Interop.Excel.Range)sheet.Cells[j + 2, i + 1];
-                    myRange.Value2 = b.Text;
-                }
-            }
-            return workbook;
-        }
-
         public void SaveDocExcel(DataGrid table)
         {
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
-            Excel.Workbook workbook = TableToExcel(table);
+            Excel.Application app = null;
+            Excel.Workbook wb = null;
+            Excel.Worksheet ws = null;
+            var process = System.Diagnostics.Process.GetProcessesByName("EXCEL");
 
-            saveFileDialog1.Filter = "Excel documents (*.xlsx)|*.xlsx";
-            saveFileDialog1.RestoreDirectory = true;
+            SaveFileDialog openDialog = new SaveFileDialog();
+            openDialog.FileName = "Чек № ";
+            openDialog.Filter = "Excel (.xls)|*.xls |Excel (.xlsx)|*.xlsx |All files (*.*)|*.*";
+            openDialog.FilterIndex = 2;
+            openDialog.RestoreDirectory = true;
 
-            if (table.Items.Count != 0)
+            if (openDialog.ShowDialog() == true)
             {
-                if (saveFileDialog1.ShowDialog() == true)
-                {
-                    string fileName = saveFileDialog1.FileName;
-                    workbook.SaveAs(fileName, Type.Missing, Type.Missing, Type.Missing,
-                        Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive,
-                        Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    //sheet1 = (Excel.Worksheet)workbook.Sheets.get_Item(1);
-                }
-            }
-            else
-                if (MessageBox.Show("Вы действительно хотите сохранить таблицу в файл?", 
-                    "В таблице нет записей",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    if (saveFileDialog1.ShowDialog() == true)
-                    {
-                        string fileName = saveFileDialog1.FileName;
-                        workbook.SaveAs(fileName, Type.Missing, Type.Missing, Type.Missing,
-                            Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive,
-                            Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    }
+                app = new Excel.Application();
+                app.DisplayAlerts = false;
+                wb = app.Workbooks.Add();
+                ws = wb.ActiveSheet;
+                table.SelectAllCells();
+                table.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
+                System.Windows.Input.ApplicationCommands.Copy.Execute(null, table);
+                ws.Paste();
+                ws.Range["A1", "I1"].Font.Bold = true;
+                int number1 = ws.UsedRange.Rows.Count;
+                Microsoft.Office.Interop.Excel.Range myRange = ws.Range["A1", "I" + number1];
+                myRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                myRange.WrapText = false;
+                ws.Columns.EntireColumn.AutoFit();
+                wb.SaveAs(openDialog.FileName);
             }
         }
 
@@ -195,27 +168,27 @@ namespace Program_for_exam
 
     interface IDataBase
     {
-        void OutputTable(DataGrid DG, int choose);
+        void OutputTable(DataGrid dataGrid, int choose);
 
         void CreateNewSale(string firstName, string secondName,
             string middleName, string position,
-            string product, System.Windows.Controls.TextBox country = null,
-            System.Windows.Controls.TextBox city = null, System.Windows.Controls.TextBox street = null);
+            string product, string country = null,
+            string city = null, string street = null);
 
         bool DeleteSale(string numberSale);
 
-        void GetStaff(ComboBox comboBox);
+        void GetStaff(string worker);
     }
 
     public class DataBase : Connection, IDataBase
     {
         public DataBase(string option) : base(option) { }
 
-        public void OutputTableStaff(DataGrid DG)
+        public void OutputTableStaff(DataGrid dataGrid)
         {
-            DG.Items.Clear();
+            dataGrid.Items.Clear();
 
-            string sql = "SELECT second_name,first_name,middle_name,position FROM `staff`";
+            string  sql = "SELECT second_name,first_name,middle_name,position FROM `staff`";
 
             MySqlCommand command = new MySqlCommand(sql, _connection);
             MySqlDataReader reader = command.ExecuteReader();
@@ -228,12 +201,13 @@ namespace Program_for_exam
 
                 data[data.Count - 1][0] = reader[0].ToString() + " " + 
                     reader[1].ToString() + " " + reader[2].ToString();
+
                 data[data.Count - 1][1] = reader[3].ToString();
             }
             
             foreach(string[] s in data)
             {
-                DG.Items.Add(new ItemWorker()
+                dataGrid.Items.Add(new ItemWorker()
                 {
                     nameWorker = s[0],
                     positionWorker = s[1]
@@ -256,6 +230,8 @@ namespace Program_for_exam
                 comboBox.Items.Add("Название: " + reader[0] + "; Тип: " + reader[1] + "; " +
                     "Кем произведён: " + reader[2]);
             }
+
+            comboBox.ItemsSource = 
 
             reader.Close();
         }
