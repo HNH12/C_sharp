@@ -184,6 +184,9 @@ namespace Program_for_exam
 
 
                     MessageBox.Show("Покупка оформлена");
+
+                    workersListComboBox.SelectedIndex = -1;
+                    productComboBox.SelectedIndex = -1;
                 }
             }
             else
@@ -202,26 +205,41 @@ namespace Program_for_exam
                     dataBase.CreateNewSale(tuple.Item2, tuple.Item1, tuple.Item3, tuple.Item4, 
                         productComboBox.SelectedItem.ToString(), countryTextBox.Text, cityTextBox.Text, streetTextBox.Text);
 
-                    SaveFileDialog saveFile = new SaveFileDialog();
-                    saveFile.FileName = String.Format("Чек №{0}", dataBase.GetLastSaleNumber());
-                    saveFile.Filter = "DocX document (.docx)|(*.docx)";
+                    MessageBoxResult dialogResult = MessageBox.Show("Сохранить чек?\n(Внимание! Без чека вы не сможете вернуть товар)",
+                        "Сохранение чека", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
 
-                    if (saveFile.ShowDialog() == true)
+                    if (dialogResult == MessageBoxResult.Yes)
                     {
-                        DateTime date = DateTime.Now;
-                        string dateForMySql = date.ToString("yyyy-MM-dd");
+                        SaveFileDialog saveFile = new SaveFileDialog();
+                        saveFile.FileName = String.Format("Чек №{0}", dataBase.GetLastSaleNumber());
+                        saveFile.Filter = "DocX document (.docx)|(*.docx)";
 
-                        string text = String.Format("Номер покупки: {0}\nТовар:\n" +
-                            "{1}\nДата покупки: {2}", 
-                            dataBase.GetLastSaleNumber(), productComboBox.SelectedItem.ToString(), dateForMySql);
+                        if (saveFile.ShowDialog() == true)
+                        {
+                            DateTime date = DateTime.Now;
+                            string dateForMySql = date.ToString("yyyy-MM-dd");
 
-                        FileClass file = new FileClass();
-                        file.SaveDocWord(saveFile.FileName, text);
+                            string text = String.Format("Номер покупки: {0}\nТовар:\n" +
+                                "{1}\nДата покупки: {2}",
+                                dataBase.GetLastSaleNumber(), productComboBox.SelectedItem.ToString(), dateForMySql);
+
+                            FileClass file = new FileClass();
+                            file.SaveDocWord(saveFile.FileName, text);
+                        }
                     }
 
                     dataBase.OutputTable(salesTable, selectedIndex);
 
                     MessageBox.Show("Покупка оформлена");
+
+                    workersListComboBox.SelectedIndex = -1;
+                    productComboBox.SelectedIndex = -1;
+
+                    cityTextBox.Clear();
+                    countryTextBox.Clear();
+                    streetTextBox.Clear();
+
+                    deliveryCheckBox.IsChecked = false;
                 }
             }
         }

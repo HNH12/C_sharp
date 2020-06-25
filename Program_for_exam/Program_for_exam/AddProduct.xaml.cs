@@ -69,14 +69,14 @@ namespace Program_for_exam
         }
 
         private void AddProductButton_Click(object sender, RoutedEventArgs e)
-        {
-            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
-            
-            bool isSuccessfulAdd = dataBase.CreateNewTechnic(nameProductTextBox.Text, typeProductTextBox.Text, 
-                priceProductTextBox.Text, nameFabricatorTextBox.Text);
-
+        {    
             if(CheckFullData())
-            { 
+            {
+                DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
+
+                bool isSuccessfulAdd = dataBase.CreateNewTechnic(nameProductTextBox.Text, typeProductTextBox.Text,
+               priceProductTextBox.Text, nameFabricatorTextBox.Text);
+
                 if (isSuccessfulAdd)
                 {
                     MessageBox.Show("Товар создан");
@@ -100,40 +100,56 @@ namespace Program_for_exam
             }
         }
 
-        private void nameProductTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private Brush GetBrushColor()
         {
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            nameProductTextBox.BorderBrush = brush;
+            return brush;
+        }
 
+        private delegate Brush DelegateBrush();
+
+        private void nameProductTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DelegateBrush MainBrushColor = GetBrushColor;
+            nameProductTextBox.BorderBrush = MainBrushColor();
+            
             nameProductToolTip.Visibility = Visibility.Hidden;
         }
 
         private void typeProductTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            BrushConverter converter = new BrushConverter();
-            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            typeProductTextBox.BorderBrush = brush;
+            DelegateBrush MainBrushColor = GetBrushColor;
+            typeProductTextBox.BorderBrush = MainBrushColor();
 
             typeProductToolTip.Visibility = Visibility.Hidden;
         }
 
         private void nameFabricatorTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            BrushConverter converter = new BrushConverter();
-            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            nameFabricatorTextBox.BorderBrush = brush;
+            DelegateBrush MainBrushColor = GetBrushColor;
+            nameFabricatorTextBox.BorderBrush = MainBrushColor();
 
             nameFabricatorToolTip.Visibility = Visibility.Hidden;
         }
 
         private void priceProductTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            BrushConverter converter = new BrushConverter();
-            Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            priceProductTextBox.BorderBrush = brush;
+            DelegateBrush MainBrushColor = GetBrushColor;
+            priceProductTextBox.BorderBrush = MainBrushColor();
 
             priceProductToolTip.Visibility = Visibility.Hidden;
+
+            if (sender is TextBox textBox)
+            {
+                textBox.Text = new string
+                (
+                textBox.Text.Where
+                (symb =>
+                (symb >= '0' && symb <= '9'))
+                .ToArray()
+                );
+            }
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Program_for_exam"
         mc:Ignorable="d"
-        Title="AddDiscount" Height="241.304" Width="924.636">
+        Title="Добавление скидки" Height="241.304" Width="924.636">
     
     <Grid>
         

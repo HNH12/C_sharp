@@ -54,9 +54,15 @@ namespace Program_for_exam
                 {
                     MessageBox.Show("Статус изменён");
                     dataBase.OutputTable(salesTable, selectedIndex);
+
+                    numberSaleTextBox.Clear();
                 }
                 else
+                {
                     MessageBox.Show("Невозможно изменить статус");
+
+                    numberSaleTextBox.Clear();
+                }
             }
         }
 

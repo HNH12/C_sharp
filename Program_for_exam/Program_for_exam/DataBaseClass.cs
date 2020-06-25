@@ -60,7 +60,7 @@ namespace Program_for_exam
             public string discount { get; set; }
         }
 
-        interface IDataBase
+        interface ISalesDataBase
         {
             void OutputTable(DataGrid dataGrid, int choose);
 
@@ -71,10 +71,14 @@ namespace Program_for_exam
 
             bool DeleteSale(string numberSale);
 
-            List<string> GetStaff();
+            bool IssueRefund(string text, ref string saleNumber);
+
+            string GetLastSaleNumber();
+
+            bool UpdateSaleStatus(string saleNumber);
         }
 
-        public class DataBase : Connection
+        public class DataBase : Connection, ISalesDataBase
         {
             public DataBase(string option) : base(option) { }
 
@@ -380,32 +384,41 @@ namespace Program_for_exam
                 saleNumber = Tuple.Item1;
                 date = Tuple.Item2;
 
-                try
-                {
+                
                     string sql = String.Format("SELECT date FROM `sale` WHERE id = {0}", saleNumber);
 
                     MySqlCommand command = new MySqlCommand(sql, _connection);
-                    string dateSale = command.ExecuteScalar().ToString();
-
-                    DateTime currentDate = DateTime.Now;
-                    string dateForMySql = currentDate.ToString("dd.MM.yyyy");
-
-                    bool check = true;
-                    for (int i = 0; i < 10; i++)
+                string dateSale;
+                try
+                {
+                    if (command.ExecuteScalar() == null)
                     {
-                        if (dateSale[i] != dateForMySql[i])
-                            check = false;
-                    }
-
-                    if (check)
-                        return true;
-                    else
                         return false;
+                    }
+                    else
+                    {
+                        dateSale = command.ExecuteScalar().ToString();
+                        DateTime currentDate = DateTime.Now;
+                        string dateForMySql = currentDate.ToString("dd.MM.yyyy");
+
+                        bool check = true;
+                        for (int i = 0; i < 10; i++)
+                        {
+                            if (dateSale[i] != dateForMySql[i])
+                                check = false;
+                        }
+
+                        if (check)
+                            return true;
+                        else
+                            return false;
+                    }
                 }
-                catch
+                catch 
                 {
                     return false;
                 }
+
             }
 
             /// <summary>

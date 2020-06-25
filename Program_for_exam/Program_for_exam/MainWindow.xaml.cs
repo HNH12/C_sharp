@@ -82,7 +82,7 @@ namespace Program_for_exam
                     dataBase.DeleteSale(saleNumber);
                     MessageBox.Show("Возврат выполнен");
 
-                    dataBase.OutputTable(salesDataBase, Convert.ToInt32(typeList.SelectedItem));
+                    dataBase.OutputTable(salesDataBase, typeList.SelectedIndex);
 
                     FileInfo fileInf = new FileInfo(openFile.FileName);
 

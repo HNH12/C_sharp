@@ -54,9 +54,14 @@ namespace Program_for_exam
                 {
                     MessageBox.Show("Удаление прошло успешно");
                     dataBase.OutputTable(dataGrid, selectedIndex);
+
+                    numberSaleTextBox.Clear();
                 }
                 else
-                    MessageBox.Show("Неверный номер покупки"); 
+                {
+                    MessageBox.Show("Неверный номер покупки");
+                    numberSaleTextBox.Clear();
+                }
             }
         }
 

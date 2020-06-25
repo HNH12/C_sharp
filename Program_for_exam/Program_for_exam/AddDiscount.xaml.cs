@@ -81,9 +81,10 @@ namespace Program_for_exam
                 {
                     Tuple<string, int> tuple = new Tuple<string, int>
                         (technicComboBox.SelectedItem.ToString(), Convert.ToInt32(discountTextBox.Text));
-             
+
+                    currentDiscountComboBox.SelectedIndex = -1;
                     discountDataGrid.Items.Clear();
-                    currentDiscountComboBox.Items.Clear();
+                    currentDiscountComboBox.ItemsSource = null;
 
                     dataBase.OutputTableDiscount(discountDataGrid);
                     currentDiscountComboBox.ItemsSource = dataBase.OutputAllDiscount();
@@ -103,10 +104,10 @@ namespace Program_for_exam
 
                         discountDataGrid.Items.Clear();
                         dataBase.OutputTableDiscount(discountDataGrid);
-
-                        technicComboBox.SelectedIndex = -1;
-                        discountTextBox.Text = "";
                     }
+
+                    technicComboBox.SelectedIndex = -1;
+                    discountTextBox.Text = "";
                 }
             }
         }
@@ -134,8 +135,9 @@ namespace Program_for_exam
 
                 dataBase.DeleteDiscount(currentDiscountComboBox.SelectedItem.ToString());
 
+                currentDiscountComboBox.SelectedIndex = -1;
                 discountDataGrid.Items.Clear();
-                currentDiscountComboBox.Items.Clear();
+                currentDiscountComboBox.ItemsSource = null;
 
                 currentDiscountComboBox.ItemsSource = dataBase.OutputAllDiscount();
                 dataBase.OutputTableDiscount(discountDataGrid);
@@ -156,7 +158,8 @@ namespace Program_for_exam
 
                 dataBase.DeleteDiscount();
 
-                currentDiscountComboBox.Items.Clear();
+                currentDiscountComboBox.SelectedIndex = -1;
+                currentDiscountComboBox.ItemsSource = null;
                 discountDataGrid.Items.Clear();
 
                 currentDiscountComboBox.ItemsSource = dataBase.OutputAllDiscount();
@@ -188,7 +191,7 @@ namespace Program_for_exam
                 (
                 textBox.Text.Where
                 (symb =>
-                (symb >= '0' && symb <= '9'))
+                (symb >= '1' && symb <= '9'))
                 .ToArray()
                 );
             }
