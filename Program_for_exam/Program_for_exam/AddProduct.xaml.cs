@@ -20,114 +20,120 @@ namespace Program_for_exam
     /// </summary>
     public partial class AddProduct : System.Windows.Window
     {
-        private string _dataBaseOption = "server = 127.0.0.1; user = root; database = market";
 
         public AddProduct()
         {
             InitializeComponent();
 
-            DataBase dataBase = new DataBase(_dataBaseOption);
-            dataBase.OutputTableTechnic(listProductDataGrid);
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
+            dataBase.productDataBase.OutputTableProduct(listProductDataGrid);
         }
 
         public bool CheckFullData()
         {
             bool check = true;
 
-            if (nameProduct.Text=="")
+            if (nameProductTextBox.Text=="")
             {
                 check = false;
-                nameProduct.BorderBrush = Brushes.Red;
-                nameProductAddProductToolTip.Visibility = Visibility.Visible;
+
+                nameProductTextBox.BorderBrush = Brushes.Red;
+                nameProductToolTip.Visibility = Visibility.Visible;
             }
 
-            if(typeProduct.Text=="")
+            if(typeProductTextBox.Text=="")
             {
                 check = false;
-                typeProduct.BorderBrush = Brushes.Red;
-                typeProductAddProductToolTip.Visibility = Visibility.Visible;
+
+                typeProductTextBox.BorderBrush = Brushes.Red;
+                typeProductToolTip.Visibility = Visibility.Visible;
             }
 
-            if(nameFabricator.Text=="")
+            if(nameFabricatorTextBox.Text=="")
             {
                 check = false;
-                nameFabricator.BorderBrush = Brushes.Red;
-                nameFabricatorAddProductToolTip.Visibility = Visibility.Visible;
+
+                nameFabricatorTextBox.BorderBrush = Brushes.Red;
+                nameFabricatorToolTip.Visibility = Visibility.Visible;
             }
 
-            if(priceProduct.Text=="")
+            if(priceProductTextBox.Text=="")
             {
                 check = false;
-                priceProduct.BorderBrush = Brushes.Red;
-                priceProductAddProductToolTip.Visibility = Visibility.Visible;
+
+                priceProductTextBox.BorderBrush = Brushes.Red;
+                priceProductToolTip.Visibility = Visibility.Visible;
             }
 
             return check;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AddProductButton_Click(object sender, RoutedEventArgs e)
         {
-            DataBase dataBase = new DataBase(_dataBaseOption);
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
             
-            try
-            {
-                if (dataBase.CreateNewTechnic(nameProduct, typeProduct, priceProduct, nameFabricator))
+            bool isSuccessfulAdd = dataBase.productDataBase.CreateNewTechnic(nameProductTextBox.Text, typeProductTextBox.Text, 
+                priceProductTextBox.Text, nameFabricatorTextBox.Text);
+
+            if(CheckFullData())
+            { 
+                if (isSuccessfulAdd)
                 {
                     MessageBox.Show("Товар создан");
-                    dataBase.OutputTableTechnic(listProductDataGrid);
+                    dataBase.productDataBase.OutputTableProduct(listProductDataGrid);
 
-                    nameProduct.Clear();
-                    nameFabricator.Clear();
-                    typeProduct.Clear();
-                    priceProduct.Clear();
+                    nameProductTextBox.Clear();
+                    nameFabricatorTextBox.Clear();
+                    typeProductTextBox.Clear();
+                    priceProductTextBox.Clear();
                 }
 
                 else
                 {
                     MessageBox.Show("Такой товар уже существует");
 
-                    nameProduct.Clear();
-                    nameFabricator.Clear();
-                    typeProduct.Clear();
-                    priceProduct.Clear();
+                    nameProductTextBox.Clear();
+                    nameFabricatorTextBox.Clear();
+                    typeProductTextBox.Clear();
+                    priceProductTextBox.Clear();
                 }
             }
-            catch
-            {
-                CheckFullData();
-            }
         }
 
-        private void nameProduct_TextChanged(object sender, TextChangedEventArgs e)
+        private void nameProductTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            nameProduct.BorderBrush = brush;
-            nameProductAddProductToolTip.Visibility = Visibility.Hidden;
+            nameProductTextBox.BorderBrush = brush;
+
+            nameProductToolTip.Visibility = Visibility.Hidden;
         }
 
-        private void typeProduct_TextChanged(object sender, TextChangedEventArgs e)
+        private void typeProductTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            typeProduct.BorderBrush = brush;
-            typeProductAddProductToolTip.Visibility = Visibility.Hidden;
+            typeProductTextBox.BorderBrush = brush;
+
+            typeProductToolTip.Visibility = Visibility.Hidden;
         }
 
-        private void nameFabricator_TextChanged(object sender, TextChangedEventArgs e)
+        private void nameFabricatorTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            nameFabricator.BorderBrush = brush;
-            nameFabricatorAddProductToolTip.Visibility = Visibility.Hidden;
+            nameFabricatorTextBox.BorderBrush = brush;
+
+            nameFabricatorToolTip.Visibility = Visibility.Hidden;
         }
 
-        private void priceProduct_TextChanged(object sender, TextChangedEventArgs e)
+        private void priceProductTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            priceProduct.BorderBrush = brush;
-            priceProductAddProductToolTip.Visibility = Visibility.Hidden;
+            priceProductTextBox.BorderBrush = brush;
+
+            priceProductToolTip.Visibility = Visibility.Hidden;
         }
     }
 }

@@ -96,6 +96,8 @@
     <Compile Include="CreateWorker.xaml.cs">
       <DependentUpon>CreateWorker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataBaseClass.cs" />
+    <Compile Include="FileClass.cs" />
     <Compile Include="InfoAboutCreator.xaml.cs">
       <DependentUpon>InfoAboutCreator.xaml</DependentUpon>
     </Compile>

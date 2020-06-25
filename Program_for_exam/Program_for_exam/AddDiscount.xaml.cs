@@ -20,16 +20,16 @@ namespace Program_for_exam
     /// </summary>
     public partial class AddDiscount : Window
     {
-        private string _dataBaseOption = "server = 127.0.0.1; user = root; database = market";
-
         public AddDiscount()
         {
             InitializeComponent();
 
-            DataBase dataBase = new DataBase(_dataBaseOption);
-            dataBase.OutputAllTechnic(technicComboBox);
-            dataBase.OutputTableDiscount(discountDataGrid);
-            dataBase.OutputAllDiscount(currentDiscount);
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
+
+            technicComboBox.ItemsSource = dataBase.discountDataBase.OutputAllTechnic();
+            currentDiscountComboBox.ItemsSource = dataBase.discountDataBase.OutputAllDiscount();
+
+            dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
         }
 
         private bool CheckRightDiscount()
@@ -37,12 +37,12 @@ namespace Program_for_exam
             bool check = true;
 
             int result;
-            bool isInt = Int32.TryParse(discountTextBox.Text, out result);
+            bool isInteger = Int32.TryParse(discountTextBox.Text, out result);
 
-            bool rightDiscount = (result > 0 && result < 100) && 
+            bool isRightDiscount = (result > 0 && result < 100) && 
                 (discountTextBox.Text[0] != '-' && discountTextBox.Text[0] != '0');
 
-            if (!isInt || !rightDiscount)
+            if (!isInteger || !isRightDiscount)
                 check = false;
 
             return check;
@@ -56,7 +56,7 @@ namespace Program_for_exam
             {
                 check = false;
 
-                firstObejct.Visibility = Visibility.Visible;
+                firstObejctLabel.Visibility = Visibility.Visible;
                 productToolTip.Visibility = Visibility.Visible;
             }
 
@@ -71,38 +71,38 @@ namespace Program_for_exam
             return check;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AddDiscountButton_Click(object sender, RoutedEventArgs e)
         {
             if (CheckFullDiscount())
             {
-                DataBase dataBase = new DataBase(_dataBaseOption);
+                DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
-                if (dataBase.AddDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text))
+                if (dataBase.discountDataBase.AddDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text))
                 {
                     Tuple<string, int> tuple = new Tuple<string, int>
                         (technicComboBox.SelectedItem.ToString(), Convert.ToInt32(discountTextBox.Text));
              
                     discountDataGrid.Items.Clear();
-                    currentDiscount.Items.Clear();
-                    dataBase.OutputTableDiscount(discountDataGrid);
-                    dataBase.OutputAllDiscount(currentDiscount);
+                    currentDiscountComboBox.Items.Clear();
+
+                    dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
+                    currentDiscountComboBox.ItemsSource = dataBase.discountDataBase.OutputAllDiscount();
 
                     technicComboBox.SelectedIndex = -1;
                     discountTextBox.Text = "";
                 }
-
                 else
                 {
-                    bool messageResult = MessageBox.Show
+                    bool isMessageResultAgree = MessageBox.Show
                         ("Скидка на этот товар существует. Изменить существующую скидку?", "Изменнение скидки",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes;
 
-                    if (messageResult)
+                    if (isMessageResultAgree)
                     {
-                        dataBase.UpdateDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text);
+                        dataBase.discountDataBase.UpdateDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text);
 
                         discountDataGrid.Items.Clear();
-                        dataBase.OutputTableDiscount(discountDataGrid);
+                        dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
 
                         technicComboBox.SelectedIndex = -1;
                         discountTextBox.Text = "";
@@ -115,52 +115,52 @@ namespace Program_for_exam
         {
             bool check = true;
 
-            if (currentDiscount.SelectedIndex == -1)
+            if (currentDiscountComboBox.SelectedIndex == -1)
             {
                 check = false;
 
-                secondObject.Visibility = Visibility.Visible;
+                secondObjectLabel.Visibility = Visibility.Visible;
                 deleteToolTip.Visibility = Visibility.Visible;
             }
 
             return check;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void DeleteDiscountButton_Click(object sender, RoutedEventArgs e)
         {
             if (CheckFullProductDelete())
             {
-                DataBase dataBase = new DataBase(_dataBaseOption);
+                DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
-                dataBase.DeleteDiscount(currentDiscount.SelectedItem.ToString());
+                dataBase.discountDataBase.DeleteDiscount(currentDiscountComboBox.SelectedItem.ToString());
 
                 discountDataGrid.Items.Clear();
-                currentDiscount.Items.Clear();
+                currentDiscountComboBox.Items.Clear();
 
-                dataBase.OutputAllDiscount(currentDiscount);
-                dataBase.OutputTableDiscount(discountDataGrid);
+                currentDiscountComboBox.ItemsSource = dataBase.discountDataBase.OutputAllDiscount();
+                dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
 
                 MessageBox.Show("        Удаление прошло успешно");
             }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void DeleteAllDiscountButton_Click(object sender, RoutedEventArgs e)
         {
-            bool messageResult = MessageBox.Show
+            bool isMessageResultAgree = MessageBox.Show
                         ("                    Удалить всё?", "Подтверждение операции",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes;
 
-            if (messageResult)
+            if (isMessageResultAgree)
             {
-                DataBase dataBase = new DataBase(_dataBaseOption);
+                DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
-                dataBase.DeleteDiscount();
+                dataBase.discountDataBase.DeleteDiscount();
 
-                currentDiscount.Items.Clear();
+                currentDiscountComboBox.Items.Clear();
                 discountDataGrid.Items.Clear();
 
-                dataBase.OutputAllDiscount(currentDiscount);
-                dataBase.OutputTableDiscount(discountDataGrid);
+                currentDiscountComboBox.ItemsSource = dataBase.discountDataBase.OutputAllDiscount();
+                dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
 
                 MessageBox.Show("        Удаление прошло успешно");
             }
@@ -169,8 +169,9 @@ namespace Program_for_exam
         private void technicComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             discountTextBox.Text = "";
+
             productToolTip.Visibility = Visibility.Hidden;
-            firstObejct.Visibility = Visibility.Hidden;
+            firstObejctLabel.Visibility = Visibility.Hidden;
         }
 
         private void discountTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -193,10 +194,10 @@ namespace Program_for_exam
             }
         }
 
-        private void currentDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void currentDiscountComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             deleteToolTip.Visibility = Visibility.Hidden;
-            secondObject.Visibility = Visibility.Hidden;
+            secondObjectLabel.Visibility = Visibility.Hidden;
         }
     }
 }

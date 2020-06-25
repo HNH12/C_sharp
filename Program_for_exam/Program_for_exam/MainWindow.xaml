@@ -8,63 +8,63 @@
         Title="Программа" Height="450" Width="1246.008" Closing="Window_Closing">
 
     <Grid x:Name="grid1" Margin="0,0,4,0">
-        <DataGrid x:Name="salesDataBase" IsReadOnly ="True" Margin="39,75,0,225" HorizontalAlignment="Left">
+        
+        <DataGrid x:Name="salesDataBase" IsReadOnly ="True" Margin="39,75,0,25" HorizontalAlignment="Left">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Номер чека" Binding="{Binding Path=numberSale}" Width="80" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="ФИО сотрудника" Binding="{Binding Path=nameWorker}" Width="190"/>
-
                 <DataGridTextColumn Header="Должность сотрудника" Binding="{Binding Path=positionWorker}" Width="190">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Название изготовителя" Binding="{Binding Path=dataFabricator}" Width="150">
+                <DataGridTextColumn Header="Название изготовителя" Binding="{Binding Path=nameFabricator}" Width="150">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Название техники" Binding="{Binding Path=nameTechnic}" Width="150">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Тип техники" Binding="{Binding Path=typeTechnic}" Width="120">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Цена" Binding="{Binding Path=priceTechnic}" Width="60">
+                <DataGridTextColumn Header="Цена" Binding="{Binding Path=priceSale}" Width="60">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Дата" Binding="{Binding Path=date}" Width="90">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Статус" Binding="{Binding Path=status}" Width="104">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -73,27 +73,27 @@
 
         <Menu Height="27" VerticalAlignment="Top" Margin="0,0,580,0">
             <MenuItem Header="Сохранить в Excel файл">
-                <MenuItem Header="Продажи за сегодня"></MenuItem>
-                <MenuItem Header="Все продажи" Click="SaveAllTable_Click" Margin="0,0,-0.2,0"></MenuItem>
+                <MenuItem Header="Все продажи" Click="SaveTable_Click" Margin="0,0,-0.2,0"/>
             </MenuItem>
             <MenuItem Header="Работа с покупками">
-                <MenuItem Header="Оформить новую покупку" Click="NewSale_Click" ></MenuItem>
-                <MenuItem Header="Оформить возврат" Click="BackSale_Click" ></MenuItem>
-                <MenuItem Header="Удалить покупку" Click="DeleteSale_Click" ></MenuItem>
-                <MenuItem Header="Изменить статус товара" Click="UpdateSale_Click" ></MenuItem>
+                <MenuItem Header="Оформить новую покупку" Click="NewSale_Click" />
+                <MenuItem Header="Оформить возврат" Click="BackSale_Click" />
+                <MenuItem Header="Удалить покупку" Click="DeleteSale_Click" />
+                <MenuItem Header="Изменить статус товара" Click="UpdateSale_Click" />
             </MenuItem>
             <MenuItem Header="Работа с сотрудниками и товарами">
-                <MenuItem Header="Добавить товар" Click="AddProduct_Click" ></MenuItem>
-                <MenuItem Header="Добавить скидки" Click="AddDiscount_Click" ></MenuItem>
-                <MenuItem Header="Добавить сотрудника" Click="CreateWorker_Click" ></MenuItem>
+                <MenuItem Header="Добавить товар" Click="AddProduct_Click" />
+                <MenuItem Header="Добавить скидки" Click="AddDiscount_Click" />
+                <MenuItem Header="Добавить сотрудника" Click="AddWorker_Click" />
             </MenuItem>
-            <MenuItem Header="Информация о программе" Click="MenuItem_Click"/>
+            <MenuItem Header="Информация о программе" Click="Info_Click"/>
         </Menu>
 
         <ComboBox Name="typeList" Height="25" VerticalAlignment="Top" Margin="1059,45,0,0" SelectionChanged="typeList_SelectionChanged" HorizontalAlignment="Left" Width="121">
-            <TextBlock>Все</TextBlock>
-            <TextBlock>Полученные</TextBlock>
-            <TextBlock>Доставляется</TextBlock>
+            <TextBlock Text="Все"/>
+            <TextBlock Text="Полученые"/>
+            <TextBlock Text="Доставляется"/>
         </ComboBox>
+        
     </Grid>
 </Window>

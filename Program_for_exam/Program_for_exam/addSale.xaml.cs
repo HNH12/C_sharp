@@ -21,15 +21,14 @@ namespace Program_for_exam
     /// </summary>
     public partial class addSale : Window
     {
-        private string _dataBaseOption = "server = 127.0.0.1; user = root; database = market";
-
         public addSale(int selectedIndex, DataGrid salesTable)
         {
             InitializeComponent();
 
-            DataBase dataBase = new DataBase(_dataBaseOption);
-            dataBase.GetStaff(workersListComboBox);
-            dataBase.OutputProduct(productComboBox);
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
+
+            workersListComboBox.ItemsSource = dataBase.staffDataBase.GetStaff();
+            productComboBox.ItemsSource = dataBase.productDataBase.OutputProduct();
 
             this.selectedIndex = selectedIndex;
             this.salesTable = salesTable;
@@ -79,18 +78,20 @@ namespace Program_for_exam
         {
             bool check = true;
             
-            if (productComboBox.SelectedIndex==-1)
+            if (productComboBox.SelectedIndex == -1)
             {
                 check = false;
+
                 firstObject.Visibility = Visibility.Visible;
                 productToolTip.Visibility = Visibility.Visible;
             }
 
-            if (workersListComboBox.SelectedIndex==-1)
+            if (workersListComboBox.SelectedIndex == -1)
             {
                 check = false;
-                secondObject.Visibility = Visibility.Visible;
-                nameWorkerToolTip.Visibility = Visibility.Visible;
+
+                secondObjectLabel.Visibility = Visibility.Visible;
+                workerToolTip.Visibility = Visibility.Visible;
             }
 
             return check;
@@ -100,23 +101,26 @@ namespace Program_for_exam
         {
             bool check = true;
 
-            if (countryTextBox.Text=="")
+            if (countryTextBox.Text == "")
             {
                 check = false;
+
                 countryTextBox.BorderBrush = Brushes.Red;
                 countryToolTip.Visibility = Visibility.Visible;
             }
 
-            if (cityTextBox.Text=="")
+            if (cityTextBox.Text == "")
             {
                 check = false;
+
                 cityTextBox.BorderBrush = Brushes.Red;
                 cityToolTip.Visibility = Visibility.Visible;
             }
 
-            if (streetTextBox.Text=="")
+            if (streetTextBox.Text == "")
             {
                 check = false;
+
                 streetTextBox.BorderBrush = Brushes.Red;
                 streetToolTip.Visibility = Visibility.Visible;
 ;            }
@@ -146,26 +150,39 @@ namespace Program_for_exam
             {
                 if (CheckFullSale())
                 {
-                    DataBase dataBase = new DataBase(_dataBaseOption);
+                    DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
+
                     var Tuple = GetWorkerInformation();
 
-                    dataBase.CreateNewSale(Tuple.Item2, Tuple.Item1, Tuple.Item3, Tuple.Item4,
+                    dataBase.salesDataBase.CreateNewSale(Tuple.Item2, Tuple.Item1, Tuple.Item3, Tuple.Item4,
                         productComboBox.SelectedItem.ToString());
 
                     SaveFileDialog saveFile = new SaveFileDialog();
                     saveFile.Filter = "DocX document (.docx)|(*.docx)";
-                    if (saveFile.ShowDialog() == true)
+
+                    MessageBoxResult dialogResult = MessageBox.Show("Сохранить чек?\n(Внимание! Без чека вы не сможете вернуть товар)",
+                        "Сохранение чека", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+
+                    if (dialogResult == MessageBoxResult.Yes)
                     {
-                        DateTime date = DateTime.Now;
-                        string dateForMySql = date.ToString("yyyy-MM-dd");
+                        if (saveFile.ShowDialog() == true)
+                        {
+                            DateTime date = DateTime.Now;
+                            string dateForMySql = date.ToString("yyyy-MM-dd");
 
-                        string text = "Номер покупки: " + dataBase.GetLastSaleNumber() +
-                            "\nДата покупки: " + dateForMySql;
+                            string text = String.Format("Номер покупки: {0}\nДата покупки: {1}",
+                                dataBase.salesDataBase.GetLastSaleNumber(), dateForMySql);
 
-                        File file = new File();
-                        file.SaveDocWord(saveFile.FileName, text);
+                            FileClass file = new FileClass();
+                            file.SaveDocWord(saveFile.FileName, text);
+                        }
                     }
-                    dataBase.OutputTable(salesTable, selectedIndex);
+
+                    dataBase.salesDataBase.OutputTable(salesTable, selectedIndex);
+
+
+
+                    MessageBox.Show("Покупка оформлена");
                 }
             }
             else
@@ -178,25 +195,30 @@ namespace Program_for_exam
 
                 if (checkFullAddress && checkFullSale)
                 {
-                    DataBase dataBase = new DataBase(_dataBaseOption);
-                    var Tuple = GetWorkerInformation();
+                    DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
+                    var tuple = GetWorkerInformation();
 
-                    dataBase.CreateNewSale(Tuple.Item2, Tuple.Item1, Tuple.Item3, Tuple.Item4,
-                        productComboBox.SelectedItem.ToString(), countryTextBox, cityTextBox, streetTextBox);
+                    dataBase.salesDataBase.CreateNewSale(tuple.Item2, tuple.Item1, tuple.Item3, tuple.Item4, 
+                        productComboBox.SelectedItem.ToString(), countryTextBox.Text, cityTextBox.Text, streetTextBox.Text);
+
                     SaveFileDialog saveFile = new SaveFileDialog();
                     saveFile.Filter = "DocX document (.docx)|(*.docx)";
+
                     if (saveFile.ShowDialog() == true)
                     {
                         DateTime date = DateTime.Now;
                         string dateForMySql = date.ToString("yyyy-MM-dd");
 
-                        string text = "Номер покупки: " + dataBase.GetLastSaleNumber() +
-                            "\nДата покупки: " + dateForMySql;
+                        string text = String.Format("Номер покупки: {0}\nДата покупки: {1}", 
+                            dataBase.salesDataBase.GetLastSaleNumber(), dateForMySql);
 
-                        File file = new File();
+                        FileClass file = new FileClass();
                         file.SaveDocWord(saveFile.FileName, text);
                     }
-                    dataBase.OutputTable(salesTable, selectedIndex);
+
+                    dataBase.salesDataBase.OutputTable(salesTable, selectedIndex);
+
+                    MessageBox.Show("Покупка оформлена");
                 }
             }
         }
@@ -222,6 +244,7 @@ namespace Program_for_exam
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
             countryTextBox.BorderBrush = brush;
+
             countryToolTip.Visibility = Visibility.Hidden;
 
             OnlyLetter(sender);
@@ -232,6 +255,7 @@ namespace Program_for_exam
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
             cityTextBox.BorderBrush = brush;
+
             cityToolTip.Visibility = Visibility.Hidden;
 
             OnlyLetter(sender);
@@ -242,6 +266,7 @@ namespace Program_for_exam
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
             streetTextBox.BorderBrush = brush;
+
             streetToolTip.Visibility = Visibility.Hidden;
         }
 
@@ -253,8 +278,8 @@ namespace Program_for_exam
 
         private void workersListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            nameWorkerToolTip.Visibility = Visibility.Hidden;
-            secondObject.Visibility = Visibility.Hidden;
+            workerToolTip.Visibility = Visibility.Hidden;
+            secondObjectLabel.Visibility = Visibility.Hidden;
         }
 
         private void Label_MouseUp(object sender, MouseButtonEventArgs e)

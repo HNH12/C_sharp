@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Program_for_exam"
         mc:Ignorable="d"
-        Title="Удаление покупки" Height="127.035" Width="236.829">
+        Title="Удаление" Height="127.035" Width="254.04">
+    
     <Grid Margin="0,0,3.8,0.4">
-        <Button Content="Удалить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="78,49,0,0" Click="deleteSale_Click"/>
-        <TextBox x:Name="numberSaleTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" Margin="92,21,0,0" TextChanged="numberSaleTextBox_TextChanged">
+        
+        <Button Content="Удалить" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="90,49,0,0" Click="deleteSaleButton_Click"/>
+        
+        <TextBox x:Name="numberSaleTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="47" Margin="104,21,0,0" TextChanged="numberSaleTextBox_TextChanged">
             <TextBox.ToolTip>
-                <ToolTip>
-                    Укажите номер покупки
-                </ToolTip>
+                <ToolTip Content="Укажите номер покупки"/>
             </TextBox.ToolTip>
         </TextBox>
 

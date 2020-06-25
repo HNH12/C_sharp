@@ -6,70 +6,67 @@
         xmlns:local="clr-namespace:Program_for_exam"
         mc:Ignorable="d"
         Title="Добавить товар" Height="313.127" Width="783.634">
+    
     <Window.Resources>
         <Color x:Key="DefaultColor">#FFABADB3</Color>
     </Window.Resources>
 
     <Grid Margin="0,0,-0.4,0">
-        <TextBox x:Name="nameProduct" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="23,49,0,0" TextChanged="nameProduct_TextChanged">
+        
+        <TextBox x:Name="nameProductTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="23,49,0,0" TextChanged="nameProductTextBox_TextChanged">
             <TextBox.ToolTip>
-                <ToolTip x:Name="nameProductAddProductToolTip" Visibility="Hidden">
-                    Укажите название товара
-                </ToolTip>
+                <ToolTip x:Name="nameProductToolTip" Visibility="Hidden" Content="Укажите название товара"/>
             </TextBox.ToolTip>
         </TextBox>
-        <TextBox x:Name="typeProduct" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="23,107,0,0" TextChanged="typeProduct_TextChanged">
+        <TextBox x:Name="typeProductTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="23,107,0,0" TextChanged="typeProductTextBox_TextChanged">
             <TextBox.ToolTip>
-                <ToolTip x:Name="typeProductAddProductToolTip" Visibility="Hidden">
-                    Укажите тип товара
-                </ToolTip>
+                <ToolTip x:Name="typeProductToolTip" Visibility="Hidden" Content="Укажите тип товара"/>
             </TextBox.ToolTip>
         </TextBox>
-        <TextBox x:Name="nameFabricator" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="23,166,0,0" TextChanged="nameFabricator_TextChanged">
+        <TextBox x:Name="nameFabricatorTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="23,166,0,0" TextChanged="nameFabricatorTextBox_TextChanged">
             <TextBox.ToolTip>
-                <ToolTip x:Name="nameFabricatorAddProductToolTip" Visibility="Hidden">
-                    Укажите название производителя
-                </ToolTip>
+                <ToolTip x:Name="nameFabricatorToolTip" Visibility="Hidden" Content="Укажите название производителя"/>
             </TextBox.ToolTip>
         </TextBox>
-        <TextBox x:Name="priceProduct" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="23,225,0,0" TextChanged="priceProduct_TextChanged">
+        <TextBox x:Name="priceProductTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Margin="23,225,0,0" TextChanged="priceProductTextBox_TextChanged">
             <TextBox.ToolTip>
-                <ToolTip x:Name="priceProductAddProductToolTip" Visibility="Hidden">
-                    Укажите цену товара
-                </ToolTip>
+                <ToolTip x:Name="priceProductToolTip" Visibility="Hidden" Content="Укажите цену товара"/>
             </TextBox.ToolTip>
         </TextBox>
+        
         <Label Content="Название товара" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="23,23,0,0"/>
         <Label Content="Тип товара" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="23,81,0,0"/>
         <Label Content="Название производителя" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="23,140,0,0" RenderTransformOrigin="0.636,1.435"/>
         <Label Content="Цена товара" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="23,199,0,0"/>
 
-        <Button Content="Добавить" HorizontalAlignment="Left" Margin="220,225,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" RenderTransformOrigin="0.548,1.856" Height="23"/>
+        <Button Content="Добавить" HorizontalAlignment="Left" Margin="220,225,0,0" VerticalAlignment="Top" Width="75" Click="AddProductButton_Click" RenderTransformOrigin="0.548,1.856" Height="23"/>
+        
         <DataGrid x:Name="listProductDataGrid" HorizontalAlignment="Left" Height="159" VerticalAlignment="Top" Margin="220,50,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название" Binding="{Binding Path=nameProduct}" Width="150">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Тип" Binding="{Binding Path=typeProduct}" Width="110">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Производитель" Binding="{Binding Path=nameFabricator}" Width="150">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Цена" Binding="{Binding Path=priceProduct}" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
+        
     </Grid>
 </Window>

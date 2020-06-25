@@ -24,33 +24,32 @@ namespace Program_for_exam
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string _dataBaseOption = "server = 127.0.0.1; user = root; database = market";
-
         public MainWindow()
         {
             InitializeComponent();
 
-            DataBase dataBase = new DataBase(_dataBaseOption);
-            dataBase.OutputTable(salesDataBase);
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
+            dataBase.salesDataBase.OutputTable(salesDataBase);
+
             typeList.SelectedIndex = 0;
         }
 
-        private void SaveAllTable_Click(object sender, RoutedEventArgs e)
+        private void SaveTable_Click(object sender, RoutedEventArgs e)
         {
-            File saveFile = new File();
+            FileClass saveFile = new FileClass();
             saveFile.SaveDocExcel(salesDataBase);
         }
 
         private void typeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DataBase dataBase = new DataBase(_dataBaseOption);
-            dataBase.OutputTable(salesDataBase, typeList.SelectedIndex);
-        }
-
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
+            dataBase.salesDataBase.OutputTable(salesDataBase, typeList.SelectedIndex);
+            
+        } 
         private void NewSale_Click(object sender, RoutedEventArgs e)
         {
-            addSale add = new addSale(typeList.SelectedIndex, salesDataBase);
-            add.ShowDialog();
+            addSale form = new addSale(typeList.SelectedIndex, salesDataBase);
+            form.ShowDialog();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -62,25 +61,28 @@ namespace Program_for_exam
             }
         }
 
+        delegate string TextFromFile(string path);
+
         private void BackSale_Click(object sender, RoutedEventArgs e)
         {
-            File file = new File();
-            DataBase dataBase = new DataBase(_dataBaseOption);
+            FileClass file = new FileClass();
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.Title = "Выбрать чек";
             openFile.Filter = "Word documents(*.docx)|*.docx";
 
-            string numberSale = string.Empty;
+            string saleNumber = string.Empty;
+            TextFromFile textFromFile = file.GetTextDocWord;
 
             if (openFile.ShowDialog() == true)
             {
-                if (dataBase.IssueRefund(file.GetTextDocWord(openFile.FileName), ref numberSale))
+                if (dataBase.salesDataBase.IssueRefund(textFromFile(openFile.FileName), ref saleNumber))
                 {
-                    dataBase.DeleteSale(numberSale);
+                    dataBase.salesDataBase.DeleteSale(saleNumber);
                     MessageBox.Show("Возврат выполнен");
 
-                    dataBase.OutputTable(salesDataBase, Convert.ToInt32(typeList.SelectedItem));
+                    dataBase.salesDataBase.OutputTable(salesDataBase, Convert.ToInt32(typeList.SelectedItem));
 
                     FileInfo fileInf = new FileInfo(openFile.FileName);
 
@@ -95,38 +97,38 @@ namespace Program_for_exam
 
         private void DeleteSale_Click(object sender, RoutedEventArgs e)
         {
-            DeleteSale delete = new DeleteSale(typeList.SelectedIndex, salesDataBase);
-            delete.ShowDialog();
+            DeleteSale form = new DeleteSale(typeList.SelectedIndex, salesDataBase);
+            form.ShowDialog();
         }
 
         private void UpdateSale_Click(object sender, RoutedEventArgs e)
         {
-            UpdateSale update = new UpdateSale(typeList.SelectedIndex, salesDataBase);
-            update.ShowDialog();
+            UpdateSale form = new UpdateSale(typeList.SelectedIndex, salesDataBase);
+            form.ShowDialog();
         }
 
-        private void CreateWorker_Click(object sender, RoutedEventArgs e)
+        private void AddWorker_Click(object sender, RoutedEventArgs e)
         {
-            CreateWorker createWorker = new CreateWorker();
-            createWorker.ShowDialog();
+            CreateWorker form = new CreateWorker();
+            form.ShowDialog();
         }
 
         private void AddDiscount_Click(object sender, RoutedEventArgs e)
         {
-            AddDiscount addDiscount = new AddDiscount();
-            addDiscount.ShowDialog();
+            AddDiscount form = new AddDiscount();
+            form.ShowDialog();
         }
 
         private void AddProduct_Click(object sender, RoutedEventArgs e)
         {
-            AddProduct addProduct = new AddProduct();
-            addProduct.ShowDialog();
+            AddProduct form = new AddProduct();
+            form.ShowDialog();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void Info_Click(object sender, RoutedEventArgs e)
         {
-            InfoAboutCreator info = new InfoAboutCreator();
-            info.ShowDialog();
+            InfoAboutCreator form = new InfoAboutCreator();
+            form.ShowDialog();
         }
     }
 }

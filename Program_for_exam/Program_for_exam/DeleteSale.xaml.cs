@@ -19,7 +19,6 @@ namespace Program_for_exam
     /// </summary>
     public partial class DeleteSale : Window
     {
-        private string _dataBaseOption = "server = 127.0.0.1; user = root; database = market";
 
         public DeleteSale(int selectedIndex, DataGrid dataGrid)
         {
@@ -45,16 +44,16 @@ namespace Program_for_exam
             return check;
         }
 
-        private void deleteSale_Click(object sender, RoutedEventArgs e)
+        private void deleteSaleButton_Click(object sender, RoutedEventArgs e)
         {
-            DataBase dataBase = new DataBase(_dataBaseOption);
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
             if (CheckFullNumber())
             {
-                if (dataBase.DeleteSale(numberSaleTextBox.Text))
+                if (dataBase.salesDataBase.DeleteSale(numberSaleTextBox.Text))
                 {
                     MessageBox.Show("Удаление прошло успешно");
-                    dataBase.OutputTable(dataGrid, selectedIndex);
+                    dataBase.salesDataBase.OutputTable(dataGrid, selectedIndex);
                 }
                 else
                     MessageBox.Show("Неверный номер покупки"); 

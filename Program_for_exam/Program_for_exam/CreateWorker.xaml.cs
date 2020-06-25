@@ -19,14 +19,13 @@ namespace Program_for_exam
     /// </summary>
     public partial class CreateWorker : Window
     {
-        private string _dataBaseOption = "server = 127.0.0.1; user = root; database = market";
 
         public CreateWorker()
         {
             InitializeComponent();
 
-            DataBase dataBase = new DataBase(_dataBaseOption);
-            dataBase.OutputTableStaff(staffTable);
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
+            dataBase.staffDataBase.OutputTableStaff(staffTableDataGrid);
 
             string[] staff = {"Продавец-консультант", "Менеджер", "Кассир" };
 
@@ -37,31 +36,35 @@ namespace Program_for_exam
         {
             bool check = true;
 
-            if (firstName.Text == "")
+            if (firstNameTextBox.Text == "")
             {
                 firstNameToolTip.Visibility = Visibility.Visible;
-                firstName.BorderBrush = Brushes.Red;
+                firstNameTextBox.BorderBrush = Brushes.Red;
+
                 check = false;
             }
 
-            if (secondName.Text == "")
+            if (secondNameTextBox.Text == "")
             {
                 secondNameToolTip.Visibility = Visibility.Visible;
-                secondName.BorderBrush = Brushes.Red;
+                secondNameTextBox.BorderBrush = Brushes.Red;
+
                 check = false;
             }
 
-            if (middleName.Text == "")
+            if (middleNameTextBox.Text == "")
             {
                 middleNameToolTip.Visibility = Visibility.Visible;
-                middleName.BorderBrush = Brushes.Red;
+                middleNameTextBox.BorderBrush = Brushes.Red;
+
                 check = false;
             }
 
             if (staffComboBox.SelectedIndex == -1)
             {
-                firstObject.Visibility = Visibility.Visible;
+                firstObjectLabel.Visibility = Visibility.Visible;
                 staffToolTip.Visibility = Visibility.Visible;
+
                 check = false;
             }
 
@@ -84,63 +87,69 @@ namespace Program_for_exam
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AddWorkerButton_Click(object sender, RoutedEventArgs e)
         {
-            DataBase dataBase = new DataBase(_dataBaseOption);
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
             if (CheckFullInfo())
             {
-                if (dataBase.CheckFullStaff(secondName, firstName, middleName, staffComboBox.SelectedItem.ToString()))
-                {
+                bool isExistWorker = dataBase.staffDataBase.CheckFullStaff(secondNameTextBox.Text, firstNameTextBox.Text, middleNameTextBox.Text,
+                    staffComboBox.SelectedItem.ToString());
+
+                if (isExistWorker)
                     MessageBox.Show("Такой работник уже записан");
-                }
+                
                 else
                 {
-                    dataBase.CreateNewWorker(secondName,firstName, middleName, staffComboBox.SelectedItem.ToString());
+                    dataBase.staffDataBase.CreateNewWorker(secondNameTextBox.Text, firstNameTextBox.Text, middleNameTextBox.Text, 
+                        staffComboBox.SelectedItem.ToString());
+
                     MessageBox.Show("Уcпешно создан");
-                    dataBase.OutputTableStaff(staffTable);
+
+                    dataBase.staffDataBase.OutputTableStaff(staffTableDataGrid);
                 }
 
-                firstName.Clear();
-                secondName.Clear();
-                middleName.Clear();
+                firstNameTextBox.Clear();
+                secondNameTextBox.Clear();
+                middleNameTextBox.Clear();
+
                 staffComboBox.SelectedIndex = -1;
             }
         }
 
         private void staffComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            firstObject.Visibility = Visibility.Hidden;
+            firstObjectLabel.Visibility = Visibility.Hidden;
             staffToolTip.Visibility = Visibility.Hidden;
         }
 
-        private void middleName_TextChanged(object sender, TextChangedEventArgs e)
+        private void middleNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            middleName.BorderBrush = brush;
+            middleNameTextBox.BorderBrush = brush;
 
             middleNameToolTip.Visibility = Visibility.Hidden;
 
             OnlyLetter(sender);
         }
 
-        private void firstName_TextChanged(object sender, TextChangedEventArgs e)
+        private void firstNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            firstName.BorderBrush = brush;
+            firstNameTextBox.BorderBrush = brush;
 
             firstNameToolTip.Visibility = Visibility.Hidden;
 
             OnlyLetter(sender);
         }
 
-        private void secondName_TextChanged(object sender, TextChangedEventArgs e)
+        private void secondNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             BrushConverter converter = new BrushConverter();
             Brush brush = (Brush)converter.ConvertFromString("#FFABADB3");
-            secondName.BorderBrush = brush;
+            secondNameTextBox.BorderBrush = brush;
 
             secondNameToolTip.Visibility = Visibility.Hidden;
 

@@ -20,8 +20,6 @@ namespace Program_for_exam
     /// </summary>
     public partial class UpdateSale : System.Windows.Window
     {
-        private string _dataBaseOption = "server = 127.0.0.1; user = root; database = market";
-
         public UpdateSale(int selectedIndex, DataGrid salesTable)
         {
             InitializeComponent();
@@ -46,16 +44,16 @@ namespace Program_for_exam
             return check;
         }
 
-        private void UpdateSale_Click(object sender, RoutedEventArgs e)
+        private void UpdateSaleButton_Click(object sender, RoutedEventArgs e)
         {
-            DataBase dataBase = new DataBase(_dataBaseOption);
+            DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
             if (CheckFullNumber())
             {
-                if (dataBase.UpdateSale(numberSaleTextBox.Text))
+                if (dataBase.salesDataBase.UpdateSaleStatus(numberSaleTextBox.Text))
                 {
                     MessageBox.Show("Статус изменён");
-                    dataBase.OutputTable(salesTable, selectedIndex);
+                    dataBase.salesDataBase.OutputTable(salesTable, selectedIndex);
                 }
                 else
                     MessageBox.Show("Невозможно изменить статус");
