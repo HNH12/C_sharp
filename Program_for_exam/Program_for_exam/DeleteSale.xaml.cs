@@ -50,10 +50,10 @@ namespace Program_for_exam
 
             if (CheckFullNumber())
             {
-                if (dataBase.salesDataBase.DeleteSale(numberSaleTextBox.Text))
+                if (dataBase.DeleteSale(numberSaleTextBox.Text))
                 {
                     MessageBox.Show("Удаление прошло успешно");
-                    dataBase.salesDataBase.OutputTable(dataGrid, selectedIndex);
+                    dataBase.OutputTable(dataGrid, selectedIndex);
                 }
                 else
                     MessageBox.Show("Неверный номер покупки"); 

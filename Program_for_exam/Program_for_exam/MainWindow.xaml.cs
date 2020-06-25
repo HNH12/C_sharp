@@ -29,7 +29,7 @@ namespace Program_for_exam
             InitializeComponent();
 
             DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
-            dataBase.salesDataBase.OutputTable(salesDataBase);
+            dataBase.OutputTable(salesDataBase);
 
             typeList.SelectedIndex = 0;
         }
@@ -43,7 +43,7 @@ namespace Program_for_exam
         private void typeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
-            dataBase.salesDataBase.OutputTable(salesDataBase, typeList.SelectedIndex);
+            dataBase.OutputTable(salesDataBase, typeList.SelectedIndex);
             
         } 
         private void NewSale_Click(object sender, RoutedEventArgs e)
@@ -77,12 +77,12 @@ namespace Program_for_exam
 
             if (openFile.ShowDialog() == true)
             {
-                if (dataBase.salesDataBase.IssueRefund(textFromFile(openFile.FileName), ref saleNumber))
+                if (dataBase.IssueRefund(textFromFile(openFile.FileName), ref saleNumber))
                 {
-                    dataBase.salesDataBase.DeleteSale(saleNumber);
+                    dataBase.DeleteSale(saleNumber);
                     MessageBox.Show("Возврат выполнен");
 
-                    dataBase.salesDataBase.OutputTable(salesDataBase, Convert.ToInt32(typeList.SelectedItem));
+                    dataBase.OutputTable(salesDataBase, Convert.ToInt32(typeList.SelectedItem));
 
                     FileInfo fileInf = new FileInfo(openFile.FileName);
 
@@ -129,6 +129,55 @@ namespace Program_for_exam
         {
             InfoAboutCreator form = new InfoAboutCreator();
             form.ShowDialog();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.F1)
+            {
+                FileClass saveFile = new FileClass();
+                saveFile.SaveDocExcel(salesDataBase);
+            }
+
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.F2)
+            {
+                NewSale_Click(sender, e);
+            }
+
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.F3)
+            {
+                BackSale_Click(sender, e);
+            }
+
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.F4)
+            {
+                DeleteSale_Click(sender, e);
+            }
+
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.F5)
+            {
+                UpdateSale_Click(sender, e);
+            }
+
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.F6)
+            {
+                AddProduct_Click(sender, e);
+            }
+
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.F7)
+            {
+                AddDiscount_Click(sender, e);
+            }
+
+            if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.F8)
+            {
+                AddWorker_Click(sender, e);
+            }
+
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }

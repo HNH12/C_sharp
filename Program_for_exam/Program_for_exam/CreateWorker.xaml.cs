@@ -25,7 +25,7 @@ namespace Program_for_exam
             InitializeComponent();
 
             DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
-            dataBase.staffDataBase.OutputTableStaff(staffTableDataGrid);
+            dataBase.OutputTableStaff(staffTableDataGrid);
 
             string[] staff = {"Продавец-консультант", "Менеджер", "Кассир" };
 
@@ -93,7 +93,7 @@ namespace Program_for_exam
 
             if (CheckFullInfo())
             {
-                bool isExistWorker = dataBase.staffDataBase.CheckFullStaff(secondNameTextBox.Text, firstNameTextBox.Text, middleNameTextBox.Text,
+                bool isExistWorker = dataBase.CheckFullStaff(secondNameTextBox.Text, firstNameTextBox.Text, middleNameTextBox.Text,
                     staffComboBox.SelectedItem.ToString());
 
                 if (isExistWorker)
@@ -101,12 +101,12 @@ namespace Program_for_exam
                 
                 else
                 {
-                    dataBase.staffDataBase.CreateNewWorker(secondNameTextBox.Text, firstNameTextBox.Text, middleNameTextBox.Text, 
+                    dataBase.CreateNewWorker(secondNameTextBox.Text, firstNameTextBox.Text, middleNameTextBox.Text, 
                         staffComboBox.SelectedItem.ToString());
 
                     MessageBox.Show("Уcпешно создан");
 
-                    dataBase.staffDataBase.OutputTableStaff(staffTableDataGrid);
+                    dataBase.OutputTableStaff(staffTableDataGrid);
                 }
 
                 firstNameTextBox.Clear();

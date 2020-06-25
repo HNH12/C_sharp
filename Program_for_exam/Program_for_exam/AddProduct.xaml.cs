@@ -26,7 +26,7 @@ namespace Program_for_exam
             InitializeComponent();
 
             DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
-            dataBase.productDataBase.OutputTableProduct(listProductDataGrid);
+            dataBase.OutputTableProduct(listProductDataGrid);
         }
 
         public bool CheckFullData()
@@ -72,7 +72,7 @@ namespace Program_for_exam
         {
             DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
             
-            bool isSuccessfulAdd = dataBase.productDataBase.CreateNewTechnic(nameProductTextBox.Text, typeProductTextBox.Text, 
+            bool isSuccessfulAdd = dataBase.CreateNewTechnic(nameProductTextBox.Text, typeProductTextBox.Text, 
                 priceProductTextBox.Text, nameFabricatorTextBox.Text);
 
             if(CheckFullData())
@@ -80,7 +80,7 @@ namespace Program_for_exam
                 if (isSuccessfulAdd)
                 {
                     MessageBox.Show("Товар создан");
-                    dataBase.productDataBase.OutputTableProduct(listProductDataGrid);
+                    dataBase.OutputTableProduct(listProductDataGrid);
 
                     nameProductTextBox.Clear();
                     nameFabricatorTextBox.Clear();

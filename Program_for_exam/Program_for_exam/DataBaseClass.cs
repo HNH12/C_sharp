@@ -34,8 +34,8 @@ namespace Program_for_exam
             public string positionWorker { get; set; }
             public string nameTechnic { get; set; }
             public string typeTechnic { get; set; }
-            public string priceTechnic { get; set; }
-            public string dataFabricator { get; set; }
+            public string priceSale { get; set; }
+            public string nameFabricator { get; set; }
             public string date { get; set; }
             public string status { get; set; }
         }
@@ -74,10 +74,15 @@ namespace Program_for_exam
             List<string> GetStaff();
         }
 
-        public class SalesDataBase : Connection
+        public class DataBase : Connection
         {
-            public SalesDataBase(string option) : base(option) { }
+            public DataBase(string option) : base(option) { }
 
+            /// <summary>
+            /// Выводит информацию в указанный DataGrid;
+            /// </summary>
+            /// <param name="dataGrid"></param>
+            /// <param name="choose"></param>
             public void OutputTable(DataGrid dataGrid, int choose = 0)
             {
                 dataGrid.Items.Clear();
@@ -148,16 +153,23 @@ namespace Program_for_exam
                         numberSale = s[0],
                         nameWorker = s[1],
                         positionWorker = s[2],
-                        dataFabricator = s[3],
+                        nameFabricator = s[3],
                         nameTechnic = s[4],
                         typeTechnic = s[5],
-                        priceTechnic = s[6],
+                        priceSale = s[6],
                         date = s[7],
                         status = s[8]
                     });
                 }
             }
 
+            /// <summary>
+            /// Проверка на существование в базе данных указанного адреса;
+            /// </summary>
+            /// <param name="country"></param>
+            /// <param name="city"></param>
+            /// <param name="street"></param>
+            /// <returns></returns>
             private bool CheckFullAddress(string country, string city, string street)
             {
                 string sql = String.Format("SELECT id FROM address WHERE country = '{0}' AND city = '{1}' AND street = '{2}'",
@@ -177,6 +189,12 @@ namespace Program_for_exam
                 }
             }
 
+            /// <summary>
+            /// Добавляет в базу данных новый адрес;
+            /// </summary>
+            /// <param name="country"></param>
+            /// <param name="city"></param>
+            /// <param name="street"></param>
             private void CreateNewAddress(string country, string city, string street)
             {
                 string sql = String.Format("INSERT INTO `address`(`id`,`country`,`city`,`street`) VALUES (NULL, '{0}', '{1}', '{2}')",
@@ -186,6 +204,17 @@ namespace Program_for_exam
                 command.ExecuteNonQuery();
             }
 
+            /// <summary>
+            /// Добавляет в базу данных новую продажу;
+            /// </summary>
+            /// <param name="firstName"></param>
+            /// <param name="secondName"></param>
+            /// <param name="middleName"></param>
+            /// <param name="position"></param>
+            /// <param name="product"></param>
+            /// <param name="country"></param>
+            /// <param name="city"></param>
+            /// <param name="street"></param>
             public void CreateNewSale(string firstName, string secondName, string middleName, string position,
                 string product, string country = null, string city = null, string street = null)
             {
@@ -231,6 +260,11 @@ namespace Program_for_exam
                 command.ExecuteNonQuery();
             }
 
+            /// <summary>
+            /// Удаляет из базы данных продажу с указанным номером;
+            /// </summary>
+            /// <param name="numberSale"></param>
+            /// <returns></returns>
             public bool DeleteSale(string numberSale)
             {
                 string sql = String.Format("DELETE FROM `sale` WHERE id = '{0}'", numberSale);
@@ -255,6 +289,11 @@ namespace Program_for_exam
                 }
             }
 
+            /// <summary>
+            /// Преобразование данных о продаже к двум переменным типа string;
+            /// </summary>
+            /// <param name="text"></param>
+            /// <returns></returns>
             private (string, string) SaleInformation(string text)
             {
                 string date = string.Empty;
@@ -279,6 +318,11 @@ namespace Program_for_exam
                 return (saleNumber, date);
             }
 
+            /// <summary>
+            /// Преобразование данных о товаре к четырём переменных типа string;
+            /// </summary>
+            /// <param name="product"></param>
+            /// <returns></returns>
             private (string, string, string, string) GetProductInfo(string product)
             {
                 string name = ""; string type = ""; string nameFabricator = "";
@@ -321,8 +365,12 @@ namespace Program_for_exam
                 return (name, type, nameFabricator, price);
             }
 
-
-
+            /// <summary>
+            /// Проверяет, можно ли оформить возврат указанной покупки;
+            /// </summary>
+            /// <param name="text"></param>
+            /// <param name="saleNumber"></param>
+            /// <returns></returns>
             public bool IssueRefund(string text, ref string saleNumber)
             {
                 string date;
@@ -360,6 +408,10 @@ namespace Program_for_exam
                 }
             }
 
+            /// <summary>
+            /// Возвращает номер последней продажи;
+            /// </summary>
+            /// <returns></returns>
             public string GetLastSaleNumber()
             {
                 string number = string.Empty;
@@ -372,6 +424,11 @@ namespace Program_for_exam
                 return number;
             }
 
+            /// <summary>
+            /// Изменяет статус указанной продажи;
+            /// </summary>
+            /// <param name="saleNumber"></param>
+            /// <returns></returns>
             public bool UpdateSaleStatus(string saleNumber)
             {
                 string sql = String.Format("UPDATE `sale` SET address_id = NULL WHERE id = {0} AND address_id IS NOT NULL", saleNumber);
@@ -384,12 +441,11 @@ namespace Program_for_exam
                 else
                     return false;
             }
-        }
 
-        public class ProductDataBase : Connection
-        {
-            public ProductDataBase(string option) : base(option) { }
-
+            /// <summary>
+            /// Выводит информацию о товарах в указанный DataGrid;
+            /// </summary>
+            /// <param name="dataGrid"></param>
             public void OutputTableProduct(DataGrid dataGrid)
             {
                 dataGrid.Items.Clear();
@@ -424,6 +480,12 @@ namespace Program_for_exam
                     });
                 }
             }
+
+            /// <summary>
+            /// Проверка на существование в базе данных производителя с указанными данными;
+            /// </summary>
+            /// <param name="name"></param>
+            /// <returns></returns>
             private bool CheckFullFabricator(string name)
             {
                 string sql = String.Format("SELECT id FROM fabricators WHERE name = '{0}'", name);
@@ -437,6 +499,14 @@ namespace Program_for_exam
                     return true;
             }
 
+            /// <summary>
+            /// Проверка на существование в базе данных техники с указанными данными;
+            /// </summary>
+            /// <param name="nameTechnic"></param>
+            /// <param name="typeTechnic"></param>
+            /// <param name="nameFabricator"></param>
+            /// <param name="price"></param>
+            /// <returns></returns>
             private bool CheckFullTechnic(string nameTechnic, string typeTechnic, string nameFabricator, string price)
             {
                 string sql = string.Empty;
@@ -471,6 +541,10 @@ namespace Program_for_exam
                 }
             }
 
+            /// <summary>
+            /// Представляет все товары в виде списка;
+            /// </summary>
+            /// <returns></returns>
             public List<string> OutputProduct()
             {
                 string sql = "SELECT t.name, t.type, f.name, t.price FROM `technic` t " +
@@ -491,6 +565,14 @@ namespace Program_for_exam
                 return list;
             }
 
+            /// <summary>
+            /// Создаёт новый товар;
+            /// </summary>
+            /// <param name="name"></param>
+            /// <param name="type"></param>
+            /// <param name="price"></param>
+            /// <param name="nameFabricator"></param>
+            /// <returns></returns>
             public bool CreateNewTechnic(string name, string type, string price, string nameFabricator)
             {
                 if (CheckFullTechnic(name, type, nameFabricator, price))
@@ -510,12 +592,11 @@ namespace Program_for_exam
                     return true;
                 }
             }
-        }
 
-        public class DiscountDataBase : Connection
-        {
-            public DiscountDataBase(string option) : base(option) { }
-
+            /// <summary>
+            /// Представляет все товары в виде списка;
+            /// </summary>
+            /// <returns></returns>
             public List<string> OutputAllTechnic()
             {
                 string sql = "SELECT t.name, t.type, f.name FROM `technic` t " +
@@ -536,6 +617,10 @@ namespace Program_for_exam
                 return list;
             }
 
+            /// <summary>
+            /// Выводит все скидки в указанный DataGrid;
+            /// </summary>
+            /// <param name="dataGrid"></param>
             public void OutputTableDiscount(DataGrid dataGrid)
             {
                 string sql = "SELECT * FROM `discount`";
@@ -564,6 +649,10 @@ namespace Program_for_exam
                 reader.Close();
             }
 
+            /// <summary>
+            /// Удаляет скидку у указанного товара;
+            /// </summary>
+            /// <param name="product"></param>
             public void DeleteDiscount(string product = "delete all")
             {
                 string sql = string.Empty;
@@ -578,6 +667,11 @@ namespace Program_for_exam
                 command.ExecuteNonQuery();
             }
 
+            /// <summary>
+            /// Проверка на существование в базе данных скидки у указанного продукта;
+            /// </summary>
+            /// <param name="product"></param>
+            /// <returns></returns>
             private bool CheckDiscount(string product)
             {
                 string sql = String.Format("SELECT COUNT(*) FROM `discount` WHERE product = '{0}'", product);
@@ -591,6 +685,12 @@ namespace Program_for_exam
                     return true;
             }
 
+            /// <summary>
+            /// Добавление новой скидки у указанного продукта;
+            /// </summary>
+            /// <param name="product"></param>
+            /// <param name="discount"></param>
+            /// <returns></returns>
             public bool AddDiscount(string product, string discount)
             {
                 if (CheckDiscount(product))
@@ -610,6 +710,11 @@ namespace Program_for_exam
                 }
             }
 
+            /// <summary>
+            /// Изменяет скидку у указанного продукта;
+            /// </summary>
+            /// <param name="product"></param>
+            /// <param name="discount"></param>
             public void UpdateDiscount(string product, string discount)
             {
                 string sql = String.Format("UPDATE `discount` SET discount = {0} WHERE product = '{1}'",
@@ -619,6 +724,10 @@ namespace Program_for_exam
                 command.ExecuteNonQuery();
             }
 
+            /// <summary>
+            /// Представляет все скидки в виде списка;
+            /// </summary>
+            /// <returns></returns>
             public List<string> OutputAllDiscount()
             {
                 string sql = "SELECT * FROM `discount`";
@@ -636,17 +745,17 @@ namespace Program_for_exam
 
                 return list;
             }
-        }
 
-        public class StaffDataBase : Connection
-        {
-            public StaffDataBase(string option) : base(option) { }
-
+            /// <summary>
+            /// Выводит всех сотрудников в указанный DataGrid;
+            /// </summary>
+            /// <param name="dataGrid"></param>
             public void OutputTableStaff(DataGrid dataGrid)
             {
                 dataGrid.Items.Clear();
 
-                string sql = "SELECT second_name,first_name,middle_name,position FROM `staff`";
+                string sql = "SELECT second_name,first_name,middle_name,position FROM `staff` ORDER BY " +
+                    "second_name,first_name,middle_name";
 
                 MySqlCommand command = new MySqlCommand(sql, _connection);
                 MySqlDataReader reader = command.ExecuteReader();
@@ -675,6 +784,14 @@ namespace Program_for_exam
                 reader.Close();
             }
 
+            /// <summary>
+            /// Проверка на существование в базе данных сотрудника с указанными данными;
+            /// </summary>
+            /// <param name="secondName"></param>
+            /// <param name="firstName"></param>
+            /// <param name="middleName"></param>
+            /// <param name="position"></param>
+            /// <returns></returns>
             public bool CheckFullStaff(string secondName, string firstName, string middleName, string position)
             {
                 object result = new object();
@@ -692,6 +809,13 @@ namespace Program_for_exam
                     return true;
             }
 
+            /// <summary>
+            /// Создание нового сотрудника с указанными данными;
+            /// </summary>
+            /// <param name="secondName"></param>
+            /// <param name="firstName"></param>
+            /// <param name="middleName"></param>
+            /// <param name="position"></param>
             public void CreateNewWorker(string secondName, string firstName, string middleName, string position)
             {
                 string sql = String.Format("INSERT INTO `staff`(`id`,`second_name`,`first_name`,`middle_name`,`position`) " +
@@ -701,6 +825,10 @@ namespace Program_for_exam
                 command.ExecuteNonQuery();
             }
 
+            /// <summary>
+            /// Представляет всех сотрудников в виде списка;
+            /// </summary>
+            /// <returns></returns>
             public List<string> GetStaff()
             {
                 string sql = "SELECT second_name,first_name,middle_name,position " +
@@ -719,22 +847,6 @@ namespace Program_for_exam
                 reader.Close();
 
                 return list;
-            }
-        }
-
-        public class DataBase : Connection
-        {
-            public SalesDataBase salesDataBase;
-            public ProductDataBase productDataBase;
-            public StaffDataBase staffDataBase;
-            public DiscountDataBase discountDataBase;
-
-            public DataBase(string option) : base(option)
-            {
-                productDataBase = new ProductDataBase(option);
-                staffDataBase = new StaffDataBase(option);
-                discountDataBase = new DiscountDataBase(option);
-                salesDataBase = new SalesDataBase(option);
             }
         }
     }

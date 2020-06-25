@@ -26,10 +26,10 @@ namespace Program_for_exam
 
             DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
-            technicComboBox.ItemsSource = dataBase.discountDataBase.OutputAllTechnic();
-            currentDiscountComboBox.ItemsSource = dataBase.discountDataBase.OutputAllDiscount();
+            technicComboBox.ItemsSource = dataBase.OutputAllTechnic();
+            currentDiscountComboBox.ItemsSource = dataBase.OutputAllDiscount();
 
-            dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
+            dataBase.OutputTableDiscount(discountDataGrid);
         }
 
         private bool CheckRightDiscount()
@@ -77,7 +77,7 @@ namespace Program_for_exam
             {
                 DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
-                if (dataBase.discountDataBase.AddDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text))
+                if (dataBase.AddDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text))
                 {
                     Tuple<string, int> tuple = new Tuple<string, int>
                         (technicComboBox.SelectedItem.ToString(), Convert.ToInt32(discountTextBox.Text));
@@ -85,8 +85,8 @@ namespace Program_for_exam
                     discountDataGrid.Items.Clear();
                     currentDiscountComboBox.Items.Clear();
 
-                    dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
-                    currentDiscountComboBox.ItemsSource = dataBase.discountDataBase.OutputAllDiscount();
+                    dataBase.OutputTableDiscount(discountDataGrid);
+                    currentDiscountComboBox.ItemsSource = dataBase.OutputAllDiscount();
 
                     technicComboBox.SelectedIndex = -1;
                     discountTextBox.Text = "";
@@ -99,10 +99,10 @@ namespace Program_for_exam
 
                     if (isMessageResultAgree)
                     {
-                        dataBase.discountDataBase.UpdateDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text);
+                        dataBase.UpdateDiscount(technicComboBox.SelectedItem.ToString(), discountTextBox.Text);
 
                         discountDataGrid.Items.Clear();
-                        dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
+                        dataBase.OutputTableDiscount(discountDataGrid);
 
                         technicComboBox.SelectedIndex = -1;
                         discountTextBox.Text = "";
@@ -132,13 +132,13 @@ namespace Program_for_exam
             {
                 DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
-                dataBase.discountDataBase.DeleteDiscount(currentDiscountComboBox.SelectedItem.ToString());
+                dataBase.DeleteDiscount(currentDiscountComboBox.SelectedItem.ToString());
 
                 discountDataGrid.Items.Clear();
                 currentDiscountComboBox.Items.Clear();
 
-                currentDiscountComboBox.ItemsSource = dataBase.discountDataBase.OutputAllDiscount();
-                dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
+                currentDiscountComboBox.ItemsSource = dataBase.OutputAllDiscount();
+                dataBase.OutputTableDiscount(discountDataGrid);
 
                 MessageBox.Show("        Удаление прошло успешно");
             }
@@ -154,13 +154,13 @@ namespace Program_for_exam
             {
                 DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
-                dataBase.discountDataBase.DeleteDiscount();
+                dataBase.DeleteDiscount();
 
                 currentDiscountComboBox.Items.Clear();
                 discountDataGrid.Items.Clear();
 
-                currentDiscountComboBox.ItemsSource = dataBase.discountDataBase.OutputAllDiscount();
-                dataBase.discountDataBase.OutputTableDiscount(discountDataGrid);
+                currentDiscountComboBox.ItemsSource = dataBase.OutputAllDiscount();
+                dataBase.OutputTableDiscount(discountDataGrid);
 
                 MessageBox.Show("        Удаление прошло успешно");
             }

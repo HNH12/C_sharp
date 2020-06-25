@@ -50,10 +50,10 @@ namespace Program_for_exam
 
             if (CheckFullNumber())
             {
-                if (dataBase.salesDataBase.UpdateSaleStatus(numberSaleTextBox.Text))
+                if (dataBase.UpdateSaleStatus(numberSaleTextBox.Text))
                 {
                     MessageBox.Show("Статус изменён");
-                    dataBase.salesDataBase.OutputTable(salesTable, selectedIndex);
+                    dataBase.OutputTable(salesTable, selectedIndex);
                 }
                 else
                     MessageBox.Show("Невозможно изменить статус");

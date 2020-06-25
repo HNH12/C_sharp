@@ -27,8 +27,8 @@ namespace Program_for_exam
 
             DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
 
-            workersListComboBox.ItemsSource = dataBase.staffDataBase.GetStaff();
-            productComboBox.ItemsSource = dataBase.productDataBase.OutputProduct();
+            workersListComboBox.ItemsSource = dataBase.GetStaff();
+            productComboBox.ItemsSource = dataBase.OutputProduct();
 
             this.selectedIndex = selectedIndex;
             this.salesTable = salesTable;
@@ -154,10 +154,11 @@ namespace Program_for_exam
 
                     var Tuple = GetWorkerInformation();
 
-                    dataBase.salesDataBase.CreateNewSale(Tuple.Item2, Tuple.Item1, Tuple.Item3, Tuple.Item4,
+                    dataBase.CreateNewSale(Tuple.Item2, Tuple.Item1, Tuple.Item3, Tuple.Item4,
                         productComboBox.SelectedItem.ToString());
 
                     SaveFileDialog saveFile = new SaveFileDialog();
+                    saveFile.FileName = String.Format("Чек №{0}", dataBase.GetLastSaleNumber());
                     saveFile.Filter = "DocX document (.docx)|(*.docx)";
 
                     MessageBoxResult dialogResult = MessageBox.Show("Сохранить чек?\n(Внимание! Без чека вы не сможете вернуть товар)",
@@ -170,15 +171,15 @@ namespace Program_for_exam
                             DateTime date = DateTime.Now;
                             string dateForMySql = date.ToString("yyyy-MM-dd");
 
-                            string text = String.Format("Номер покупки: {0}\nДата покупки: {1}",
-                                dataBase.salesDataBase.GetLastSaleNumber(), dateForMySql);
+                            string text = String.Format("Номер покупки: {0}\nТовар:\n{1}\nДата покупки: {2}",
+                            dataBase.GetLastSaleNumber(), productComboBox.SelectedItem.ToString(), dateForMySql);
 
                             FileClass file = new FileClass();
                             file.SaveDocWord(saveFile.FileName, text);
                         }
                     }
 
-                    dataBase.salesDataBase.OutputTable(salesTable, selectedIndex);
+                    dataBase.OutputTable(salesTable, selectedIndex);
 
 
 
@@ -198,10 +199,11 @@ namespace Program_for_exam
                     DataBaseClass.DataBase dataBase = new DataBaseClass.DataBase(DataBaseOption.dataBaseOption);
                     var tuple = GetWorkerInformation();
 
-                    dataBase.salesDataBase.CreateNewSale(tuple.Item2, tuple.Item1, tuple.Item3, tuple.Item4, 
+                    dataBase.CreateNewSale(tuple.Item2, tuple.Item1, tuple.Item3, tuple.Item4, 
                         productComboBox.SelectedItem.ToString(), countryTextBox.Text, cityTextBox.Text, streetTextBox.Text);
 
                     SaveFileDialog saveFile = new SaveFileDialog();
+                    saveFile.FileName = String.Format("Чек №{0}", dataBase.GetLastSaleNumber());
                     saveFile.Filter = "DocX document (.docx)|(*.docx)";
 
                     if (saveFile.ShowDialog() == true)
@@ -209,14 +211,15 @@ namespace Program_for_exam
                         DateTime date = DateTime.Now;
                         string dateForMySql = date.ToString("yyyy-MM-dd");
 
-                        string text = String.Format("Номер покупки: {0}\nДата покупки: {1}", 
-                            dataBase.salesDataBase.GetLastSaleNumber(), dateForMySql);
+                        string text = String.Format("Номер покупки: {0}\nТовар:\n" +
+                            "{1}\nДата покупки: {2}", 
+                            dataBase.GetLastSaleNumber(), productComboBox.SelectedItem.ToString(), dateForMySql);
 
                         FileClass file = new FileClass();
                         file.SaveDocWord(saveFile.FileName, text);
                     }
 
-                    dataBase.salesDataBase.OutputTable(salesTable, selectedIndex);
+                    dataBase.OutputTable(salesTable, selectedIndex);
 
                     MessageBox.Show("Покупка оформлена");
                 }

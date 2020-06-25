@@ -19,48 +19,70 @@ namespace Program_for_exam
 {
     class FileClass
     {
+            /// <summary>
+            /// Сохраняет указанную таблицу в файл excel;
+            /// </summary>
+            /// <param name="table"></param>
             public void SaveDocExcel(DataGrid table)
             {
 
-                Excel.Application app = null;
-                Excel.Workbook wb = null;
-                Excel.Worksheet ws = null;
+                Excel.Application application = null;
+                Excel.Workbook workbook = null;
+                Excel.Worksheet worksheet = null;
                 var process = System.Diagnostics.Process.GetProcessesByName("EXCEL");
 
+                string date = DateTime.Now.ToString("yyyy-MM-dd");
+
                 SaveFileDialog openDialog = new SaveFileDialog();
-                openDialog.FileName = "Чек № ";
+                openDialog.FileName = String.Format("Таблица продаж от {0}", date);
                 openDialog.Filter = "Excel (.xls)|*.xls |Excel (.xlsx)|*.xlsx |All files (*.*)|*.*";
                 openDialog.FilterIndex = 2;
                 openDialog.RestoreDirectory = true;
 
                 if (openDialog.ShowDialog() == true)
                 {
-                    app = new Excel.Application();
-                    app.DisplayAlerts = false;
-                    wb = app.Workbooks.Add();
-                    ws = wb.ActiveSheet;
+                    application = new Excel.Application();
+                    application.DisplayAlerts = false;
+
+                    workbook = application.Workbooks.Add();
+                    worksheet = workbook.ActiveSheet;
+
                     table.SelectAllCells();
                     table.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
                     System.Windows.Input.ApplicationCommands.Copy.Execute(null, table);
-                    ws.Paste();
-                    ws.Range["A1", "I1"].Font.Bold = true;
-                    int number1 = ws.UsedRange.Rows.Count;
-                    Microsoft.Office.Interop.Excel.Range myRange = ws.Range["A1", "I" + number1];
+
+                    worksheet.Paste();
+                    worksheet.Range["A1", "I1"].Font.Bold = true;
+                    int number1 = worksheet.UsedRange.Rows.Count;
+                    Microsoft.Office.Interop.Excel.Range myRange = worksheet.Range["A1", "I" + number1];
+
                     myRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                     myRange.WrapText = false;
-                    ws.Columns.EntireColumn.AutoFit();
-                    wb.SaveAs(openDialog.FileName);
+
+                    worksheet.Columns.EntireColumn.AutoFit();
+                    workbook.SaveAs(openDialog.FileName);
                 }
             }
 
+            /// <summary>
+            /// Сохраняет текст в файл word;
+            /// </summary>
+            /// <param name="fileName"></param>
+            /// <param name="text"></param>
             public void SaveDocWord(string fileName, string text)
             {
                 string pathFile = fileName;
                 DocX document = DocX.Create(pathFile);
+
                 document.InsertParagraph(text);
                 document.Save();
             }
 
+            /// <summary>
+            /// Считывает текст с файла word;
+            /// </summary>
+            /// <param name="fileName"></param>
+            /// <returns></returns>
             public string GetTextDocWord(Object fileName)
             {
                 Object confirmConversions = Type.Missing;
@@ -78,35 +100,27 @@ namespace Program_for_exam
                 Object openAndRepair = Type.Missing;
                 Object documentDirection = Type.Missing;
                 Object noEncodingDialog = Type.Missing;
-                Word.Application Progr = new Microsoft.Office.Interop.Word.Application();
-                Progr.Documents.Open(ref fileName,
-                    ref confirmConversions,
-                    ref readOnly,
-                    ref addToRecentFiles,
-                    ref passwordDocument,
-                    ref passwordTemplate,
-                    ref revert,
-                    ref writePasswordDocument,
-                    ref writePasswordTemplate,
-                    ref format,
-                    ref encoding,
-                    ref visible,
-                    ref openConflictDocument,
-                    ref openAndRepair,
-                    ref documentDirection,
-                    ref noEncodingDialog);
-                Word.Document Doc = new Microsoft.Office.Interop.Word.Document();
-                Doc = Progr.Documents.Application.ActiveDocument;
-                object start = 0;
-                object stop = Doc.Characters.Count;
-                Word.Range Rng = Doc.Range(ref start, ref stop);
-                string Result = Rng.Text;
-                object sch = Type.Missing;
-                object aq = Type.Missing;
-                object ab = Type.Missing;
-                Progr.Quit(ref sch, ref aq, ref ab);
 
-                return Result;
+                Word.Application program = new Microsoft.Office.Interop.Word.Application();
+                program.Documents.Open(ref fileName, ref confirmConversions, ref readOnly, ref addToRecentFiles, ref passwordDocument,
+                    ref passwordTemplate, ref revert, ref writePasswordDocument, ref writePasswordTemplate, ref format, ref encoding,
+                    ref visible, ref openConflictDocument, ref openAndRepair, ref documentDirection, ref noEncodingDialog);
+
+                Word.Document document = new Microsoft.Office.Interop.Word.Document();
+                document = program.Documents.Application.ActiveDocument;
+
+                object start = 0;
+                object stop = document.Characters.Count;
+
+                Word.Range range = document.Range(ref start, ref stop);
+
+                string result = range.Text;
+                object saveChanges = Type.Missing;
+                object originalFormat = Type.Missing;
+                object routeDocument = Type.Missing;
+                program.Quit(ref saveChanges, ref originalFormat, ref routeDocument);
+
+                return result;
             }
     }
 }
